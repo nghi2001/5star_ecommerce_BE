@@ -1,7 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { Schema, Model, FilterQuery } from "mongoose";
+import { Model, FilterQuery } from "mongoose";
 import { IRead } from "./interfaces/IRead.interface";
 import { IWrite } from "./interfaces/IWrite.interface";
+import mongoose from 'mongoose'
+
 
 export abstract class BaseRepository <T> implements IRead<T>,IWrite<T> {
     constructor(
@@ -9,7 +11,7 @@ export abstract class BaseRepository <T> implements IRead<T>,IWrite<T> {
     ) {
         
     }
-    async findById(id: Schema.Types.ObjectId): Promise<T> {
+    async findById(id: mongoose.Types.ObjectId): Promise<T> {
         let data = await this.model.findById(id);
         return data
     }
@@ -29,10 +31,11 @@ export abstract class BaseRepository <T> implements IRead<T>,IWrite<T> {
             return false
         }
     }
-    update(id: Schema.Types.ObjectId): Promise<boolean> {
+    update(id: mongoose.Types.ObjectId): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
-    async delete(id: Schema.Types.ObjectId): Promise<boolean> {
+    
+    async delete(id: mongoose.Types.ObjectId): Promise<boolean> {
         try {
             let data = await this.model.findByIdAndDelete(id)
             return true

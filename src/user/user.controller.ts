@@ -1,22 +1,54 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Param, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Get } from '@nestjs/common';
+import { Get, Post, Body, Delete } from '@nestjs/common';
+import { ValidationPipe } from 'src/common/pipe/validation.pipe';
+import { CreateUserDto } from './dto/create-user.dto';
 @Controller('user')
 export class UserController {
     constructor(
         private UserService: UserService
-    ){}
-    
-    @Get()
-    async Hello() {
-        let helo = await this.UserService.Hello()
+    ) { }
 
-        return [helo]
+    // @Get("/test")
+    // async create() {
+    //     let result = await this.UserService.createUser()
+    //     return result
+    // }
+    @Get("/:id")
+    async find(@Param("id") id) {
+        try {
+            if(this.UserService.checkObjectId(id)) {
+                let {account, ...user} = await this.UserService.findOne(id);
+                return [user]
+            }
+        } catch (error) {
+            return error
+        }
     }
 
-    @Get("/add")
-    async Add() {
-        let data = await this.UserService.add()
-        return [data]
+    @Post("/")
+    async create(
+        @Body(new ValidationPipe()) createUserDto: CreateUserDto
+    ) {
+        try {
+            let result = await this.UserService.createUser(createUserDto);
+            return [result]
+        } catch (error) {
+            return [error]
+        }
+    }
+
+    @Delete("/:id")
+    async delete(@Param("id") id) {
+        try {
+            if (this.UserService.checkObjectId(id)){
+                
+                let result = await this.UserService.deleteUser(id)
+
+                return result
+            }
+        } catch (error) {
+            return error
+        }
     }
 }
