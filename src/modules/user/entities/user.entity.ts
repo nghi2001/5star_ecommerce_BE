@@ -43,6 +43,9 @@ export class User {
     @Prop([String])
     address: string[];
 
+    @Prop()
+    refreshToken?: string;
+
     @Prop({type: InternalAccountSchema || GoogleAccountSchema})
     account: InternalAccount | GoogleAccount
 

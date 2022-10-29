@@ -31,8 +31,9 @@ export abstract class BaseRepository <T> implements IRead<T>,IWrite<T> {
             return false
         }
     }
-    update(id: mongoose.Types.ObjectId): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async update(id: mongoose.Types.ObjectId,update): Promise<boolean> {
+        let data = await this.model.updateOne({id: id},update)
+        return true
     }
     
     async delete(id: mongoose.Types.ObjectId): Promise<boolean> {

@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './user.repository';
 import mongoose from 'mongoose'
-import {ObjectId} from 'mongoose'
+import { ObjectId } from 'mongoose'
 
 @Injectable()
 export class UserService {
@@ -41,15 +41,15 @@ export class UserService {
         return result
     }
 
-    checkObjectId(id: string): boolean{
+    checkObjectId(id: string): boolean {
         let ObjectId = mongoose.Types.ObjectId;
-        if(ObjectId.isValid(id)){
+        if (ObjectId.isValid(id)) {
             return true
         }
 
         throw new HttpException('id invalid', HttpStatus.NOT_ACCEPTABLE)
     }
-    async deleteUser(id:mongoose.Types.ObjectId) {
+    async deleteUser(id: mongoose.Types.ObjectId) {
         let result = await this.UserRepository.delete(id);
         return result
     }
@@ -57,5 +57,22 @@ export class UserService {
     async findOne(id: mongoose.Types.ObjectId) {
         let user = await this.UserRepository.findById(id);
         return user
+    }
+
+    async getAllUser() {
+        let users = await this.UserRepository.find({});
+        return users
+    }
+
+
+    async checkUserExist(username: string) {
+        let user = await this.UserRepository.findByUserName(username)
+        if (user) {
+            return user;
+        }
+        throw new HttpException("user not exist", HttpStatus.NOT_FOUND)
+    }
+    async update(id, update) {
+        let data = await this.UserRepository.update(id, update)
     }
 }

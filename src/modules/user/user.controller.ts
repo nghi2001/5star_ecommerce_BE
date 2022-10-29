@@ -1,4 +1,4 @@
-import { Controller, Param, Query } from '@nestjs/common';
+import { Controller, Param, Query, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Post, Body, Delete } from '@nestjs/common';
 import { ValidationPipe } from 'src/common/pipe/validation.pipe';
@@ -8,24 +8,31 @@ export class UserController {
     constructor(
         private UserService: UserService
     ) { }
+    
 
-    // @Get("/test")
-    // async create() {
-    //     let result = await this.UserService.createUser()
-    //     return result
-    // }
+    
     @Get("/:id")
     async find(@Param("id") id) {
         try {
-            if(this.UserService.checkObjectId(id)) {
-                let {account, ...user} = await this.UserService.findOne(id);
+            if (this.UserService.checkObjectId(id)) {
+                let { account, ...user } = await this.UserService.findOne(id);
                 return [user]
             }
         } catch (error) {
             return error
         }
     }
-
+    @Get("/")
+    async show() {
+        try {
+            let users = await this.UserService.getAllUser();
+            return [users]
+        } catch (error) {
+            return error
+        }
+        // res.json('ajd')
+        // return 'ajlvjladbv'
+    }
     @Post("/")
     async create(
         @Body(new ValidationPipe()) createUserDto: CreateUserDto
@@ -41,8 +48,8 @@ export class UserController {
     @Delete("/:id")
     async delete(@Param("id") id) {
         try {
-            if (this.UserService.checkObjectId(id)){
-                
+            if (this.UserService.checkObjectId(id)) {
+
                 let result = await this.UserService.deleteUser(id)
 
                 return result
