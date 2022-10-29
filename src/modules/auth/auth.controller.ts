@@ -1,5 +1,5 @@
 import {
-    Controller,Get,
+    Controller, Get,
     Post, Body, Request, UseGuards, HttpException, HttpStatus
 } from '@nestjs/common';
 import { ValidationPipe } from 'src/common/pipe/validation.pipe';
@@ -26,24 +26,27 @@ export class AuthController {
     async resetToken(@Request() req) {
         let id = req.user.id;
         let user = await this.UserService.findOne(id);
-        if( user.refreshToken !== req.user.refreshToken) {
+        if (user.refreshToken !== req.user.refreshToken) {
             throw new HttpException("token not valid", HttpStatus.NOT_FOUND);
         }
-        let token = await this.AuthService.getTokens({id: id});
+        let token = await this.AuthService.getTokens({ id: id });
         await this.AuthService.updateRefreshToken(token.refreshToken, id);
 
         return token
-        // let updateRefreshToken = await this.AuthService.updateRefreshToken
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("logout")
+    async logout(@Request() req) {
+        await this.AuthService.updateRefreshToken(null, req.user.id);
+        return true
     }
 
     @UseGuards(RefreshTokenAuthGuard)
     @Get("/a")
     async test(@Request() req) {
         console.log(req.user);
-        
+
         return 'nghi'
     }
-    // note: can update lai
-    // @Post('logout')
-    // async logout()
 }
