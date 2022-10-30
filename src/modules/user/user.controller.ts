@@ -11,7 +11,7 @@ export class UserController {
     
 
     
-    @Get("/:id")
+    @Get(":id")
     async find(@Param("id") id) {
         try {
             if (this.UserService.checkObjectId(id)) {

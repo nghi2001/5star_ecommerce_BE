@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
+import { BigBannerModule } from './modules/big-banner/big-banner.module';
 import DB_CONFIG from './config/database/configuration';
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import DB_CONFIG from './config/database/configuration';
     AuthModule,
     FileModule,
     CategoryModule,
-    ProductModule
+    ProductModule,
+    BigBannerModule
   ],
   controllers: [AppController],
   providers: [AppService],
