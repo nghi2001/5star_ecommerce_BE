@@ -44,7 +44,7 @@ export class BigBannerService {
 
     async update(id, banner: CreateBannerDTO) {
         if(this.checkId(id)) {
-            let result = await this.BannerRepository.update(id, banner);
+            let result = await this.BannerRepository.update(new Types.ObjectId(id), banner);
             return result;
         }
     }
