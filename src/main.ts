@@ -5,6 +5,7 @@ import { TranformInterceptor } from './Interceptors/tranform.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors()
   // use global interceptor 
   app.useGlobalInterceptors(new TranformInterceptor());
 

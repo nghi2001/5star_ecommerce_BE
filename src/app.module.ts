@@ -10,6 +10,8 @@ import { FileModule } from './modules/file/file.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { BigBannerModule } from './modules/big-banner/big-banner.module';
+import { AwsS3Controller } from './modules/aws_s3/aws_s3.controller';
+import { AwsS3Module } from './modules/aws_s3/aws_s3.module';
 import DB_CONFIG from './config/database/configuration';
 @Module({
   imports: [
@@ -23,9 +25,10 @@ import DB_CONFIG from './config/database/configuration';
     FileModule,
     CategoryModule,
     ProductModule,
-    BigBannerModule
+    BigBannerModule,
+    AwsS3Module
   ],
-  controllers: [AppController],
+  controllers: [AppController, AwsS3Controller],
   providers: [AppService],
 })
 export class AppModule {}
