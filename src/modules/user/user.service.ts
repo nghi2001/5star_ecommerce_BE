@@ -18,12 +18,7 @@ export class UserService {
         }
         return false
     }
-
-    async hashPassWord(password: string): Promise<string> {
-        let salt = await bcrypt.genSalt();
-        let hashPass = await bcrypt.hash(password, salt);
-        return hashPass
-    }
+    
     async createUser(createUserDto: CreateUserDto) {
 
         let result = await this.UserRepository.createProfile({

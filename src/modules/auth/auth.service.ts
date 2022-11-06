@@ -4,10 +4,12 @@ import { AuthDTO } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import {JwtService} from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { InternalaccountService } from '../internalaccount/internalaccount.service';
 @Injectable()
 export class AuthService {
     constructor(
         private UserService: UserService,
+        private InternalAccountService: InternalaccountService,
         private JwtService: JwtService,
         private ConfigService: ConfigService
     ) {
@@ -21,11 +23,11 @@ export class AuthService {
         throw new HttpException("wrong password", HttpStatus.FORBIDDEN)
     }
     async SigIn(data: AuthDTO) {
-        let user: any = await this.UserService.checkUserExist(data.username);
-        let verifyPass = await this.verifyPassword(data.password, user.account.password);
+        let user: any = await this.InternalAccountService.checkAccountExist(data.username);
+        let verifyPass = await this.verifyPassword(data.password, user.password);
         if(verifyPass) {
-            let tokens = await this.getTokens({id:user._id});
-            await this.updateRefreshToken(tokens.refreshToken, user._id)
+            let tokens = await this.getTokens({id:user.id});
+            await this.updateRefreshToken(tokens.refreshToken, user.id)
             return tokens
         }
     }
@@ -47,7 +49,9 @@ export class AuthService {
         }
     }
 
-    async updateRefreshToken(refreshToken: string, id: string) {
-        await this.UserService.update(id, {refreshToken})
+    async updateRefreshToken(refreshToken: string, id: number) {
+        let result = await this.InternalAccountService.update(id, {refresh_token: refreshToken})
+        console.log(result);
+        
     }
 }

@@ -8,12 +8,14 @@ import { AuthService } from './auth.service';
 import { AuthDTO } from './dto/auth.dto';
 import { RefreshTokenAuthGuard } from 'src/guards/refresh-token-auth.guard';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { InternalaccountService } from '../internalaccount/internalaccount.service';
 
 @Controller('auth')
 export class AuthController {
     constructor(
         private AuthService: AuthService,
-        private UserService: UserService
+        private UserService: UserService,
+        private InternalAccountService: InternalaccountService
     ) { }
 
     @Post("login")
@@ -26,8 +28,9 @@ export class AuthController {
     @Post("resettoken")
     async resetToken(@Request() req) {
         let id = req.user.id;
-        let user = await this.UserService.findOne(id);
-        if (user.refreshToken !== req.user.refreshToken) {
+        let user = await this.InternalAccountService.findOne(id);
+        
+        if (user.refresh_token !== req.user.refreshToken) {
             throw new HttpException("token not valid", HttpStatus.NOT_FOUND);
         }
         let token = await this.AuthService.getTokens({ id: id });

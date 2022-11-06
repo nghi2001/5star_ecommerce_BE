@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Banner } from 'src/entity/banner.entity';
+import { Category } from 'src/entity/Category.entity';
 import { InternalAccount } from 'src/entity/internal_account.entity';
+import { Sub_Category } from 'src/entity/sub_category.entity';
 import { Profile } from 'src/entity/user.entity';
 console.log(process.env.PASS);
 
@@ -16,7 +18,8 @@ console.log(process.env.PASS);
             database: process.env.DB || '5star',
             entities: [
                 InternalAccount,
-                Profile, Banner
+                Profile, Banner,
+                Category, Sub_Category
             ],
             synchronize: true
         })

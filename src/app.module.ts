@@ -5,9 +5,9 @@ import { AppService } from './app.service';
 // import { ProviderModule as DatabaseModules } from './provider/database/mongodb/provider/provider.module';
 // import { AuthModule } from './auth/auth.module';
 import { UserModule } from './modules/user/user.module';
-// import { AuthModule } from './modules/auth/auth.module';
-// import { FileModule } from './modules/file/file.module';
-// import { CategoryModule } from './modules/category/category.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { FileModule } from './modules/file/file.module';
+import { CategoryModule } from './modules/category/category.module';
 // import { ProductModule } from './modules/product/product.module';
 import { BigBannerModule } from './modules/big-banner/big-banner.module';
 import { AwsS3Controller } from './modules/aws_s3/aws_s3.controller';
@@ -23,9 +23,9 @@ import DB_CONFIG from './config/database/configuration';
     }),
     // DatabaseModules,
     // UserModule,
-    // AuthModule,
-    // FileModule,
-    // CategoryModule,
+    AuthModule,
+    FileModule,
+    CategoryModule,
     // ProductModule,
     UserModule,
     BigBannerModule,

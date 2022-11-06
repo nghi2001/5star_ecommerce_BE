@@ -1,69 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Category } from './entities/Category.entities';
-import { Model } from 'mongoose';
-import { BaseRepository } from "src/common/base/BaseRepository";
+import { Repository, DataSource} from 'typeorm';
 import { createCategoryDTO } from './dto/create-category.dto';
+import { Category } from 'src/entity/Category.entity';
 
 @Injectable()
-export class CategoryRepository extends BaseRepository<Category> {
+export class CategoryRepository extends Repository<Category> {
     constructor(
-        @InjectModel(Category.name) CategoryModel: Model<Category>
+        dataSource: DataSource
     ) {
-        super(CategoryModel)
+        super(Category, dataSource.createEntityManager())
     }
-
-    async insertSub(id: string, category: createCategoryDTO) {
-        let categorys = await this.model.findById(id);
-        await categorys.sub_category.push((category))
-        categorys.save()
-
-        return categorys
+    async createCategory(category) {
+        let result =  await this.createQueryBuilder()
+            .insert()
+            .into(Category)
+            .values([category])
+            .execute()
+        return result
     }
-
-    async findSub(idParent: string, id: string) {
-        let categoryParent = await this.model.findOne({
-            _id: idParent,
-            sub_category: {
-                $elemMatch: {
-                    _id: id
-                }
-            }
-        }, {
-            name: 1,
-            slug: 1,
-            "sub_category.$": 1
-        });
-
-        return categoryParent
-    }
-
-    async deleteSub(idParent: string, id: string) {
-        let result = await this.model.findByIdAndUpdate({
-            _id: idParent
-        },
-            {
-                $pull: {
-                    sub_category: {
-                        _id: id
-                    }
-                }
-            }
-        );
-
-        return result;
-    }
-
-    async updateSub(idParent: string, id: string, category: createCategoryDTO) {
-        let result = await this.model.findOneAndUpdate({
-            _id: idParent,
-            "sub_category._id": id
-        },{
-            $set: {
-                "sub_category.$": category
-            }
-        },{
-            new: true
+    async getAllCategory () {
+        let result =  await this.findAndCount({
+            // relations: {
+            //     sub_categorys: true
+            // }
         })
         return result
     }

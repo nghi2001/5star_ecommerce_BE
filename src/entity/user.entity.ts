@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 
 @Entity()
 export class Profile {
@@ -22,9 +22,14 @@ export class Profile {
     @Column('text',{array: true})
     address: string[];
 
-    @Column({nullable: true})
-    refreshToken?: string;
-
     @Column({default: false})
     is_active: boolean;
+
+    @Column()
+    @CreateDateColumn()
+    create_at: Date;
+
+    @Column()
+    @UpdateDateColumn()
+    update_at: Date;
 }
