@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany} from 'typeorm';
 import { Category } from './Category.entity';
+import { Product } from './product.entity';
 @Entity()
 export class Sub_Category extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -20,6 +21,9 @@ export class Sub_Category extends BaseEntity {
     @ManyToOne(() => Category, (category) => category.sub_categorys)
     @JoinColumn({name: 'id_category'})
     category: Category;
+
+    @OneToMany(() => Product, (product) => product.sub_category)
+    products: Product[];
 
     @Column()
     @CreateDateColumn()

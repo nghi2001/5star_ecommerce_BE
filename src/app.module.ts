@@ -15,6 +15,7 @@ import { AwsS3Module } from './modules/aws_s3/aws_s3.module';
 import { PostgresModule } from './database/postgres/postgres.module';
 import { InternalaccountModule } from './modules/internalaccount/internalaccount.module';
 import { SubcategoryModule } from './modules/subcategory/subcategory.module';
+import { BrandModule } from './modules/brand/brand.module';
 import DB_CONFIG from './config/database/configuration';
 @Module({
   imports: [
@@ -23,7 +24,6 @@ import DB_CONFIG from './config/database/configuration';
       load: [DB_CONFIG]
     }),
     // DatabaseModules,
-    // UserModule,
     AuthModule,
     FileModule,
     CategoryModule,
@@ -33,7 +33,8 @@ import DB_CONFIG from './config/database/configuration';
     AwsS3Module,
     PostgresModule,
     InternalaccountModule,
-    SubcategoryModule
+    SubcategoryModule,
+    BrandModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],
