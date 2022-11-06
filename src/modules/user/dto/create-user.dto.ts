@@ -25,7 +25,4 @@ export class CreateUserDto {
     @MaxLength(20,{each: true})
     @IsNotEmpty()
     address: string[]
-
-    @IsNotEmptyObject()
-    account: any
 }

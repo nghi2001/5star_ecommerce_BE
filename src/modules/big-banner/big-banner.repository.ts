@@ -1,16 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Banner } from './entities/banner.entities';
-import { Model } from 'mongoose';
-import { BaseRepository } from "src/common/base/BaseRepository";
+import { DataSource,Repository } from 'typeorm';
+import { Banner } from 'src/entity/banner.entity';
 
 @Injectable()
-export class BannerRepository extends BaseRepository<Banner> {
+export class BannerRepository extends Repository<Banner> {
     constructor(
-        @InjectModel(Banner.name) BannerModel: Model<Banner>
+        private dataSource: DataSource
     ) {
-        super(BannerModel)
+        super(Banner, dataSource.createEntityManager());
     }
-
+    
     
 }

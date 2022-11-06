@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { BigBannerController } from './big-banner.controller';
 import { BannerRepository } from './big-banner.repository';
 import { BigBannerService } from './big-banner.service';
-import { Banner, BannerSchema } from './entities/banner.entities';
+import { Banner } from 'src/entity/banner.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{name: Banner.name, schema: BannerSchema}])
+    TypeOrmModule.forFeature([Banner])
   ],
   controllers: [BigBannerController],
   providers: [BigBannerService, BannerRepository]
 })
-export class BigBannerModule {}
+export class BigBannerModule { }

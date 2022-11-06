@@ -20,14 +20,14 @@ export class BigBannerService {
     }
 
     async getAll() {
-        let banners = await this.BannerRepository.find({});
+        let banners = await this.BannerRepository.findAndCount();
 
         return banners;
     }
 
     async getOne(id) {
         if (this.checkId(id)) {
-            let banner = await this.BannerRepository.findOne({ _id: id });
+            let banner = await this.BannerRepository.findOneBy(id)
             if (!banner) {
                 throw new HttpException("not found", 404);
             }
@@ -44,7 +44,7 @@ export class BigBannerService {
 
     async update(id, banner: CreateBannerDTO) {
         if(this.checkId(id)) {
-            let result = await this.BannerRepository.update(new Types.ObjectId(id), banner);
+            let result = await this.BannerRepository.createQueryBuilder().update();
             return result;
         }
     }

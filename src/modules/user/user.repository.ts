@@ -1,25 +1,30 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from "./entities/user.entity";
-import { Model } from 'mongoose';
-import { BaseRepository } from "src/common/base/BaseRepository";
+import { DataSource,Repository } from 'typeorm';
+import { Profile } from "src/entity/user.entity";
+import { CreateUserDto } from "./dto/create-user.dto";
 
 @Injectable({
     
 })
-export class UserRepository extends BaseRepository<User> {
+export class UserRepository extends Repository<Profile> {
 
     constructor(
-        @InjectModel(User.name) UserModel: Model<User>
+        private dataSource: DataSource
     ){
-        super(UserModel)
+        super(Profile, dataSource.createEntityManager())
     }
-     helo() {
-        return 'Hello'
-     }
-     async findByUserName(username: string) {
-        let user = await this.model.findOne({"account.username": username})
+
+    async createProfile (profile: CreateUserDto) {
+        let result = await this.createQueryBuilder()
+            .insert()
+            .into(Profile)
+            .values([profile])
+            .execute();
+        return result;
+    }
+    //  async findByUserName(username: string) {
+    //     let user = await this.model.findOne({"account.username": username})
         
-        return user
-    }
+    //     return user
+    // }
 }

@@ -1,37 +1,30 @@
-import { Controller, Param, Query, Res } from '@nestjs/common';
+import { Controller, Param, Put, Query, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Post, Body, Delete } from '@nestjs/common';
 import { ValidationPipe } from 'src/common/pipe/validation.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
+import { updateUserDTO } from './dto/update-user.dto';
 @Controller('user')
 export class UserController {
     constructor(
         private UserService: UserService
     ) { }
-    
 
-    
+
+
     @Get(":id")
     async find(@Param("id") id) {
-        try {
-            if (this.UserService.checkObjectId(id)) {
-                let { account, ...user } = await this.UserService.findOne(id);
-                return [user]
-            }
-        } catch (error) {
-            return error
+        if (this.UserService.checkObjectId(id)) {
+            let user = await this.UserService.findOne(id);
+            return user;
         }
+
     }
     @Get("/")
     async show() {
-        try {
-            let users = await this.UserService.getAllUser();
-            return [users]
-        } catch (error) {
-            return error
-        }
-        // res.json('ajd')
-        // return 'ajlvjladbv'
+        let [profiles, count] = await this.UserService.getAllUser();
+        return { profiles, count };
+
     }
     @Post("/")
     async create(
@@ -39,23 +32,32 @@ export class UserController {
     ) {
         try {
             let result = await this.UserService.createUser(createUserDto);
-            return [result]
+
+            return result;
         } catch (error) {
-            return [error]
+            return [error];
         }
     }
 
     @Delete("/:id")
     async delete(@Param("id") id) {
-        try {
-            if (this.UserService.checkObjectId(id)) {
+        if (this.UserService.checkObjectId(id)) {
 
-                let result = await this.UserService.deleteUser(id)
+            let result = await this.UserService.deleteUser(id);
 
-                return result
-            }
-        } catch (error) {
-            return error
+            return result;
+        }
+    }
+
+    @Put("/:id")
+    async update(@Param("id") id,
+    @Body(new ValidationPipe()) body: updateUserDTO
+    ) {
+        if (this.UserService.checkObjectId(id)) {
+
+            let result = await this.UserService.update(id, body);
+            
+            return result;
         }
     }
 }

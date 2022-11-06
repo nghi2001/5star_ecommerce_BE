@@ -2,16 +2,18 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProviderModule as DatabaseModules } from './provider/database/mongodb/provider/provider.module';
+// import { ProviderModule as DatabaseModules } from './provider/database/mongodb/provider/provider.module';
 // import { AuthModule } from './auth/auth.module';
 import { UserModule } from './modules/user/user.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { FileModule } from './modules/file/file.module';
-import { CategoryModule } from './modules/category/category.module';
-import { ProductModule } from './modules/product/product.module';
+// import { AuthModule } from './modules/auth/auth.module';
+// import { FileModule } from './modules/file/file.module';
+// import { CategoryModule } from './modules/category/category.module';
+// import { ProductModule } from './modules/product/product.module';
 import { BigBannerModule } from './modules/big-banner/big-banner.module';
 import { AwsS3Controller } from './modules/aws_s3/aws_s3.controller';
 import { AwsS3Module } from './modules/aws_s3/aws_s3.module';
+import { PostgresModule } from './database/postgres/postgres.module';
+import { InternalaccountModule } from './modules/internalaccount/internalaccount.module';
 import DB_CONFIG from './config/database/configuration';
 @Module({
   imports: [
@@ -19,14 +21,17 @@ import DB_CONFIG from './config/database/configuration';
       isGlobal: true,
       load: [DB_CONFIG]
     }),
-    DatabaseModules,
+    // DatabaseModules,
+    // UserModule,
+    // AuthModule,
+    // FileModule,
+    // CategoryModule,
+    // ProductModule,
     UserModule,
-    AuthModule,
-    FileModule,
-    CategoryModule,
-    ProductModule,
     BigBannerModule,
-    AwsS3Module
+    AwsS3Module,
+    PostgresModule,
+    InternalaccountModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],
