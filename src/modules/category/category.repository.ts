@@ -20,9 +20,9 @@ export class CategoryRepository extends Repository<Category> {
     }
     async getAllCategory () {
         let result =  await this.findAndCount({
-            // relations: {
-            //     sub_categorys: true
-            // }
+            relations: {
+                sub_categorys: true
+            }
         })
         return result
     }

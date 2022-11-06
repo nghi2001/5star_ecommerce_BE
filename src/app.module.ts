@@ -14,6 +14,7 @@ import { AwsS3Controller } from './modules/aws_s3/aws_s3.controller';
 import { AwsS3Module } from './modules/aws_s3/aws_s3.module';
 import { PostgresModule } from './database/postgres/postgres.module';
 import { InternalaccountModule } from './modules/internalaccount/internalaccount.module';
+import { SubcategoryModule } from './modules/subcategory/subcategory.module';
 import DB_CONFIG from './config/database/configuration';
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import DB_CONFIG from './config/database/configuration';
     BigBannerModule,
     AwsS3Module,
     PostgresModule,
-    InternalaccountModule
+    InternalaccountModule,
+    SubcategoryModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],

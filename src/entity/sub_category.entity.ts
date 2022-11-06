@@ -12,7 +12,7 @@ export class Sub_Category extends BaseEntity {
     slug: string;
     
     @Column()
-    status: string;
+    status: number;
     
     @Column()
     id_category: number;
