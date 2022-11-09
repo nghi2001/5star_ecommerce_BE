@@ -3,8 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Banner } from 'src/entity/banner.entity';
 import { Brand } from 'src/entity/brand.entity';
 import { Category } from 'src/entity/Category.entity';
+import { Classify_1 } from 'src/entity/classify_1.entity';
+import { Classify_2 } from 'src/entity/classify_2.entity';
 import { InternalAccount } from 'src/entity/internal_account.entity';
 import { Product } from 'src/entity/product.entity';
+import { Sock } from 'src/entity/sock.entity';
 import { Sub_Category } from 'src/entity/sub_category.entity';
 import { Profile } from 'src/entity/user.entity';
 console.log(process.env.PASS);
@@ -22,7 +25,8 @@ console.log(process.env.PASS);
                 InternalAccount,
                 Profile, Banner,
                 Category, Sub_Category,
-                Brand, Product
+                Brand, Product,
+                Sock, Classify_1, Classify_2
             ],
             synchronize: true
         })

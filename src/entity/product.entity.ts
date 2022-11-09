@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Brand } from './brand.entity';
 import { Category } from './Category.entity';
+import { Sock } from './sock.entity';
 import { Sub_Category } from './sub_category.entity';
 
 @Entity()
@@ -20,7 +21,7 @@ export class Product extends BaseEntity {
     @Column()
     slug: string;
 
-    @Column()
+    @Column({ default: 0})
     sold: number;
 
     @Column()
@@ -57,4 +58,6 @@ export class Product extends BaseEntity {
     @JoinColumn({ name: "id_brand" })
     brnad: Brand;
 
+    @OneToMany(() => Sock, (sock) => sock.product)
+    socks: Sock[]
 }

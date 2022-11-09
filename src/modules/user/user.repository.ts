@@ -20,6 +20,7 @@ export class UserRepository extends Repository<Profile> {
             .into(Profile)
             .values([profile])
             .execute();
+
         return result;
     }
     //  async findByUserName(username: string) {
