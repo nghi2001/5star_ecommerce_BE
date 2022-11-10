@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Banner } from 'src/entity/banner.entity';
+import { Blog } from 'src/entity/blog.entity';
 import { Brand } from 'src/entity/brand.entity';
 import { Category } from 'src/entity/Category.entity';
 import { Classify_1 } from 'src/entity/classify_1.entity';
@@ -26,7 +27,8 @@ console.log(process.env.PASS);
                 Profile, Banner,
                 Category, Sub_Category,
                 Brand, Product,
-                Sock, Classify_1, Classify_2
+                Sock, Classify_1, Classify_2,
+                Blog
             ],
             synchronize: true
         })

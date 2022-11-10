@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
-
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Blog } from './blog.entity';
+import { Comment } from './comment.entity';
 @Entity()
 export class Profile {
     @PrimaryGeneratedColumn()
@@ -19,10 +20,10 @@ export class Profile {
     @Column()
     gender: string;
 
-    @Column('text',{array: true})
+    @Column('text', { array: true })
     address: string[];
 
-    @Column({default: false})
+    @Column({ default: false })
     is_active: boolean;
 
     @Column()
@@ -32,4 +33,10 @@ export class Profile {
     @Column()
     @UpdateDateColumn()
     update_at: Date;
+
+    @OneToMany(() => Blog, (blog) => blog.user)
+    blogs: Blog[];
+
+    @OneToMany(() => Comment, (comment) => comment.profile)
+    comments: Comment[];
 }

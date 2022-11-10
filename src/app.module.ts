@@ -16,6 +16,8 @@ import { PostgresModule } from './database/postgres/postgres.module';
 import { InternalaccountModule } from './modules/internalaccount/internalaccount.module';
 import { SubcategoryModule } from './modules/subcategory/subcategory.module';
 import { BrandModule } from './modules/brand/brand.module';
+import { BlogModule } from './modules/blog/blog.module';
+import { CommentModule } from './modules/comment/comment.module';
 import DB_CONFIG from './config/database/configuration';
 @Module({
   imports: [
@@ -34,7 +36,9 @@ import DB_CONFIG from './config/database/configuration';
     PostgresModule,
     InternalaccountModule,
     SubcategoryModule,
-    BrandModule
+    BrandModule,
+    BlogModule,
+    CommentModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],
