@@ -1,7 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { Schema, Model, FilterQuery } from "mongoose";
+import { Model, FilterQuery } from "mongoose";
 import { IRead } from "./interfaces/IRead.interface";
 import { IWrite } from "./interfaces/IWrite.interface";
+import mongoose from 'mongoose'
+
 
 export abstract class BaseRepository <T> implements IRead<T>,IWrite<T> {
     constructor(
@@ -9,7 +11,7 @@ export abstract class BaseRepository <T> implements IRead<T>,IWrite<T> {
     ) {
         
     }
-    async findById(id: Schema.Types.ObjectId): Promise<T> {
+    async findById(id: mongoose.Types.ObjectId): Promise<T> {
         let data = await this.model.findById(id);
         return data
     }
@@ -21,18 +23,20 @@ export abstract class BaseRepository <T> implements IRead<T>,IWrite<T> {
         let data = await this.model.findOne(FilterQuery)
         return data
     }
-    async create(item: T): Promise<boolean> {
-        try {
+    async create(item: T): Promise<T> {
             let data = await this.model.create(item)
+            return data
+    }
+    async update(id: mongoose.Types.ObjectId,update): Promise<boolean> {
+        try {
+            let data = await this.model.updateOne({id: id},update)
             return true
         } catch (error) {
             return false
         }
     }
-    update(id: Schema.Types.ObjectId): Promise<boolean> {
-        throw new Error("Method not implemented.");
-    }
-    async delete(id: Schema.Types.ObjectId): Promise<boolean> {
+    
+    async delete(id: mongoose.Types.ObjectId): Promise<boolean> {
         try {
             let data = await this.model.findByIdAndDelete(id)
             return true
