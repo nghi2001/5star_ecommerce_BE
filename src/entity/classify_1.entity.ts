@@ -1,8 +1,8 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Sock } from "./sock.entity";
+import { Stock } from "./stock.entity";
 
 @Entity()
-export class Classify_1 extends BaseEntity{
+export class Classify_1 extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -17,6 +17,6 @@ export class Classify_1 extends BaseEntity{
     @Column()
     update_at: Date;
 
-    @OneToMany(() => Sock, (sock) => sock.classify_1)
-    socks: Sock[]
+    @OneToMany(() => Stock, (stock) => stock.classify_1)
+    stocks: Stock[]
 }

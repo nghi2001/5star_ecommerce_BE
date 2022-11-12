@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Brand } from './brand.entity';
 import { Category } from './Category.entity';
-import { Sock } from './sock.entity';
+import { Stock } from './stock.entity';
 import { Sub_Category } from './sub_category.entity';
 
 @Entity()
@@ -9,22 +9,25 @@ export class Product extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({ nullable: true })
     name: string;
 
-    @Column()
-    decription: string;
+    @Column({ nullable: true })
+    description: string;
 
-    @Column('text', { array: true })
+    @Column({ type: "text", array: true, nullable: true })
+    info_detail: string;
+
+    @Column('text', { array: true, nullable: true })
     image: string[];
 
-    @Column()
+    @Column({ nullable: true })
     slug: string;
 
-    @Column({ default: 0 })
+    @Column({ default: 0, nullable: true })
     sold: number;
 
-    @Column()
+    @Column({ default: 0 })
     status: number;
 
     @Column({ default: 0 })
@@ -32,10 +35,7 @@ export class Product extends BaseEntity {
     @Column()
     id_category: number;
 
-    @Column()
-    id_subcategory: number;
-
-    @Column()
+    @Column({ nullable: true })
     id_brand: number;
 
     @Column()
@@ -54,6 +54,6 @@ export class Product extends BaseEntity {
     @JoinColumn({ name: "id_brand" })
     brand: Brand;
 
-    @OneToMany(() => Sock, (sock) => sock.product)
-    socks: Sock[]
+    @OneToMany(() => Stock, (stock) => stock.product)
+    stocks: Stock[]
 }

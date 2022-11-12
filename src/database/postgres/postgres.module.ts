@@ -8,7 +8,7 @@ import { Classify_1 } from 'src/entity/classify_1.entity';
 import { Classify_2 } from 'src/entity/classify_2.entity';
 import { InternalAccount } from 'src/entity/internal_account.entity';
 import { Product } from 'src/entity/product.entity';
-import { Sock } from 'src/entity/sock.entity';
+import { Stock } from 'src/entity/stock.entity';
 import { Sub_Category } from 'src/entity/sub_category.entity';
 import { Profile } from 'src/entity/user.entity';
 import { Comment } from 'src/entity/comment.entity';
@@ -27,7 +27,7 @@ import { Comment } from 'src/entity/comment.entity';
                 Profile, Banner,
                 Category,
                 Brand, Product,
-                Sock, Classify_1, Classify_2,
+                Stock, Classify_1, Classify_2,
                 Blog, Comment
             ],
             synchronize: true
