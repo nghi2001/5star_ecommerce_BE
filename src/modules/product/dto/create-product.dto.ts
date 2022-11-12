@@ -32,6 +32,8 @@ export class CreateProductDto {
     @IsArray()
     classify_1: { attribute: string }[]
     @IsArray()
+    @IsNotEmpty()
+    @IsOptional()
     classify_2: { attribute: string }[]
 
     @IsBoolean()
