@@ -16,9 +16,10 @@ export class CategoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async create(@Body(new ValidationPipe()) createDto: createCategoryDTO) {
-        let newCategory = await this.CategoryService.createCategory(createDto);
-        return newCategory;
+    async store(@Body(new ValidationPipe()) createDto: createCategoryDTO) {
+        let category = await this.CategoryService.createCategory(createDto);
+        let newCategory = await this.CategoryService.getOne(category.raw[0].id);
+        return newCategory
     }
 
     @UseGuards(JwtAuthGuard)

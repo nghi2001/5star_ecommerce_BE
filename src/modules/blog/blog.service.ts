@@ -61,12 +61,12 @@ export class BlogService {
         return true;
     }
     async checkBlogExist(id: number) {
-        if (this.checkId(id)) {
-            let blog = await this.findOne(id);
-            if (blog) {
-                return true
-            }
-            throw new HttpException("blog not found", HttpStatus.NOT_FOUND);
+        let [err] = await this.checkId(id).then(result => [null, result]).catch(err => [err, null]);
+        if (err) throw new HttpException("id invalid", HttpStatus.BAD_REQUEST);
+        let blog = await this.findOne(id);
+        if (blog) {
+            return true
         }
+        throw new HttpException("blog not found", HttpStatus.NOT_FOUND);
     }
 }

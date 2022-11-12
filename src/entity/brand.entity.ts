@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, CreateDateColumn, UpdateDateColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Product } from './product.entity';
 
 @Entity()
@@ -8,11 +8,11 @@ export class Brand extends BaseEntity {
 
     @Column()
     name: string;
-    
+
     @Column()
     slug: string;
 
-    @OneToMany(() => Product, (product) => product.brnad)
+    @OneToMany(() => Product, (product) => product.brand)
     products: Product[]
 
     @Column()

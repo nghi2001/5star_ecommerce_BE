@@ -25,7 +25,7 @@ import { Comment } from 'src/entity/comment.entity';
             entities: [
                 InternalAccount,
                 Profile, Banner,
-                Category, Sub_Category,
+                Category,
                 Brand, Product,
                 Sock, Classify_1, Classify_2,
                 Blog, Comment

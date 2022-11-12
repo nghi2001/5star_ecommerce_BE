@@ -21,7 +21,7 @@ export class Product extends BaseEntity {
     @Column()
     slug: string;
 
-    @Column({ default: 0})
+    @Column({ default: 0 })
     sold: number;
 
     @Column()
@@ -50,13 +50,9 @@ export class Product extends BaseEntity {
     @JoinColumn({ name: 'id_category' })
     category: Category;
 
-    @ManyToOne(() => Sub_Category, (sub_category) => sub_category.products)
-    @JoinColumn({ name: "id_subcategory" })
-    sub_category: Sub_Category;
-
     @ManyToOne(() => Brand, (brand) => brand.products)
     @JoinColumn({ name: "id_brand" })
-    brnad: Brand;
+    brand: Brand;
 
     @OneToMany(() => Sock, (sock) => sock.product)
     socks: Sock[]
