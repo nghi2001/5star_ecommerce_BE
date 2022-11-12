@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsPositive, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class createCategoryDTO {
     @IsString()
@@ -12,5 +12,9 @@ export class createCategoryDTO {
     @IsInt()
     @IsPositive()
     status: number;
-    
+
+    @IsInt()
+    @IsPositive()
+    @IsOptional()
+    parent_id?: number;
 }

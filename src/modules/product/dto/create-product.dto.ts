@@ -1,4 +1,4 @@
-import { IsArray, IsInt, IsNotEmpty, IsPositive, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class CreateProductDto {
     @IsString()
@@ -8,6 +8,9 @@ export class CreateProductDto {
     @IsString()
     @IsNotEmpty()
     description: string;
+
+    @IsArray()
+    info_detail: string[];
 
     @IsNotEmpty()
     @IsArray()
@@ -19,18 +22,26 @@ export class CreateProductDto {
 
     @IsInt()
     @IsPositive()
-    status: number;
-
-    @IsInt()
-    @IsPositive()
     id_category: number;
 
     @IsInt()
     @IsPositive()
-    id_subcategory: number;
-
-    @IsInt()
-    @IsPositive()
+    @IsOptional()
     id_brand: number;
 
+    @IsArray()
+    classify_1: { attribute: string }[]
+    @IsArray()
+    classify_2: { attribute: string }[]
+
+    @IsBoolean()
+    isClassify_1: boolean;
+
+    @IsBoolean()
+    isClassify_2: boolean
+
+    variable_attribute: {
+        price: any,
+        quantity: any
+    }[]
 }

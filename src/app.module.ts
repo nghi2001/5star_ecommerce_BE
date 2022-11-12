@@ -8,7 +8,7 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
 import { CategoryModule } from './modules/category/category.module';
-// import { ProductModule } from './modules/product/product.module';
+import { ProductModule } from './modules/product/product.module';
 import { BigBannerModule } from './modules/big-banner/big-banner.module';
 import { AwsS3Controller } from './modules/aws_s3/aws_s3.controller';
 import { AwsS3Module } from './modules/aws_s3/aws_s3.module';
@@ -21,7 +21,7 @@ import { CommentModule } from './modules/comment/comment.module';
 import DB_CONFIG from './config/database/configuration';
 @Module({
   imports: [
-    ConfigModule.forRoot( {
+    ConfigModule.forRoot({
       isGlobal: true,
       load: [DB_CONFIG]
     }),
@@ -29,7 +29,7 @@ import DB_CONFIG from './config/database/configuration';
     AuthModule,
     FileModule,
     CategoryModule,
-    // ProductModule,
+    ProductModule,
     UserModule,
     BigBannerModule,
     AwsS3Module,
@@ -43,4 +43,4 @@ import DB_CONFIG from './config/database/configuration';
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

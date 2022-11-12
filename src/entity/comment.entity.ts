@@ -1,7 +1,8 @@
-import { BaseEntity, Column, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Blog } from "./blog.entity";
 import { Profile } from "./user.entity";
 
+@Entity()
 export class Comment extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -9,7 +10,7 @@ export class Comment extends BaseEntity {
     @Column()
     body: string;
 
-    @Column({ default: null })
+    @Column({ default: null, nullable: true })
     parent_id: number;
 
     @Column()
@@ -19,12 +20,13 @@ export class Comment extends BaseEntity {
     blog_id: number;
 
     @ManyToOne((type) => Comment, (comment) => comment.childComment)
+    @JoinColumn({ name: "parent_id" })
     parentComment: Comment;
 
     @OneToMany((type) => Comment, (comment) => comment.parentComment)
     childComment: Comment[];
 
-    @ManyToOne(() => Blog, (blog) => blog.comments)
+    @ManyToOne(() => Blog, (blog) => blog.comment)
     @JoinColumn({ name: 'blog_id' })
     blog: Blog;
 

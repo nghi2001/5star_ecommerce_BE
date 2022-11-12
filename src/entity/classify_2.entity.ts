@@ -1,22 +1,22 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Sock } from "./sock.entity";
+import { Stock } from "./stock.entity";
 
 @Entity()
-export class Classify_2 extends BaseEntity{
+export class Classify_2 extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
-    name: string;
+    attribute: string;
 
-    @CreateDateColumn()
     @Column()
+    @CreateDateColumn()
     create_at: Date;
 
-    @UpdateDateColumn()
     @Column()
+    @UpdateDateColumn()
     update_at: Date;
 
-    @OneToMany(() => Sock, (sock) => sock.classify_2)
-    socks: Sock[]
+    @OneToMany(() => Stock, (stock) => stock.classify_2)
+    stocks: Stock[]
 }

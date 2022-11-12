@@ -1,0 +1,15 @@
+product id 1
+
+classify1 xanh 2
+classify1 vanng 3
+=> [2, 3]
+classify2 S 4
+classify2 M 5
+classify2 L 6
+
+[S, M L] => for(
+    [2: xanh, 3: vang] => {
+        s xanh var[0].price var[0].quantiry
+        s vang var[0].price var[0].quantoty
+    }
+)

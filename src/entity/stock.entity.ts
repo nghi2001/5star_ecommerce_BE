@@ -5,7 +5,7 @@ import { Product } from "./product.entity";
 
 
 @Entity()
-export class Sock extends BaseEntity {
+export class Stock extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -17,30 +17,31 @@ export class Sock extends BaseEntity {
     @Column()
     id_product: number;
 
-    @Column()
+    @Column({ nullable: true })
     id_classify_1: number;
 
-    @Column()
+    @Column({ nullable: true })
     id_classify_2: number;
-    
-    @CreateDateColumn()
+
+
     @Column()
+    @CreateDateColumn()
     create_at: Date;
 
-    @UpdateDateColumn()
     @Column()
+    @UpdateDateColumn()
     update_at: Date;
 
-    @ManyToOne(() => Product, (product) => product.socks)
-    @JoinColumn({name: 'id_product'})
+    @ManyToOne(() => Product, (product) => product.stocks)
+    @JoinColumn({ name: 'id_product' })
     product: Product
 
-    @ManyToOne(() => Classify_1, (classify_1) => classify_1.socks)
-    @JoinColumn({name: 'id_classify_1'})
+    @ManyToOne(() => Classify_1, (classify_1) => classify_1.stocks)
+    @JoinColumn({ name: 'id_classify_1' })
     classify_1: Classify_1
 
-    @ManyToOne(() => Classify_2, (classify_2) => classify_2.socks)
-    @JoinColumn({name: 'id_classify_2'})
+    @ManyToOne(() => Classify_2, (classify_2) => classify_2.stocks)
+    @JoinColumn({ name: 'id_classify_2' })
     classify_2: Classify_2
 
 }

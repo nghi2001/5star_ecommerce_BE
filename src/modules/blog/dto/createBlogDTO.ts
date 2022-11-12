@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsPositive, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class CreateBlogDTO {
     @IsString()
@@ -7,9 +7,10 @@ export class CreateBlogDTO {
 
     @IsString()
     @IsNotEmpty()
-    body: string;
+    content: string;
 
-    @IsInt()
-    @IsPositive()
-    user_id: number;
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    image?: string
 }
