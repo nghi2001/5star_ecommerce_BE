@@ -4,15 +4,16 @@ export class UpdateBlogDTO {
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    title: string;
+    title?: string;
 
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    body: string;
+    body?: string;
 
-    @IsInt()
-    @IsPositive()
+
+    @IsString()
+    @IsNotEmpty()
     @IsOptional()
-    user_id: number;
+    image?: string
 }

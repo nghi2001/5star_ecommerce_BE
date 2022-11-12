@@ -1,6 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Profile } from "./user.entity";
-
+import { Comment } from "./comment.entity";
 @Entity()
 export class Blog extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -10,6 +10,10 @@ export class Blog extends BaseEntity {
     title: string;
     @Column()
     content: string;
+    @Column({
+        nullable: true
+    })
+    image: string;
 
     @Column()
     user_id: number;
@@ -26,6 +30,6 @@ export class Blog extends BaseEntity {
     @UpdateDateColumn()
     update_at: Date
 
-    @OneToMany(() => Comment, (comment) => comment.bl)
-    comments: Comment[]
+    @OneToMany(() => Comment, (comment) => comment.blog)
+    comment: Comment[]
 }

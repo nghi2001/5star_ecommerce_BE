@@ -20,7 +20,8 @@ export class CategoryController {
         let newCategory = await this.CategoryService.createCategory(createDto);
         return newCategory;
     }
-    
+
+    @UseGuards(JwtAuthGuard)
     @Get()
     async show() {
         let categorys = await this.CategoryService.getAll();
@@ -35,7 +36,7 @@ export class CategoryController {
 
     @UseGuards(JwtAuthGuard)
     @Delete(":id")
-    async destroy(@Param('id') id: string) {        
+    async destroy(@Param('id') id: string) {
         let result = await this.CategoryService.deleteOne(id);
         return result;
     }
@@ -45,8 +46,8 @@ export class CategoryController {
     async update(
         @Param('id') id: number,
         @Body(new ValidationPipe()) createDto: createCategoryDTO
-    ){
-        let result = await this.CategoryService.updateCategory(id,createDto);
+    ) {
+        let result = await this.CategoryService.updateCategory(id, createDto);
         return result
     }
 }

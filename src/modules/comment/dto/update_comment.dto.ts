@@ -1,19 +1,23 @@
-import { IsIn, IsInt, IsNotEmpty, IsPositive, IsString } from "class-validator";
+import { IsIn, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class UpdateCommentDto {
     @IsString()
     @IsNotEmpty()
-    body: string;
+    @IsOptional()
+    body?: string;
 
     @IsInt()
     @IsPositive()
-    parent_id: number;
+    @IsOptional()
+    parent_id?: number;
 
     @IsInt()
     @IsPositive()
-    user_id: number;
+    @IsOptional()
+    user_id?: number;
 
     @IsInt()
     @IsPositive()
-    blog_id: number;
+    @IsOptional()
+    blog_id?: number;
 }

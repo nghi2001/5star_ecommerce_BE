@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { BlogRepository } from './blog.repository';
 import { CreateBlogDTO } from './dto/createBlogDTO';
+import { UpdateBlogDTO } from './dto/updateBlogDTO';
+import { Blog } from './interfaces/blog.interface';
 
 @Injectable()
 export class BlogService {
@@ -9,8 +11,8 @@ export class BlogService {
         private BlogRepository: BlogRepository
     ) { }
 
-    async create(blog: CreateBlogDTO) {
-        let newBlog = await this.BlogRepository.createBlog(blog);
+    async create(blog: CreateBlogDTO, user_id: number) {
+        let newBlog = await this.BlogRepository.createBlog(blog, user_id);
 
         return newBlog;
     }
@@ -20,15 +22,51 @@ export class BlogService {
         return blogs;
     }
     async findOne(id: number) {
-        let blog = await this.BlogRepository.findOneBy({ id });
-        return blog;
+        let checkBlogExist = await this.checkBlogExist(id);
+        if (checkBlogExist) {
+            let blog = await this.BlogRepository.findOneBy({ id });
+            return blog;
+        }
     }
-    async update(id: number, updateData) {
-        let result = await this.BlogRepository.update({ id }, updateData);
-        return result;
+    async update(id: number, data: UpdateBlogDTO) {
+        let checkBlogExist = await this.checkBlogExist(id);
+        if (checkBlogExist) {
+            let blog = await this.findOne(id);
+            let updateData: Blog = {};
+            if (data.body && data.body != blog.content) {
+                updateData.content = data.body;
+            }
+            if (data.title && data.title != blog.title) {
+                updateData.title = data.title;
+            }
+            if (data.image && data.image != blog.image) {
+                updateData.image = data.image;
+            }
+            let result = await this.BlogRepository.update({ id }, { ...updateData });
+            return result;
+        }
     }
     async delete(id: number) {
-        let result = await this.BlogRepository.delete({ id });
-        return result;
+        let checkBlogExist = await this.checkBlogExist(id);
+        if (checkBlogExist) {
+            let result = await this.BlogRepository.delete({ id });
+            return result;
+        }
+    }
+
+    async checkId(id: number) {
+        if (!Number(id) || id < 0) {
+            throw new HttpException("id invalid", HttpStatus.BAD_REQUEST)
+        }
+        return true;
+    }
+    async checkBlogExist(id: number) {
+        if (this.checkId(id)) {
+            let blog = await this.findOne(id);
+            if (blog) {
+                return true
+            }
+            throw new HttpException("blog not found", HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -6,14 +6,12 @@ import { ProductService } from './product.service';
 export class ProductController {
     constructor(
         private ProductService: ProductService
-    ){}
+    ) { }
 
     @Post()
     async create(
         @Body(new ValidationPipe()) body: CreateProductDto
     ) {
-        let newProduct = await this.ProductService.create(body);
-        return newProduct;
     }
 
     @Get(":id")
@@ -31,9 +29,9 @@ export class ProductController {
     @Put(":id")
     async update(
         @Param("id") id: number,
-        @Body(new ValidationPipe() ) body
-        ){
-            let result = await this.ProductService.update(id, body);
-            return result;
-        }
+        @Body(new ValidationPipe()) body
+    ) {
+        let result = await this.ProductService.update(id, body);
+        return result;
+    }
 }

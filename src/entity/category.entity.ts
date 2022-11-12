@@ -1,5 +1,5 @@
 import { Sub_Category } from 'src/entity/sub_category.entity'
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, OneToMany} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Product } from './product.entity';
 
 @Entity()
@@ -9,10 +9,10 @@ export class Category extends BaseEntity {
 
     @Column()
     name: string;
-    
+
     @Column()
     slug: string;
-    
+
     @Column()
     status: number;
 
