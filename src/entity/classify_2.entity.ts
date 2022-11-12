@@ -7,14 +7,14 @@ export class Classify_2 extends BaseEntity {
     id: number;
 
     @Column()
-    name: string;
+    attribute: string;
 
-    @CreateDateColumn()
     @Column()
+    @CreateDateColumn()
     create_at: Date;
 
-    @UpdateDateColumn()
     @Column()
+    @UpdateDateColumn()
     update_at: Date;
 
     @OneToMany(() => Stock, (stock) => stock.classify_2)

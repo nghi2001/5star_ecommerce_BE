@@ -16,4 +16,12 @@ export class StockRepository extends Repository<Stock> {
             .execute()
         return stock;
     }
+    async createManyStock(data) {
+        let stock = await this.createQueryBuilder()
+            .insert()
+            .into(Stock)
+            .values(data)
+            .execute()
+        return stock;
+    }
 }

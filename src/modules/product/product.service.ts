@@ -8,6 +8,8 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductRepository } from './product.repository';
 import { StockRepository } from './stock.repository';
+import { classify_1 } from './types/classify1';
+import { classify_2 } from './types/classify2';
 import { productWithoutClassify } from './types/productWithoutClassify';
 
 @Injectable()
@@ -80,5 +82,46 @@ export class ProductService {
             throw new HttpException("id invalid", 400)
         }
         return true
+    }
+    async getClassify1(id: number) {
+        let classify1 = await this.Classify_1_Repository.findOneBy({ id });
+        return classify1;
+    }
+
+    async getClassify2(id: number) {
+        let classify2 = await this.Classify_2_Repository.findOneBy({ id });
+        return classify2;
+    }
+    async createClassify1(classify1: classify_1[]) {
+        let result = await this.Classify_1_Repository.createClassify1(classify1);
+        let classifys_1 = [];
+        for (let i = 0; i < result.raw.length; i++) {
+            let classify = await this.getClassify1(result.raw[i].id);
+            classifys_1.push(classify);
+        }
+        return classifys_1
+    }
+
+    async createClassify2(classify2: classify_2[]) {
+        let [err, result] = await to(this.Classify_2_Repository.createClassify2(classify2));
+        if (err) console.log(err);
+
+        let classifys_2 = [];
+        for (let i = 0; i < result.raw.length; i++) {
+            let classify = await this.getClassify2(result.raw[i].id);
+            classifys_2.push(classify);
+        }
+        return classifys_2
+    }
+
+    async createProduct(productInsert) {
+        let newProduct = await this.ProductRepository.createProduct(productInsert);
+        let product = await this.getOne(newProduct.raw[0].id);
+        return product
+    }
+
+    async createStock(stockInsert) {
+        let result = await this.StockRepository.createManyStock(stockInsert);
+        return result;
     }
 }
