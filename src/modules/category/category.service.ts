@@ -42,7 +42,7 @@ export class CategoryService {
 
     async getOne(id) {
         if (this.checkId(id)) {
-            let category = await this.CategoryRepository.findOneBy({ id });
+            let category = await this.CategoryRepository.getOneCategory(id);
             return category;
         }
     }

@@ -26,4 +26,11 @@ export class CategoryRepository extends Repository<Category> {
         })
         return result
     }
+    async getOneCategory(id: number) {
+        let result = await this.createQueryBuilder("category")
+            .where("category.id = :id", { id: id })
+            .leftJoinAndSelect("category.sub_category", "product")
+            .getOne()
+        return result
+    }
 }
