@@ -15,12 +15,12 @@ export class BigBannerService {
         throw new HttpException("not found", 404)
     }
     async createBanner(banner: CreateBannerDTO) {
-        let newBanner = await this.BannerRepository.create(banner);
+        let newBanner = await this.BannerRepository.createBanner(banner);
         return newBanner;
     }
 
     async getAll() {
-        let banners = await this.BannerRepository.findAndCount();
+        let banners = await this.BannerRepository.findAndCount({});
 
         return banners;
     }
@@ -43,7 +43,7 @@ export class BigBannerService {
     }
 
     async update(id, banner: CreateBannerDTO) {
-        if(this.checkId(id)) {
+        if (this.checkId(id)) {
             let result = await this.BannerRepository.createQueryBuilder().update();
             return result;
         }
