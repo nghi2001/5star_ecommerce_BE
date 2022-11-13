@@ -39,7 +39,11 @@ export class ProductRepository extends Repository<Product> {
                 'stock.quantity',
                 'stock.id_classify_1',
                 'stock.id_classify_2',
+                "classify_1.attribute",
+                "classify_2.attribute"
             ])
+            .leftJoin("stock.classify_1", "classify_1")
+            .leftJoin("stock.classify_2", "classify_2")
             .getOne()
         return product
     }
@@ -64,7 +68,11 @@ export class ProductRepository extends Repository<Product> {
                 'stock.quantity',
                 'stock.id_classify_1',
                 'stock.id_classify_2',
+                "classify_1.attribute",
+                "classify_2.attribute"
             ])
+            .leftJoin("stock.classify_1", "classify_1")
+            .leftJoin("stock.classify_2", "classify_2")
             .getMany()
         return product
     }
