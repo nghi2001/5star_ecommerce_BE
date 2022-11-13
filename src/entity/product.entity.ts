@@ -54,6 +54,6 @@ export class Product extends BaseEntity {
     @JoinColumn({ name: "id_brand" })
     brand: Brand;
 
-    @OneToMany(() => Stock, (stock) => stock.product)
+    @OneToMany(() => Stock, (stock) => stock.product, { onDelete: 'CASCADE' })
     stocks: Stock[]
 }

@@ -28,7 +28,7 @@ export class AwsS3Service {
                 Bucket: this.AWS_BUCKET,
                 ContentType: type,
                 Key: key,
-                Expires: (30 * 60)
+                Expires: (60 * 60)
             }, (err, url) => {
                 if (err) console.log(err);
 
@@ -47,8 +47,8 @@ export class AwsS3Service {
                 Key: key
             };
 
-            this.S3.deleteObject(params, (err,data) => {
-                if(err) reject(err)
+            this.S3.deleteObject(params, (err, data) => {
+                if (err) reject(err)
                 resol(data)
             });
 
