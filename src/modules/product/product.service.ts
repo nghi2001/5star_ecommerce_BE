@@ -6,6 +6,7 @@ import { Classify_1_Repository } from './classify_1.repository';
 import { Classify_2_Repository } from './classify_2.repository';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { UpdateStockDto } from './dto/update_stock.dto';
 import { ProductRepository } from './product.repository';
 import { StockRepository } from './stock.repository';
 import { classify_1 } from './types/classify1';
@@ -59,7 +60,8 @@ export class ProductService {
         return true
     }
     async getAll() {
-
+        let products = await this.ProductRepository.getManyProduct();
+        return products
     }
     async getOne(id: number) {
         let checkId = this.checkId(id);
@@ -69,12 +71,19 @@ export class ProductService {
             return product;
         }
     }
+    async getOneProduct(id: number) {
+        let checkProdExist = await this.checkProdExist(id);
+        if (checkProdExist) {
+            let product = await this.ProductRepository.getOneProduct(id);
+            return product
+        }
+    }
     async delete(id: number) {
         let result = await this.ProductRepository.delete({ id });
         return result;
     }
     async update(id: number, update: UpdateProductDto) {
-        let checkProduct = await this.checkProdExit(id);
+        let checkProduct = await this.checkProdExist(id);
 
         if (checkProduct) {
             let {
@@ -110,6 +119,27 @@ export class ProductService {
             if (err) console.log(err);
 
             return updateResult;
+        }
+    }
+
+    async updateStock(id: number, updateDate: UpdateStockDto) {
+        let checkStock = await this.checkStockExist(id);
+        if (checkStock) {
+            let {
+                price,
+                quantity
+            } = updateDate;
+            let dataInsert: UpdateStockDto = {};
+            if (price && price != checkStock.price) {
+                dataInsert.price = price;
+            }
+            if (quantity && quantity != checkStock.quantity) {
+                dataInsert.quantity = quantity;
+            }
+            let [err, updateResult] = await to(this.StockRepository.update({ id }, dataInsert));
+            if (err) console.log(err);
+            return updateResult;
+
         }
     }
 
@@ -161,7 +191,7 @@ export class ProductService {
         return result;
     }
 
-    async checkProdExit(id: number) {
+    async checkProdExist(id: number) {
         let [err] = await (this.checkId(id).then(result => [null, result]).catch(err => [err, null]));
         if (err) {
             throw new HttpException("id invalid", 400);
@@ -171,6 +201,26 @@ export class ProductService {
             throw new HttpException("product not found", 404);
         }
         return product;
+
+    }
+    async checkStockExist(id: number) {
+        let [err] = await (this.checkId(id).then(result => [null, result]).catch(err => [err, null]));
+        if (err) {
+            throw new HttpException("id invalid", 400);
+        }
+        let stock = await this.StockRepository.findOneBy({ id });
+        if (!stock) {
+            throw new HttpException("stock not found", 404);
+        }
+        return stock;
+
+    }
+    async deleteStock(id: number) {
+        let checkStock = await this.checkStockExist(id);
+        if (checkStock) {
+            let result = await this.StockRepository.delete({ id });
+            return result;
+        }
 
     }
 }

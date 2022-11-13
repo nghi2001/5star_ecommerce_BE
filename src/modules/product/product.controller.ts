@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { UpdateStockDto } from './dto/update_stock.dto';
 import { ProductService } from './product.service';
 import { productWithoutClassify } from './types/productWithoutClassify';
 
@@ -73,8 +74,18 @@ export class ProductController {
 
     @Get(":id")
     async find(@Param("id") id: number) {
-        let product = await this.ProductService.getOne(id);
+        let product = await this.ProductService.getOneProduct(id);
         return product
+    }
+    @Get("")
+    async shows() {
+        let products = await this.ProductService.getAll();
+        return products
+    }
+    @Delete("/stock/:id")
+    async destroyStock(@Param("id") id: number) {
+        let result = await this.ProductService.deleteStock(id);
+        return result;
     }
 
     @Delete(":id")
@@ -83,6 +94,17 @@ export class ProductController {
         return result;
     }
 
+    @Put("/stock/:id")
+    async updateStock(
+        @Param("id") id: number,
+        @Body(new ValidationPipe()) body: UpdateStockDto
+    ) {
+        let result = await this.ProductService.updateStock(id, body);
+        if (result.effected == 0) {
+            return 0;
+        }
+        return 1;
+    }
     @Put(":id")
     async update(
         @Param("id") id: number,
