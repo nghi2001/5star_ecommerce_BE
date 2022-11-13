@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
 import { productWithoutClassify } from './types/productWithoutClassify';
 
@@ -85,9 +86,12 @@ export class ProductController {
     @Put(":id")
     async update(
         @Param("id") id: number,
-        @Body(new ValidationPipe()) body
+        @Body(new ValidationPipe()) body: UpdateProductDto
     ) {
         let result = await this.ProductService.update(id, body);
-        return result;
+        if (result.affected == 0) {
+            return 0
+        }
+        return 1;
     }
 }

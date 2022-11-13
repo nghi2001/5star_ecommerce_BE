@@ -16,7 +16,7 @@ export class Product extends BaseEntity {
     description: string;
 
     @Column({ type: "text", array: true, nullable: true })
-    info_detail: string;
+    info_detail: string[];
 
     @Column('text', { array: true, nullable: true })
     image: string[];

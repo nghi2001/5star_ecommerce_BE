@@ -74,10 +74,46 @@ export class ProductService {
         return result;
     }
     async update(id: number, update: UpdateProductDto) {
+        let checkProduct = await this.checkProdExit(id);
 
+        if (checkProduct) {
+            let {
+                description,
+                id_brand,
+                id_category,
+                image,
+                name,
+                slug,
+                status
+            } = update;
+            let dataUpdate: UpdateProductDto = {};
+            if (description && description != checkProduct.description) {
+                dataUpdate.description = description;
+            }
+            if (id_brand && id_brand != checkProduct.id_brand) {
+                dataUpdate.id_brand = id_brand;
+            }
+            if (id_category && id_category != checkProduct.id_category) {
+                dataUpdate.id_category = id_category;
+            }
+            if (name && name != checkProduct.name) {
+                dataUpdate.name = name;
+            }
+            if (slug && slug != dataUpdate.slug) {
+                dataUpdate.slug = slug;
+            }
+            if (status && status != checkProduct.status) {
+                dataUpdate.status = status;
+            }
+            dataUpdate.image = image;
+            let [err, updateResult] = await to(this.ProductRepository.update({ id }, dataUpdate));
+            if (err) console.log(err);
+
+            return updateResult;
+        }
     }
 
-    checkId(id: number) {
+    async checkId(id: number) {
         if (!Number(id) || id < 0) {
             throw new HttpException("id invalid", 400)
         }
@@ -123,5 +159,18 @@ export class ProductService {
     async createStock(stockInsert) {
         let result = await this.StockRepository.createManyStock(stockInsert);
         return result;
+    }
+
+    async checkProdExit(id: number) {
+        let [err] = await (this.checkId(id).then(result => [null, result]).catch(err => [err, null]));
+        if (err) {
+            throw new HttpException("id invalid", 400);
+        }
+        let product = await this.ProductRepository.findOneBy({ id });
+        if (!product) {
+            throw new HttpException("product not found", 404);
+        }
+        return product;
+
     }
 }
