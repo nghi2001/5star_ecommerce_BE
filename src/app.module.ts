@@ -1,9 +1,7 @@
-import { Module, CacheModule } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { Module, CacheModule, CacheStoreFactory, CacheStore } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { ProviderModule as DatabaseModules } from './provider/database/mongodb/provider/provider.module';
-// import { AuthModule } from './auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
@@ -20,10 +18,9 @@ import { BlogModule } from './modules/blog/blog.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { CardModule } from './modules/card/card.module';
 import DB_CONFIG from './config/database/configuration';
-
+import { RedisModule } from 'nestjs-redis';
 @Module({
   imports: [
-    CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [DB_CONFIG]
