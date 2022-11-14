@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { Banner } from 'src/entity/banner.entity';
+import { Banner } from '../../entity/banner.entity';
 import { CreateBannerDTO } from './dto/createBanner.dto';
 
 @Injectable()

@@ -1,13 +1,13 @@
 import {
     Controller, Get,
-    Post, Body, Request, UseGuards, HttpException, HttpStatus,UseInterceptors
+    Post, Body, Request, UseGuards, HttpException, HttpStatus, UseInterceptors
 } from '@nestjs/common';
-import { ValidationPipe } from 'src/common/pipe/validation.pipe';
+import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './dto/auth.dto';
-import { RefreshTokenAuthGuard } from 'src/guards/refresh-token-auth.guard';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RefreshTokenAuthGuard } from '../../guards/refresh-token-auth.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { InternalaccountService } from '../internalaccount/internalaccount.service';
 
 @Controller('auth')
@@ -29,7 +29,7 @@ export class AuthController {
     async resetToken(@Request() req) {
         let id = req.user.id;
         let user = await this.InternalAccountService.findOne(id);
-        
+
         if (user.refresh_token !== req.user.refreshToken) {
             throw new HttpException("token not valid", HttpStatus.NOT_FOUND);
         }

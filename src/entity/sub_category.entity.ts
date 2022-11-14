@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
-import { Category } from './Category.entity';
+import { Category } from './category.entity';
 import { Product } from './product.entity';
 @Entity()
 export class Sub_Category extends BaseEntity {

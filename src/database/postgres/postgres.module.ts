@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Banner } from 'src/entity/banner.entity';
-import { Blog } from 'src/entity/blog.entity';
-import { Brand } from 'src/entity/brand.entity';
-import { Category } from 'src/entity/Category.entity';
-import { Classify_1 } from 'src/entity/classify_1.entity';
-import { Classify_2 } from 'src/entity/classify_2.entity';
-import { InternalAccount } from 'src/entity/internal_account.entity';
-import { Product } from 'src/entity/product.entity';
-import { Stock } from 'src/entity/stock.entity';
-import { Sub_Category } from 'src/entity/sub_category.entity';
-import { Profile } from 'src/entity/user.entity';
-import { Comment } from 'src/entity/comment.entity';
+import { Banner } from '../../entity/banner.entity';
+import { Blog } from '../../entity/blog.entity';
+import { Brand } from '../../entity/brand.entity';
+import { Category } from '../../entity/category.entity';
+import { Classify_1 } from '../../entity/classify_1.entity';
+import { Classify_2 } from '../../entity/classify_2.entity';
+import { InternalAccount } from '../../entity/internal_account.entity';
+import { Product } from '../../entity/product.entity';
+import { Stock } from '../../entity/stock.entity';
+import { Sub_Category } from '../../entity/sub_category.entity';
+import { Profile } from '../../entity/user.entity';
+import { Comment } from '../../entity/comment.entity';
 
 @Module({
     imports: [

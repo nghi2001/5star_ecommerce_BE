@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common/decorators";
-import { Blog } from "src/entity/blog.entity";
+import { Blog } from "../../entity/blog.entity";
 import { DataSource, Repository } from "typeorm";
 import { CreateBlogDTO } from "./dto/createBlogDTO";
 

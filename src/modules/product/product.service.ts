@@ -1,5 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { to } from 'src/common/helper/catchError';
+import { to } from '../../common/helper/catchError';
 import { BrandService } from '../brand/brand.service';
 import { CategoryService } from '../category/category.service';
 import { Classify_1_Repository } from './classify_1.repository';

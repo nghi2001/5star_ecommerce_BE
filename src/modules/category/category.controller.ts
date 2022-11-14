@@ -2,8 +2,8 @@ import {
     Controller,
     Post, Get, Delete, Put, UseGuards, Body, Param
 } from '@nestjs/common';
-import { ValidationPipe } from 'src/common/pipe/validation.pipe';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { ValidationPipe } from '../../common/pipe/validation.pipe';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CategoryService } from './category.service';
 import { createCategoryDTO } from './dto/create-category.dto';
 

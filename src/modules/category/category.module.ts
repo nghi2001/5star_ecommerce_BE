@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Category } from 'src/entity/Category.entity';
+import { Category } from '../../entity/category.entity';
 import { CategoryController } from './category.controller';
 import { CategoryRepository } from './category.repository';
 import { CategoryService } from './category.service';
@@ -12,4 +12,4 @@ import { CategoryService } from './category.service';
   providers: [CategoryService, CategoryRepository],
   exports: [CategoryService]
 })
-export class CategoryModule {}
+export class CategoryModule { }

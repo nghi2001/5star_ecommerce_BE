@@ -3,7 +3,7 @@ import { InternalAccountRepository } from './internalaccount.repository';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { CreateAccountDto } from './dto/create-account.dto';
-import { InternalAccount } from 'src/entity/internal_account.entity';
+import { InternalAccount } from '../../entity/internal_account.entity';
 @Injectable()
 export class InternalaccountService {
     constructor(
@@ -41,8 +41,8 @@ export class InternalaccountService {
         }
         throw new HttpException("User Not Exist", HttpStatus.NOT_FOUND)
     }
-    async findOne(id:number) {
-        let result = await this.InternalAccountRepository.findOneBy({id});
+    async findOne(id: number) {
+        let result = await this.InternalAccountRepository.findOneBy({ id });
         return result
     }
     async create(account: CreateAccountDto) {
@@ -62,8 +62,8 @@ export class InternalaccountService {
         return result
     }
 
-    async update( id: number, data) {
-        let result = await this.InternalAccountRepository.update({id}, data)
+    async update(id: number, data) {
+        let result = await this.InternalAccountRepository.update({ id }, data)
         return result
     }
 

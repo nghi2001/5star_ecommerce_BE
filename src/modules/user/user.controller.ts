@@ -1,7 +1,7 @@
 import { Controller, Param, Put, Query, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Post, Body, Delete } from '@nestjs/common';
-import { ValidationPipe } from 'src/common/pipe/validation.pipe';
+import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
 import { updateUserDTO } from './dto/update-user.dto';
 @Controller('user')
@@ -51,12 +51,12 @@ export class UserController {
 
     @Put("/:id")
     async update(@Param("id") id,
-    @Body(new ValidationPipe()) body: updateUserDTO
+        @Body(new ValidationPipe()) body: updateUserDTO
     ) {
         if (this.UserService.checkObjectId(id)) {
 
             let result = await this.UserService.update(id, body);
-            
+
             return result;
         }
     }

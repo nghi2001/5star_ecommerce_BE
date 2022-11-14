@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, CacheModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,9 +18,12 @@ import { SubcategoryModule } from './modules/subcategory/subcategory.module';
 import { BrandModule } from './modules/brand/brand.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { CommentModule } from './modules/comment/comment.module';
+import { CardModule } from './modules/card/card.module';
 import DB_CONFIG from './config/database/configuration';
+
 @Module({
   imports: [
+    CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [DB_CONFIG]
@@ -38,7 +41,8 @@ import DB_CONFIG from './config/database/configuration';
     SubcategoryModule,
     BrandModule,
     BlogModule,
-    CommentModule
+    CommentModule,
+    CardModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],
