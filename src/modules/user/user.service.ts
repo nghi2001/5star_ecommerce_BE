@@ -32,7 +32,18 @@ export class UserService {
 
         return result;
     }
+    async createProfile(createUserDto: CreateUserDto) {
 
+        let result = await this.UserRepository.createProfile({
+            email: createUserDto.email,
+            first_name: createUserDto.first_name,
+            last_name: createUserDto.last_name,
+            phone: createUserDto.phone,
+            gender: createUserDto.gender,
+        });
+
+        return result;
+    }
     checkObjectId(id: number): boolean {
         if (Number(id) && id > 0) {
             return true

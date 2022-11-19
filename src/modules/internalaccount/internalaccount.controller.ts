@@ -6,7 +6,7 @@ import { InternalaccountService } from './internalaccount.service';
 export class InternalaccountController {
     constructor(
         private AccountService: InternalaccountService
-    ){}
+    ) { }
 
     @Get()
     async shows() {
@@ -18,14 +18,18 @@ export class InternalaccountController {
     async create(
         @Body(new ValidationPipe()) body: CreateAccountDto
     ) {
-            let result = await this.AccountService.create(body);
+
+        let result = await this.AccountService.create(body);
+        if (result) {
             return result;
+        }
+        return new HttpException("Can't create account", 500);
     }
 
     @Delete("/:id")
     async destroy(@Param("id") id) {
-        let result =  await this.AccountService.destroy(id);
+        let result = await this.AccountService.destroy(id);
         return result
     }
-    
+
 }

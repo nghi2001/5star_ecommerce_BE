@@ -4,25 +4,25 @@ export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     @IsEmail()
-    email: string
+    email?: string
 
     @IsString()
     @IsNotEmpty()
-    first_name: string
+    first_name?: string
 
     @IsString()
     @IsNotEmpty()
-    last_name: string
+    last_name?: string
 
     @IsString()
     @IsNotEmpty()
-    phone: string
+    phone?: string
 
     @IsString()
     @IsNotEmpty()
-    gender: string
+    gender?: string
 
-    @MaxLength(20,{each: true})
+    @MaxLength(20, { each: true })
     @IsNotEmpty()
-    address: string[]
+    address?: string[]
 }

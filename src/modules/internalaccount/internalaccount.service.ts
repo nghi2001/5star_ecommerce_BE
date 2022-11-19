@@ -28,14 +28,14 @@ export class InternalaccountService {
             throw new HttpException("User Not Exist", HttpStatus.NOT_FOUND);
         }
     }
-    async checkAccountNotExist(username: string, id_profile?: number) {
-        let check = await this.InternalAccountRepository.findOneBy({ username });
+    async checkAccountNotExist(email: string, id_profile?: number) {
+        let check = await this.InternalAccountRepository.findOneBy({ email });
         if (check) {
             throw new HttpException("User exist", 400);
         } return true;
     }
-    async checkAccountExist(username: string) {
-        let check = await this.InternalAccountRepository.findOneBy({ username });
+    async checkAccountExist(email: string) {
+        let check = await this.InternalAccountRepository.findOneBy({ email });
         if (check) {
             return check
         }
@@ -46,14 +46,23 @@ export class InternalaccountService {
         return result
     }
     async create(account: CreateAccountDto) {
-        let checkProfileExist = await this.checkProfileExit(account.id_profile);
-        let checkAccountNotExist = await this.checkAccountNotExist(account.username);
-        if (checkProfileExist && checkAccountNotExist) {
+        let checkAccountNotExist = await this.checkAccountNotExist(account.email);
+        if (checkAccountNotExist) {
+
             account.password = await this.hashPassWord(account.password);
+            let profile = await this.UserService.createProfile({
+                first_name: account.first_name,
+                last_name: account.last_name,
+                email: account.email
+            });
 
-            let result = await this.InternalAccountRepository.createAccount(account);
+            let result = await this.InternalAccountRepository.createAccount({
+                email: account.email,
+                password: account.password,
+                id_profile: profile.raw[0].id
+            });
 
-            return result
+            return profile.raw[0]
         }
     }
 
