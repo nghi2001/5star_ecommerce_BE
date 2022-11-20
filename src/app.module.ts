@@ -16,7 +16,7 @@ import { SubcategoryModule } from './modules/subcategory/subcategory.module';
 import { BrandModule } from './modules/brand/brand.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { CommentModule } from './modules/comment/comment.module';
-import { CardModule } from './modules/card/card.module';
+import { CardModule } from './modules/cart/cart.module';
 import DB_CONFIG from './config/database/configuration';
 import { RedisModule } from 'nestjs-redis';
 @Module({

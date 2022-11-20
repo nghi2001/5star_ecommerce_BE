@@ -223,4 +223,14 @@ export class ProductService {
         }
 
     }
+
+    async getStockById(id: number) {
+        if (this.checkId(id)) {
+            let productStock = await this.StockRepository.getStockById(id);
+            if (!productStock) {
+                throw new HttpException("product Stock not found", 404);
+            }
+            return productStock;
+        }
+    }
 }

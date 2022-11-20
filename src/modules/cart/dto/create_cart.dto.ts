@@ -1,6 +1,6 @@
 import { IsInt, IsPositive } from "class-validator";
 
-export class createCardDto {
+export class createCartDto {
 
     @IsInt()
     @IsPositive()
