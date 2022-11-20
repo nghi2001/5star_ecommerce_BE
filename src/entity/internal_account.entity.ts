@@ -1,5 +1,5 @@
 import { type } from 'os';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Profile } from './user.entity';
 @Entity()
 export class InternalAccount {
@@ -7,7 +7,7 @@ export class InternalAccount {
     id: number;
 
     @Column()
-    username: string;
+    email: string;
 
     @Column()
     password: string;
@@ -15,14 +15,17 @@ export class InternalAccount {
     @Column()
     id_profile: number;
 
+    @Column({ nullable: true })
+    code?: string;
+
     @OneToOne(type => Profile)
-    @JoinColumn({name: 'id_profile'})
+    @JoinColumn({ name: 'id_profile' })
     profile: Profile;
 
-    
-    @Column({nullable: true})
+
+    @Column({ nullable: true })
     refresh_token?: string;
-    
+
     @Column()
     @CreateDateColumn()
     create_at: Date;

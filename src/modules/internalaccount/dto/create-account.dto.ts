@@ -1,14 +1,22 @@
-import { IsInt, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateAccountDto {
-    @IsInt()
-    id_profile: number;
+
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
 
     @IsString()
     @IsNotEmpty()
-    username: string;
+    first_name?: string;
+
+    @IsString()
+    @IsNotEmpty()
+    last_name?: string;
 
     @IsString()
     @IsNotEmpty()
     password: string;
+
+    id_profile: number;
 }

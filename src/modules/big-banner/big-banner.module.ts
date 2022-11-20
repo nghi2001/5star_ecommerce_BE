@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BigBannerController } from './big-banner.controller';
 import { BannerRepository } from './big-banner.repository';
 import { BigBannerService } from './big-banner.service';
-import { Banner } from 'src/entity/banner.entity';
+import { Banner } from '../../entity/banner.entity';
 
 @Module({
   imports: [

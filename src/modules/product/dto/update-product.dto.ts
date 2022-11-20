@@ -1,44 +1,48 @@
-import { IsArray, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsArray, IsEnum, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class UpdateProductDto {
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    name: string;
+    name?: string;
 
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    description: string;
+    description?: string;
+
+    @IsArray()
+    @IsNotEmpty()
+    @IsOptional()
+    info_detail?: string[];
 
     @IsNotEmpty()
     @IsArray()
     @IsOptional()
-    image: string[];
+    image?: string[];
 
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    slug: string;
+    slug?: string;
+
+    @IsEnum({ ACTIVE: 1, UNACTIVE: 2 })
+    @IsOptional()
+    status?: number;
 
     @IsInt()
     @IsPositive()
     @IsOptional()
-    status: number;
+    id_category?: number;
 
     @IsInt()
     @IsPositive()
     @IsOptional()
-    id_category: number;
+    id_subcategory?: number;
 
     @IsInt()
     @IsPositive()
     @IsOptional()
-    id_subcategory: number;
-
-    @IsInt()
-    @IsPositive()
-    @IsOptional()
-    id_brand: number;
+    id_brand?: number;
 
 }

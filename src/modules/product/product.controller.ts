@@ -1,5 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { UpdateStockDto } from './dto/update_stock.dto';
 import { ProductService } from './product.service';
 import { productWithoutClassify } from './types/productWithoutClassify';
 
@@ -9,6 +12,7 @@ export class ProductController {
         private ProductService: ProductService
     ) { }
 
+    @UseGuards(JwtAuthGuard)
     @Post("")
     async create(
         @Body(new ValidationPipe()) body: CreateProductDto
@@ -72,8 +76,18 @@ export class ProductController {
 
     @Get(":id")
     async find(@Param("id") id: number) {
-        let product = await this.ProductService.getOne(id);
+        let product = await this.ProductService.getOneProduct(id);
         return product
+    }
+    @Get("")
+    async shows() {
+        let products = await this.ProductService.getAll();
+        return products
+    }
+    @Delete("/stock/:id")
+    async destroyStock(@Param("id") id: number) {
+        let result = await this.ProductService.deleteStock(id);
+        return result;
     }
 
     @Delete(":id")
@@ -82,12 +96,26 @@ export class ProductController {
         return result;
     }
 
+    @Put("/stock/:id")
+    async updateStock(
+        @Param("id") id: number,
+        @Body(new ValidationPipe()) body: UpdateStockDto
+    ) {
+        let result = await this.ProductService.updateStock(id, body);
+        if (result.effected == 0) {
+            return 0;
+        }
+        return 1;
+    }
     @Put(":id")
     async update(
         @Param("id") id: number,
-        @Body(new ValidationPipe()) body
+        @Body(new ValidationPipe()) body: UpdateProductDto
     ) {
         let result = await this.ProductService.update(id, body);
-        return result;
+        if (result.affected == 0) {
+            return 0
+        }
+        return 1;
     }
 }

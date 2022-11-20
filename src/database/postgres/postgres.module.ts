@@ -1,37 +1,47 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Banner } from 'src/entity/banner.entity';
-import { Blog } from 'src/entity/blog.entity';
-import { Brand } from 'src/entity/brand.entity';
-import { Category } from 'src/entity/Category.entity';
-import { Classify_1 } from 'src/entity/classify_1.entity';
-import { Classify_2 } from 'src/entity/classify_2.entity';
-import { InternalAccount } from 'src/entity/internal_account.entity';
-import { Product } from 'src/entity/product.entity';
-import { Stock } from 'src/entity/stock.entity';
-import { Sub_Category } from 'src/entity/sub_category.entity';
-import { Profile } from 'src/entity/user.entity';
-import { Comment } from 'src/entity/comment.entity';
+import { Banner } from '../../entity/banner.entity';
+import { Blog } from '../../entity/blog.entity';
+import { Brand } from '../../entity/brand.entity';
+import { Category } from '../../entity/category.entity';
+import { Classify_1 } from '../../entity/classify_1.entity';
+import { Classify_2 } from '../../entity/classify_2.entity';
+import { InternalAccount } from '../../entity/internal_account.entity';
+import { Product } from '../../entity/product.entity';
+import { Stock } from '../../entity/stock.entity';
+import { Sub_Category } from '../../entity/sub_category.entity';
+import { Profile } from '../../entity/user.entity';
+import { Comment } from '../../entity/comment.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
+console.log(process.env.DB);
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: 'postgres',
-            host: process.env.PG_HOST || '127.0.0.1',
-            port: Number(process.env.PG_PORT) || 5432,
-            username: process.env.PG_USER || 'postgres',
-            password: process.env.PASS || 'Nghi@#2001',
-            database: process.env.DB || '5star',
-            entities: [
-                InternalAccount,
-                Profile, Banner,
-                Category,
-                Brand, Product,
-                Stock, Classify_1, Classify_2,
-                Blog, Comment
-            ],
-            synchronize: true
+        TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: async (configService: ConfigService) => ({
+                type: 'postgres',
+                host: configService.get("DB_HOST") || '127.0.0.1',
+                port: Number(configService.get("DB_PORT")) || null,
+                username: configService.get("DB_USER") || 'postgres',
+                password: configService.get("DB_PASS") || 'Nghi@#2001',
+                database: configService.get('DB_NAME') || '5star',
+                entities: [
+                    InternalAccount,
+                    Profile, Banner,
+                    Category,
+                    Brand, Product,
+                    Stock, Classify_1, Classify_2,
+                    Blog, Comment
+                ],
+                synchronize: true
+            }),
+            inject: [ConfigService]
         })
     ]
 })
-export class PostgresModule { }
+
+export class PostgresModule {
+    constructor() {
+    }
+}

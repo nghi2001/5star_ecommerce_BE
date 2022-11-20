@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository, DataSource } from 'typeorm';
 import { createCategoryDTO } from './dto/create-category.dto';
-import { Category } from 'src/entity/Category.entity';
+import { Category } from '../../entity/category.entity';
 
 @Injectable()
 export class CategoryRepository extends Repository<Category> {
@@ -24,6 +24,13 @@ export class CategoryRepository extends Repository<Category> {
                 sub_category: true
             }
         })
+        return result
+    }
+    async getOneCategory(id: number) {
+        let result = await this.createQueryBuilder("category")
+            .where("category.id = :id", { id: id })
+            .leftJoinAndSelect("category.sub_category", "product")
+            .getOne()
         return result
     }
 }

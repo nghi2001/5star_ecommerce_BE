@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common/decorators"
 import { DataSource, Repository } from "typeorm"
 import { CreateCommentDto } from "./dto/create_comment.dto"
-import { Comment } from "src/entity/comment.entity"
+import { Comment } from "../../entity/comment.entity"
 
 @Injectable()
 export class CommentRepository extends Repository<Comment>{

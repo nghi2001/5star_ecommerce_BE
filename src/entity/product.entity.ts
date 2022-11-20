@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Brand } from './brand.entity';
-import { Category } from './Category.entity';
+import { Category } from './category.entity';
 import { Stock } from './stock.entity';
 import { Sub_Category } from './sub_category.entity';
 
@@ -16,7 +16,7 @@ export class Product extends BaseEntity {
     description: string;
 
     @Column({ type: "text", array: true, nullable: true })
-    info_detail: string;
+    info_detail: string[];
 
     @Column('text', { array: true, nullable: true })
     image: string[];
@@ -54,6 +54,6 @@ export class Product extends BaseEntity {
     @JoinColumn({ name: "id_brand" })
     brand: Brand;
 
-    @OneToMany(() => Stock, (stock) => stock.product)
+    @OneToMany(() => Stock, (stock) => stock.product, { onDelete: 'CASCADE' })
     stocks: Stock[]
 }

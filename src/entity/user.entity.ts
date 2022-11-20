@@ -6,31 +6,31 @@ export class Profile {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: true })
     first_name: string;
 
-    @Column()
+    @Column({ nullable: true })
     last_name: string;
-    @Column()
+    @Column({ nullable: true })
     email: string;
 
-    @Column()
+    @Column({ nullable: true })
     phone: string;
 
-    @Column()
+    @Column({ nullable: true })
     gender: string;
 
-    @Column('text', { array: true })
+    @Column('text', { array: true, nullable: true })
     address: string[];
 
-    @Column({ default: false })
+    @Column({ nullable: true, default: false })
     is_active: boolean;
 
-    @Column()
+    @Column({ nullable: true })
     @CreateDateColumn()
     create_at: Date;
 
-    @Column()
+    @Column({ nullable: true })
     @UpdateDateColumn()
     update_at: Date;
 

@@ -2,8 +2,8 @@ import {
     Controller, Get, Post, Delete, Put,
     Body, HttpException, Param, UseGuards
 } from '@nestjs/common';
-import { ValidationPipe } from 'src/common/pipe/validation.pipe';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { ValidationPipe } from '../../common/pipe/validation.pipe';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BigBannerService } from './big-banner.service';
 import { CreateBannerDTO } from './dto/createBanner.dto';
 

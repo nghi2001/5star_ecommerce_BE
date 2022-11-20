@@ -1,20 +1,20 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource,Repository } from 'typeorm';
-import { Profile } from "src/entity/user.entity";
+import { DataSource, Repository } from 'typeorm';
+import { Profile } from "../../entity/user.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
 
 @Injectable({
-    
+
 })
 export class UserRepository extends Repository<Profile> {
 
     constructor(
         private dataSource: DataSource
-    ){
+    ) {
         super(Profile, dataSource.createEntityManager())
     }
 
-    async createProfile (profile: CreateUserDto) {
+    async createProfile(profile: CreateUserDto) {
         let result = await this.createQueryBuilder()
             .insert()
             .into(Profile)
@@ -25,7 +25,7 @@ export class UserRepository extends Repository<Profile> {
     }
     //  async findByUserName(username: string) {
     //     let user = await this.model.findOne({"account.username": username})
-        
+
     //     return user
     // }
 }

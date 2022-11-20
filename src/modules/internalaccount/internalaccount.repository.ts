@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { DataSource,Repository } from 'typeorm';
-import { InternalAccount } from 'src/entity/internal_account.entity';
+import { DataSource, Repository } from 'typeorm';
+import { InternalAccount } from '../../entity/internal_account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class InternalAccountRepository extends Repository<InternalAccount> {
     ) {
         super(InternalAccount, dataSource.createEntityManager());
     }
-    
+
     async findAndCountAll() {
         let result = await this.findAndCount({
             relations: {
@@ -26,7 +26,7 @@ export class InternalAccountRepository extends Repository<InternalAccount> {
             .into(InternalAccount)
             .values([account])
             .execute()
-            
+
         return newAccount
     }
 }

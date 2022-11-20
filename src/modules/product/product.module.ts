@@ -20,6 +20,9 @@ import { BrandModule } from '../brand/brand.module';
   imports: [
     CategoryModule,
     BrandModule
+  ],
+  exports: [
+    ProductService
   ]
 })
 export class ProductModule { }
