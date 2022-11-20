@@ -17,13 +17,12 @@ import { BrandModule } from './modules/brand/brand.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { CardModule } from './modules/cart/cart.module';
-import DB_CONFIG from './config/database/configuration';
+import DB_CONFIG from './config/config';
 import { RedisModule } from 'nestjs-redis';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
-      load: [DB_CONFIG]
+      isGlobal: true
     }),
     // DatabaseModules,
     AuthModule,
