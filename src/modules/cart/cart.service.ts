@@ -16,7 +16,7 @@ export class CartService {
 
     async getCartBy(idUser: number) {
         let cartId = this.prefixCart + idUser;
-        let cart = await redisClient.hGetAll(cartId);
+        let cart = await redisClient.hgetall(cartId);
         let keys = Object.keys(cart);
         let cartItems: any[] = []
         console.log(keys);
@@ -25,11 +25,11 @@ export class CartService {
             let idProduct = key.split(':')[1];
             let product = await this.ProductService.getStockById(Number(idProduct));
             if (!product) {
-                await redisClient.hDel(cartId, key);
+                await redisClient.hdel(cartId, key);
                 return;
             }
 
-            let cartItem = await {
+            let cartItem = {
                 ...product,
                 quantity: cart[key]
             }
@@ -40,15 +40,17 @@ export class CartService {
     }
 
     async create(idUser: string, cart: createCartDto) {
-        let cartId = this.prefixCart + idUser;
+        let cartId = `${this.prefixCart}${idUser}`;
         let productKey = `product:${cart.id_product}`;
         let checkProductExist = await this.ProductService.checkStockExist(cart.id_product);
         if (checkProductExist) {
-            let prodQuantity = await redisClient.hIncrBy(cartId, productKey, cart.quantity);
+            console.log(cartId);
+
+            let prodQuantity = await redisClient.hincrby(cartId, productKey, cart.quantity);
             if (Number(prodQuantity) <= 0) {
-                await redisClient.hDel(cartId, productKey);
+                await redisClient.hdel(cartId, productKey);
             }
-            let productInCart = await redisClient.HGET(cartId, productKey);
+            let productInCart = await redisClient.hget(cartId, productKey);
             return {
                 product: cart.id_product,
                 quantity: productInCart
