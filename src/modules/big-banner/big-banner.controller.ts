@@ -19,7 +19,11 @@ export class BigBannerController {
         @Body(new ValidationPipe()) createBannerDto: CreateBannerDTO
     ) {
         let newBanner = await this.BannerService.createBanner(createBannerDto);
-        return newBanner
+        if (newBanner) {
+            let banner = await this.BannerService.getOne(newBanner.raw[0].id);
+            return banner;
+        }
+        return false
     }
 
     @Get()

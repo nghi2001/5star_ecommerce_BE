@@ -9,8 +9,8 @@ export class CreateBannerDTO {
     @IsNotEmpty()
     sub_title: string;
 
-    // @IsString()
-    // image: string;
+    @IsString()
+    image: string;
 
     @IsEnum({ ACTIVE: 1, NOT_ACTIVE: 2 })
     @IsPositive()
