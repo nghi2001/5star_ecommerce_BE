@@ -57,7 +57,14 @@ export class UserService {
     }
 
     async findOne(id: number) {
-        let user = await this.UserRepository.findOneBy({ id });
+        let user = await this.UserRepository.findOne({
+            where: {
+                id: id
+            },
+            relations: {
+                avatar: true
+            }
+        });
         return user
     }
 

@@ -9,10 +9,10 @@ import { Classify_2 } from '../../entity/classify_2.entity';
 import { InternalAccount } from '../../entity/internal_account.entity';
 import { Product } from '../../entity/product.entity';
 import { Stock } from '../../entity/stock.entity';
-import { Sub_Category } from '../../entity/sub_category.entity';
 import { Profile } from '../../entity/user.entity';
 import { Comment } from '../../entity/comment.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MediaFile } from 'src/entity/file.entity';
 
 console.log(process.env.DB);
 @Module({
@@ -28,11 +28,17 @@ console.log(process.env.DB);
                 database: configService.get('DB_NAME') || '5star',
                 entities: [
                     InternalAccount,
-                    Profile, Banner,
+                    Profile,
+                    Banner,
                     Category,
-                    Brand, Product,
-                    Stock, Classify_1, Classify_2,
-                    Blog, Comment
+                    Brand,
+                    Product,
+                    Stock,
+                    Classify_1,
+                    Classify_2,
+                    Blog,
+                    Comment,
+                    MediaFile
                 ],
                 synchronize: true
             }),

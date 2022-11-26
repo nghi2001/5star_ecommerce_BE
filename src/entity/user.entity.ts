@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { Blog } from './blog.entity';
 import { Comment } from './comment.entity';
+import { MediaFile } from './file.entity';
 @Entity()
 export class Profile {
     @PrimaryGeneratedColumn()
@@ -23,6 +24,8 @@ export class Profile {
     @Column('text', { array: true, nullable: true })
     address: string[];
 
+    @Column({ nullable: true })
+    avatar_id: number;
     @Column({ nullable: true, default: false })
     is_active: boolean;
 
@@ -39,4 +42,8 @@ export class Profile {
 
     @OneToMany(() => Comment, (comment) => comment.profile)
     comments: Comment[];
+
+    @OneToOne(type => MediaFile)
+    @JoinColumn({ name: "avatar_id" })
+    avatar: MediaFile
 }
