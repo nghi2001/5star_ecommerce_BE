@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import redisClient from '../../config/database/redis';
 import { ProductService } from '../product/product.service';
 import { createCartDto } from './dto/create_cart.dto';
-
+import { to } from '../../common/helper/catchError';
 @Injectable()
 export class CartService {
     prefixCart: string;
@@ -56,5 +56,15 @@ export class CartService {
                 quantity: productInCart
             }
         }
+    }
+
+    async destroy(idUser: number, idProduct: number) {
+        let cartId = `${this.prefixCart}${idUser}`;
+        let productKey = `product:${idProduct}`;
+        let [err, result] = await to(redisClient.hdel(cartId, productKey));
+        if (err) {
+            throw new HttpException(err, 500);
+        }
+        return result
     }
 }
