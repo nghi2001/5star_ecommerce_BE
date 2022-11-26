@@ -26,7 +26,7 @@ export class AuthController {
         let tokens = await this.AuthService.SigIn(AuthDTO);
         res.cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
-            domain: this.ConfigService.get<string>('FRONTEND_URL')
+            domain: this.ConfigService.get<string>('FRONTEND_DOMAIN')
         });
         let user = await this.InternalAccountService.getUserInfo(AuthDTO.username);
         console.log(user);
@@ -55,7 +55,7 @@ export class AuthController {
 
         res.cookie("refreshToken", token.refreshToken, {
             httpOnly: true,
-            domain: this.ConfigService.get<string>('FRONTEND_URL')
+            domain: this.ConfigService.get<string>('FRONTEND_DOMAIN')
         })
         res.json({
             status: 200,

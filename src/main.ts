@@ -8,8 +8,9 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.enableCors({
+    origin: process.env.FRONTEND_URL,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
-    origin: process.env.FRONTEND_URL
   });
   // use global interceptor 
   app.useGlobalInterceptors(new TranformInterceptor());
