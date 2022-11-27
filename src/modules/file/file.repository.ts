@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { MediaFile } from "src/entity/file.entity";
+import { MediaFile } from "../../entity/file.entity";
 import { Repository, DataSource } from "typeorm";
 import { createMediaFile } from "./interfaces/create-media.interface";
 

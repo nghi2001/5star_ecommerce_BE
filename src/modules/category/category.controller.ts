@@ -22,7 +22,6 @@ export class CategoryController {
         return newCategory
     }
 
-    @UseGuards(JwtAuthGuard)
     @Get()
     async show() {
         let categorys = await this.CategoryService.getAll();

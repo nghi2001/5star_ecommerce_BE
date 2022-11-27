@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Req, UseGuards, Request, Post, Body, ValidationPipe, Delete } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import redis from '../../config/database/redis';
 import redisClient from '../../config/database/redis';
 import { CartService } from './cart.service';

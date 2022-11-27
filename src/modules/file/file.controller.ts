@@ -1,4 +1,4 @@
-import { Body, Delete, Get, HttpException, Param, UploadedFile, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, HttpException, Param, UploadedFile, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -6,6 +6,7 @@ import { AwsS3Service } from '../aws_s3/aws_s3.service';
 import { getSignedUrlDTO } from './dto/getSignedUrl.dto';
 import { FileService } from './file.service';
 import * as fs from 'fs';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 @Controller('file')
 export class FileController {
     constructor(
@@ -14,6 +15,7 @@ export class FileController {
         private FileService: FileService
     ) { }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     async getSignedUrl(
         @Body(new ValidationPipe()) body: getSignedUrlDTO
@@ -23,6 +25,7 @@ export class FileController {
         return { url, key, linkBucket };
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post("/destroy")
     async deleteObjectS3(@Body() body) {
         let { key } = body;
@@ -34,6 +37,8 @@ export class FileController {
         let data = await this.FileService.getOne(id);
         return data
     }
+
+    @UseGuards(JwtAuthGuard)
     @Post("/upload")
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile() file: Express.Multer.File) {
@@ -47,6 +52,8 @@ export class FileController {
         return result
     }
 
+
+    @UseGuards(JwtAuthGuard)
     @Delete("/:id")
     async destroy(@Param("id") id: number) {
         let file = await this.FileService.getOne(id);
