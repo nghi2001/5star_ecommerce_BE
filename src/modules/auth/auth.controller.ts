@@ -32,7 +32,7 @@ export class AuthController {
         console.log(user);
 
         res.json({
-            status: 200,
+            statusCode: 200,
             data: {
                 accessToken: tokens.accessToken,
                 user_info: user
@@ -58,7 +58,7 @@ export class AuthController {
             domain: this.ConfigService.get<string>('FRONTEND_DOMAIN')
         })
         res.json({
-            status: 200,
+            statusCode: 200,
             data: {
                 accessToken: token.accessToken
             }

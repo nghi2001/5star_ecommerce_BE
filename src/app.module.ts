@@ -18,9 +18,13 @@ import { BlogModule } from './modules/blog/blog.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { CardModule } from './modules/cart/cart.module';
 import DB_CONFIG from './config/config';
-import { RedisModule } from 'nestjs-redis';
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from 'path';
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public')
+    }),
     ConfigModule.forRoot({
       isGlobal: true
     }),

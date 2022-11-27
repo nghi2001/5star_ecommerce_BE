@@ -1,4 +1,4 @@
-import { IsString, MaxLength, IsNotEmpty, IsNotEmptyObject, IsEmail, IsOptional } from "class-validator";
+import { IsString, MaxLength, IsNotEmpty, IsNotEmptyObject, IsEmail, IsOptional, IsIn, IsInt } from "class-validator";
 export class updateUserDTO {
 
     @IsString()
@@ -27,8 +27,12 @@ export class updateUserDTO {
     @IsOptional()
     gender?: string
 
-    @MaxLength(20,{each: true})
+    @MaxLength(20, { each: true })
     @IsNotEmpty()
     @IsOptional()
     address?: string[]
+
+    @IsInt()
+    @IsOptional()
+    avatar_id: string;
 }

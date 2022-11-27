@@ -18,4 +18,15 @@ export class FileService {
         }
         throw new HttpException("Create File", 500);
     }
+    async getOne(id: number) {
+        let data = await this.FileRepository.findOneBy({ id });
+        if (!data) {
+            throw new HttpException("Not found", 404);
+        }
+        return data
+    }
+    async delete(id: number) {
+        let result = await this.FileRepository.delete({ id });
+        return result
+    }
 }

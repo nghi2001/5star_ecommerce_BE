@@ -1,11 +1,11 @@
-import { Body, Get, UploadedFile, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, HttpException, Param, UploadedFile, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AwsS3Service } from '../aws_s3/aws_s3.service';
 import { getSignedUrlDTO } from './dto/getSignedUrl.dto';
 import { FileService } from './file.service';
-
+import * as fs from 'fs';
 @Controller('file')
 export class FileController {
     constructor(
@@ -29,7 +29,11 @@ export class FileController {
         let result = await this.AwsS3Service.detroy(key);
         return result
     }
-
+    @Get(":id")
+    async find(@Param("id") id: number) {
+        let data = await this.FileService.getOne(id);
+        return data
+    }
     @Post("/upload")
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile() file: Express.Multer.File) {
@@ -41,5 +45,16 @@ export class FileController {
             type: file.mimetype
         });
         return result
+    }
+
+    @Delete("/:id")
+    async destroy(@Param("id") id: number) {
+        let file = await this.FileService.getOne(id);
+        console.log(file);
+        fs.unlink(file.path, async (err) => {
+            if (err) throw new HttpException("DELETE FILE", 500);
+            await this.FileService.delete(id);
+        })
+        return file;
     }
 }
