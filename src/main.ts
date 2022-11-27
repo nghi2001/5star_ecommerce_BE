@@ -2,14 +2,18 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { TranformInterceptor } from './Interceptors/tranform.interceptor';
-
+import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors()
+  app.use(cookieParser());
+  app.enableCors({
+    origin: process.env.FRONTEND_URL,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   // use global interceptor 
   app.useGlobalInterceptors(new TranformInterceptor());
-
   const config = new DocumentBuilder()
     .setTitle("Document API")
     .setDescription("Document Api 5star ecommerce")

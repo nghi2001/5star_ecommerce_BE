@@ -1,5 +1,5 @@
-import { Controller, Get, Param, Req, UseGuards, Request, Post, Body, ValidationPipe } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { Controller, Get, Param, Req, UseGuards, Request, Post, Body, ValidationPipe, Delete } from '@nestjs/common';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import redis from '../../config/database/redis';
 import redisClient from '../../config/database/redis';
 import { CartService } from './cart.service';
@@ -29,5 +29,15 @@ export class CartController {
         let cart = body;
         let newCart = await this.CartService.create(userId, cart);
         return newCart;
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete(":id")
+    async destroy(
+        @Req() req,
+        @Param("id") id: number) {
+        let idUser = req?.user?.id;
+        let result = await this.CartService.destroy(idUser, id);
+        return result;
     }
 }

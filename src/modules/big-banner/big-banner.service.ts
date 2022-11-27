@@ -20,7 +20,11 @@ export class BigBannerService {
     }
 
     async getAll() {
-        let banners = await this.BannerRepository.findAndCount({});
+        let banners = await this.BannerRepository.findAndCount({
+            where: {
+                status: 1
+            }
+        });
 
         return banners;
     }

@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BrandService } from './brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
@@ -7,8 +8,10 @@ import { UpdateBrandDto } from './dto/update-brand.dto';
 export class BrandController {
     constructor(
         private BrandService: BrandService
-    ){}
+    ) { }
 
+
+    @UseGuards(JwtAuthGuard)
     @Post()
     async create(
         @Body(new ValidationPipe()) body: CreateBrandDto
@@ -17,17 +20,19 @@ export class BrandController {
         return newBrand;
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(":id")
-    async destroy (@Param('id') id) {
+    async destroy(@Param('id') id) {
         let result = await this.BrandService.delete(id);
         return result;
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(":id")
     async update(
         @Param("id") id: number,
         @Body(new ValidationPipe()) body: UpdateBrandDto
-    ){
+    ) {
         let result = await this.BrandService.update(id, body);
         return result;
     }

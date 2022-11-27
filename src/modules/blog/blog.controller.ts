@@ -15,6 +15,7 @@ export class BlogController {
         private BlogService: BlogService,
         private CommentService: CommentService
     ) { }
+
     @Get("/:id/comment")
     async getComment(@Param('id') id: number) {
         let checkId = await this.BlogService.checkBlogExist(id);

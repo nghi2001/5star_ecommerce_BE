@@ -76,4 +76,8 @@ export class InternalaccountService {
         return result
     }
 
+    async getUserInfo(username: string) {
+        let data = await this.InternalAccountRepository.findUserInfo(username);
+        return data
+    }
 }

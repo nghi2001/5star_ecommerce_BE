@@ -1,16 +1,21 @@
-import { Body, Get, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, HttpException, Param, UploadedFile, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AwsS3Service } from '../aws_s3/aws_s3.service';
 import { getSignedUrlDTO } from './dto/getSignedUrl.dto';
-
+import { FileService } from './file.service';
+import * as fs from 'fs';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 @Controller('file')
 export class FileController {
     constructor(
         private AwsS3Service: AwsS3Service,
-        private ConfigService: ConfigService
+        private ConfigService: ConfigService,
+        private FileService: FileService
     ) { }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     async getSignedUrl(
         @Body(new ValidationPipe()) body: getSignedUrlDTO
@@ -20,10 +25,43 @@ export class FileController {
         return { url, key, linkBucket };
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post("/destroy")
     async deleteObjectS3(@Body() body) {
         let { key } = body;
         let result = await this.AwsS3Service.detroy(key);
         return result
+    }
+    @Get(":id")
+    async find(@Param("id") id: number) {
+        let data = await this.FileService.getOne(id);
+        return data
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("/upload")
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadFile(@UploadedFile() file: Express.Multer.File) {
+        let result = await this.FileService.createFile({
+            destination: file.destination,
+            file_name: file.filename,
+            original_name: file.originalname,
+            path: file.path,
+            type: file.mimetype
+        });
+        return result
+    }
+
+
+    @UseGuards(JwtAuthGuard)
+    @Delete("/:id")
+    async destroy(@Param("id") id: number) {
+        let file = await this.FileService.getOne(id);
+        console.log(file);
+        fs.unlink(file.path, async (err) => {
+            if (err) throw new HttpException("DELETE FILE", 500);
+            await this.FileService.delete(id);
+        })
+        return file;
     }
 }

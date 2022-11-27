@@ -29,4 +29,18 @@ export class InternalAccountRepository extends Repository<InternalAccount> {
 
         return newAccount
     }
+
+    async findUserInfo(username: string) {
+        let data = await this.createQueryBuilder("account")
+            .innerJoin('account.profile', 'profile')
+            .where("account.email = :username", { username })
+            .leftJoin('profile.avatar', 'avatar')
+            .select([
+                "account.id",
+                'profile',
+                'avatar'
+            ])
+            .getOne()
+        return data;
+    }
 }
