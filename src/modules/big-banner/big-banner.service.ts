@@ -9,7 +9,7 @@ export class BigBannerService {
         private BannerRepository: BannerRepository
     ) { }
     checkId(id) {
-        if (Types.ObjectId.isValid(id)) {
+        if (Number(id) && id > 0) {
             return true;
         }
         throw new HttpException("not found", 404)
@@ -31,7 +31,15 @@ export class BigBannerService {
 
     async getOne(id) {
         if (this.checkId(id)) {
-            let banner = await this.BannerRepository.findOneBy(id)
+            let banner = await this.BannerRepository.findOne({
+                where: {
+                    id: id
+                },
+                relations: {
+                    media: true
+                }
+            })
+
             if (!banner) {
                 throw new HttpException("not found", 404);
             }

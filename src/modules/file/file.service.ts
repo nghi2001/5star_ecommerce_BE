@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { MediaFile } from '../../entity/file.entity';
+import { MediaFile } from '../../entity/media.entity';
 import { FileRepository } from './file.repository';
 import { createMediaFile } from './interfaces/create-media.interface';
 

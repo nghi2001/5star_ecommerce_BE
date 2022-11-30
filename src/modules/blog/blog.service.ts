@@ -24,7 +24,12 @@ export class BlogService {
     async findOne(id: number) {
         let checkBlogExist = await this.checkBlogExist(id);
         if (checkBlogExist) {
-            let blog = await this.BlogRepository.findOneBy({ id });
+            let blog = await this.BlogRepository.findOne({
+                where: { id },
+                relations: {
+                    media: true
+                }
+            });
             return blog;
         }
     }
@@ -63,7 +68,7 @@ export class BlogService {
     async checkBlogExist(id: number) {
         let [err] = await this.checkId(id).then(result => [null, result]).catch(err => [err, null]);
         if (err) throw new HttpException("id invalid", HttpStatus.BAD_REQUEST);
-        let blog = await this.findOne(id);
+        let blog = await this.BlogRepository.findOneBy({ id });
         if (blog) {
             return true
         }

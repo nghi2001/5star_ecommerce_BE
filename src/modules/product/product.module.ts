@@ -7,6 +7,7 @@ import { Classify_2_Repository } from './classify_2.repository';
 import { StockRepository } from './stock.repository';
 import { CategoryModule } from '../category/category.module';
 import { BrandModule } from '../brand/brand.module';
+import { FileModule } from '../file/file.module';
 
 @Module({
   providers: [
@@ -19,7 +20,8 @@ import { BrandModule } from '../brand/brand.module';
   controllers: [ProductController],
   imports: [
     CategoryModule,
-    BrandModule
+    BrandModule,
+    FileModule
   ],
   exports: [
     ProductService

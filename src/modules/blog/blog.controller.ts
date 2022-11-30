@@ -44,7 +44,7 @@ export class BlogController {
         let id = req.user.id;
 
         let newBlog = await this.BlogService.create({ content, title, image }, id);
-        let blog = await this.BlogService.findOne(newBlog.raw.id);
+        let blog = await this.BlogService.findOne(newBlog.raw[0].id);
 
         return blog;
     }

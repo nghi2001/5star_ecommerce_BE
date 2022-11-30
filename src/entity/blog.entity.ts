@@ -1,6 +1,7 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, OneToOne, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Profile } from "./user.entity";
 import { Comment } from "./comment.entity";
+import { MediaFile } from './media.entity';
 @Entity()
 export class Blog extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -32,4 +33,8 @@ export class Blog extends BaseEntity {
 
     @OneToMany(() => Comment, (comment) => comment.blog)
     comment: Comment[]
+
+    @OneToOne(() => MediaFile)
+    @JoinColumn({ name: 'image' })
+    media
 }

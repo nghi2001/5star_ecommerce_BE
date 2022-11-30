@@ -21,11 +21,12 @@ export class ProductRepository extends Repository<Product> {
         let product = await this.createQueryBuilder("product")
             .leftJoin("product.stocks", 'stock')
             .where("product.id = :id", { id: id })
+            .leftJoin("product.images", "images")
             .select([
                 'product.id',
                 'product.name',
                 'product.description',
-                'product.image',
+                'images',
                 'product.slug',
                 'product.sold',
                 'product.status',

@@ -1,15 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { UpdateStockDto } from './dto/update_stock.dto';
 import { ProductService } from './product.service';
 import { productWithoutClassify } from './types/productWithoutClassify';
-
+import { FileService } from '../file/file.service';
+import { MediaFile } from 'src/entity/media.entity';
 @Controller('product')
 export class ProductController {
     constructor(
-        private ProductService: ProductService
+        private ProductService: ProductService,
+        private MediaService: FileService
     ) { }
 
     @UseGuards(JwtAuthGuard)
@@ -112,10 +114,18 @@ export class ProductController {
         @Param("id") id: number,
         @Body(new ValidationPipe()) body: UpdateProductDto
     ) {
-        let result = await this.ProductService.update(id, body);
-        if (result.affected == 0) {
-            return 0
+        let images = [];
+        if (body.images) {
+            images = await Promise.all(body.images.map(async (id_image) => {
+                if (!Number(id_image)) throw new HttpException("id image invalid", 400);
+                return await this.MediaService.getOne(Number(id_image));
+            }))
+
+            body.images = images
         }
-        return 1;
+
+        let result = await this.ProductService.update(id, body);
+
+        return result;
     }
 }

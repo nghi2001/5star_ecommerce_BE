@@ -12,7 +12,7 @@ import { Stock } from '../../entity/stock.entity';
 import { Profile } from '../../entity/user.entity';
 import { Comment } from '../../entity/comment.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MediaFile } from '../../entity/file.entity';
+import { MediaFile } from '../../entity/media.entity';
 
 console.log(process.env.DB);
 @Module({

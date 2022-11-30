@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Brand } from './brand.entity';
 import { Category } from './category.entity';
+import { MediaFile } from './media.entity';
 import { Stock } from './stock.entity';
 import { Sub_Category } from './sub_category.entity';
 
@@ -18,8 +19,8 @@ export class Product extends BaseEntity {
     @Column({ type: "text", array: true, nullable: true })
     info_detail: string[];
 
-    @Column('text', { array: true, nullable: true })
-    image: string[];
+    // @Column('text', { array: true, nullable: true })
+    // image: string[];
 
     @Column({ nullable: true })
     slug: string;
@@ -56,4 +57,8 @@ export class Product extends BaseEntity {
 
     @OneToMany(() => Stock, (stock) => stock.product, { onDelete: 'CASCADE' })
     stocks: Stock[]
+
+    @ManyToMany(() => MediaFile)
+    @JoinTable()
+    images: MediaFile[];
 }

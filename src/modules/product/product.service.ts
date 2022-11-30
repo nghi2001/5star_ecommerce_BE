@@ -83,43 +83,42 @@ export class ProductService {
         return result;
     }
     async update(id: number, update: UpdateProductDto) {
-        let checkProduct = await this.checkProdExist(id);
-
-        if (checkProduct) {
+        let [err, product] = await to(this.ProductRepository.findOneBy({ id }));
+        if (err) throw new HttpException("Update Product", 500);
+        if (product) {
             let {
                 description,
                 id_brand,
                 id_category,
-                image,
+                images,
                 name,
                 slug,
                 status
             } = update;
-            let dataUpdate: UpdateProductDto = {};
-            if (description && description != checkProduct.description) {
-                dataUpdate.description = description;
-            }
-            if (id_brand && id_brand != checkProduct.id_brand) {
-                dataUpdate.id_brand = id_brand;
-            }
-            if (id_category && id_category != checkProduct.id_category) {
-                dataUpdate.id_category = id_category;
-            }
-            if (name && name != checkProduct.name) {
-                dataUpdate.name = name;
-            }
-            if (slug && slug != dataUpdate.slug) {
-                dataUpdate.slug = slug;
-            }
-            if (status && status != checkProduct.status) {
-                dataUpdate.status = status;
-            }
-            dataUpdate.image = image;
-            let [err, updateResult] = await to(this.ProductRepository.update({ id }, dataUpdate));
-            if (err) console.log(err);
 
-            return updateResult;
+            if (description && description != product.description) {
+                product.description = description;
+            }
+            if (id_brand && id_brand != product.id_brand) {
+                product.id_brand = id_brand;
+            }
+            if (id_category && id_category != product.id_category) {
+                product.id_category = id_category;
+            }
+            if (name && name != product.name) {
+                product.name = name;
+            }
+            if (slug && slug != product.slug) {
+                product.slug = slug;
+            }
+            if (status && status != product.status) {
+                product.status = status;
+            }
+            product.images = images
+            let result = await product.save()
+            return result
         }
+        return 0;
     }
 
     async updateStock(id: number, updateDate: UpdateStockDto) {

@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { Blog } from './blog.entity';
 import { Comment } from './comment.entity';
-import { MediaFile } from './file.entity';
+import { MediaFile } from './media.entity';
 @Entity()
 export class Profile {
     @PrimaryGeneratedColumn()
