@@ -49,4 +49,25 @@ export class BlogRepository extends Repository<Blog> {
         })
         return data;
     }
+
+    async getOneBySlug(slug: string) {
+        let data = await this.findOne({
+            where: {
+                slug: slug
+            },
+            relations: {
+                media: true
+            }
+        })
+        return data;
+    }
+
+    async updateBlog(id, dataUpdate) {
+        let data = await this.createQueryBuilder()
+            .update()
+            .set(dataUpdate)
+            .where("id = :id", { id: id })
+            .execute();
+        return data;
+    }
 }

@@ -11,6 +11,10 @@ export class UpdateBlogDTO {
     @IsOptional()
     body?: string;
 
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    slug?: string;
 
     @IsString()
     @IsNotEmpty()

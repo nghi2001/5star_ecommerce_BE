@@ -16,6 +16,19 @@ export class BlogController {
         private CommentService: CommentService
     ) { }
 
+    @Get("/:idSlug")
+    async find(
+        @Param("idSlug") id_slug: string
+    ) {
+        let data = null;
+        let id = Number(id_slug);
+        if (id) {
+            data = await this.BlogService.findOne(id);
+        } else {
+            data = await this.BlogService.getOneBySlug(id_slug);
+        }
+        return data;
+    }
     @Get("/:id/comment")
     async getComment(@Param('id') id: number) {
         let checkId = await this.BlogService.checkBlogExist(id);
@@ -24,6 +37,7 @@ export class BlogController {
             return comments
         }
     }
+
     @Get("/")
     async shows() {
         let blogs = await this.BlogService.findAll();

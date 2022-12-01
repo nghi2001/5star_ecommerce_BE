@@ -229,4 +229,12 @@ export class ProductService {
             return productStock;
         }
     }
+
+    async getBySlug(slug: string) {
+        let data = await this.ProductRepository.getOneProductBySlug(slug);
+        if (!data) {
+            throw new HttpException("Product not found", 404)
+        }
+        return data;
+    }
 }

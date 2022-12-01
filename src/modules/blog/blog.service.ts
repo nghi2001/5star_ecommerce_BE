@@ -28,6 +28,14 @@ export class BlogService {
             return blog;
         }
     }
+
+    async getOneBySlug(slug: string) {
+        let blog = await this.BlogRepository.getOneBySlug(slug);
+        if (!blog) {
+            throw new HttpException("Blog not found", 404);
+        }
+        return blog
+    }
     async update(id: number, data: UpdateBlogDTO) {
         let checkBlogExist = await this.checkBlogExist(id);
         if (checkBlogExist) {
@@ -42,7 +50,13 @@ export class BlogService {
             if (data.image && data.image != blog.image) {
                 updateData.image = data.image;
             }
-            let result = await this.BlogRepository.update({ id }, { ...updateData });
+            if (data.slug && data.slug != blog.slug) {
+                updateData.slug = data.slug
+            }
+            let result = await this.BlogRepository.update({
+                id: id
+            }, updateData);
+
             return result;
         }
     }

@@ -13,6 +13,7 @@ import { Profile } from '../../entity/user.entity';
 import { Comment } from '../../entity/comment.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MediaFile } from '../../entity/media.entity';
+import { Coupon } from 'src/entity/coupon.entity';
 
 console.log(process.env.DB);
 @Module({
@@ -38,7 +39,8 @@ console.log(process.env.DB);
                     Classify_2,
                     Blog,
                     Comment,
-                    MediaFile
+                    MediaFile,
+                    Coupon
                 ],
                 synchronize: true
             }),

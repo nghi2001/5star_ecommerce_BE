@@ -37,9 +37,15 @@ export class BrandController {
         return result;
     }
 
-    @Get(":id")
-    async find(@Param('id') id) {
-        let brand = await this.BrandService.getOne(id);
+    @Get(":idSlug")
+    async find(@Param('idSlug') idSlug: string) {
+        let id = Number(idSlug);
+        let brand = null;
+        if (id) {
+            brand = await this.BrandService.getOne(id);
+        } else {
+            brand = await this.BrandService.getBySlug(idSlug);
+        }
         return brand;
     }
 }

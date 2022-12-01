@@ -19,6 +19,9 @@ export class Blog extends BaseEntity {
     @Column()
     user_id: number;
 
+    @Column({ nullable: true })
+    slug: string;
+
     @ManyToOne(() => Profile, (profile) => profile.blogs)
     @JoinColumn({ name: "user_id" })
     user: Profile

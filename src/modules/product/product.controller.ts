@@ -76,9 +76,15 @@ export class ProductController {
 
     }
 
-    @Get(":id")
-    async find(@Param("id") id: number) {
-        let product = await this.ProductService.getOneProduct(id);
+    @Get(":idSlug")
+    async find(@Param("idSlug") idSlug: string) {
+        let id = Number(idSlug);
+        let product = null;
+        if (id) {
+            product = await this.ProductService.getOneProduct(id);
+        } else {
+            product = await this.ProductService.getBySlug(idSlug);
+        }
         return product
     }
     @Get("")

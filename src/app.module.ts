@@ -17,9 +17,9 @@ import { BrandModule } from './modules/brand/brand.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { CardModule } from './modules/cart/cart.module';
-import DB_CONFIG from './config/config';
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from 'path';
+import { CouponModule } from './modules/coupon/coupon.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -42,7 +42,8 @@ import { join } from 'path';
     BrandModule,
     BlogModule,
     CommentModule,
-    CardModule
+    CardModule,
+    CouponModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],
