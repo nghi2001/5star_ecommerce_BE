@@ -87,7 +87,6 @@ export class ProductRepository extends Repository<Product> {
                 'product.id',
                 'product.name',
                 'product.description',
-                'product.image',
                 'product.slug',
                 'product.sold',
                 'product.status',
@@ -102,10 +101,12 @@ export class ProductRepository extends Repository<Product> {
                 'stock.id_classify_1',
                 'stock.id_classify_2',
                 "classify_1.attribute",
-                "classify_2.attribute"
+                "classify_2.attribute",
+                "images"
             ])
             .leftJoin("stock.classify_1", "classify_1")
             .leftJoin("stock.classify_2", "classify_2")
+            .leftJoin("product.images", "images")
             .getMany()
         return product
     }
