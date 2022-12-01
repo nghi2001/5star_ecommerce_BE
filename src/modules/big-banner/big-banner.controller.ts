@@ -1,7 +1,8 @@
 import {
     Controller, Get, Post, Delete, Put,
-    Body, HttpException, Param, UseGuards
+    Body, HttpException, Param, UseGuards, Query
 } from '@nestjs/common';
+import { pager } from 'src/common/helper/paging';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BigBannerService } from './big-banner.service';
@@ -27,8 +28,11 @@ export class BigBannerController {
     }
 
     @Get()
-    async show() {
-        let banners = await this.BannerService.getAll();
+    async show(
+        @Query() query
+    ) {
+        let pagination = pager(query);
+        let banners = await this.BannerService.getAll(pagination);
         return banners;
     }
 

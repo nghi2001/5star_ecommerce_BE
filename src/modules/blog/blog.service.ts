@@ -17,19 +17,14 @@ export class BlogService {
         return newBlog;
     }
 
-    async findAll() {
-        let blogs = await this.BlogRepository.findAndCount({});
+    async findAll(pagination = {}) {
+        let blogs = await this.BlogRepository.getAll({}, pagination);
         return blogs;
     }
     async findOne(id: number) {
         let checkBlogExist = await this.checkBlogExist(id);
         if (checkBlogExist) {
-            let blog = await this.BlogRepository.findOne({
-                where: { id },
-                relations: {
-                    media: true
-                }
-            });
+            let blog = await this.BlogRepository.getOne(id);
             return blog;
         }
     }

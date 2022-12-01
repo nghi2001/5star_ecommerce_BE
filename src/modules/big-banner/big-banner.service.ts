@@ -19,26 +19,15 @@ export class BigBannerService {
         return newBanner;
     }
 
-    async getAll() {
-        let banners = await this.BannerRepository.findAndCount({
-            where: {
-                status: 1
-            }
-        });
+    async getAll(pagination = {}) {
+        let banners = await this.BannerRepository.getAll({}, pagination);
 
         return banners;
     }
 
     async getOne(id) {
         if (this.checkId(id)) {
-            let banner = await this.BannerRepository.findOne({
-                where: {
-                    id: id
-                },
-                relations: {
-                    media: true
-                }
-            })
+            let banner = await this.BannerRepository.getOne(id);
 
             if (!banner) {
                 throw new HttpException("not found", 404);

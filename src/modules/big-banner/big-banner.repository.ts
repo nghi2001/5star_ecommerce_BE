@@ -20,4 +20,32 @@ export class BannerRepository extends Repository<Banner> {
         return result
     }
 
+    async getAll(filter = {}, pagination = {}) {
+        let data = await this.find({
+            where: filter,
+            relations: {
+                media: true
+            },
+            ...pagination
+        });
+        let total = await this.count({
+            where: filter
+        })
+        return {
+            data: data,
+            total: total
+        }
+    }
+
+    async getOne(id: number) {
+        let data = await this.findOne({
+            where: {
+                id: id
+            },
+            relations: {
+                media: true
+            }
+        })
+        return data;
+    }
 }
