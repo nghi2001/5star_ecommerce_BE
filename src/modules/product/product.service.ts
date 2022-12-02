@@ -32,7 +32,6 @@ export class ProductService {
             quantity,
             ...productDetail
         } = product;
-        console.log(product);
         let err = null;
         let checkBrand
         let checkCategory
@@ -52,6 +51,7 @@ export class ProductService {
         })
         return newProduct
     }
+
     async checkSlugExist(slug: string) {
         let result = await this.ProductRepository.findOneBy({ slug });
         if (result) {
@@ -83,6 +83,8 @@ export class ProductService {
         return result;
     }
     async update(id: number, update: UpdateProductDto) {
+        console.log("Nghi", update);
+
         let [err, product] = await to(this.ProductRepository.findOneBy({ id }));
         if (err) throw new HttpException("Update Product", 500);
         if (product) {
@@ -116,6 +118,7 @@ export class ProductService {
             }
             product.images = images
             let result = await product.save()
+
             return result
         }
         return 0;

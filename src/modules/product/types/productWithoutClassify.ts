@@ -2,7 +2,7 @@ export type productWithoutClassify = {
     id_category: number,
     description: string,
     id_brand: number,
-    image: string[],
+    images: string[],
     slug: string,
     info_detail: string[],
     name: string,

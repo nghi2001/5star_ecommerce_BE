@@ -19,6 +19,17 @@ export class ProductController {
     async create(
         @Body(new ValidationPipe()) body: CreateProductDto
     ) {
+        let images = [];
+        let product = null;
+        if (body.images) {
+            images = await Promise.all(body.images.map(async (id_image) => {
+                if (!Number(id_image)) throw new HttpException("id image invalid", 400);
+                return await this.MediaService.getOne(Number(id_image));
+            }))
+
+            body.images = images
+        }
+
         if (!body.isClassify_1) {
             let {
                 classify_1,
@@ -29,10 +40,10 @@ export class ProductController {
                 ...dataInsert
             } = body;
 
-            let resultProduct = await this.ProductService.createProdWithoutClassify((dataInsert as productWithoutClassify));
-            let product = await this.ProductService.getOne(resultProduct.raw[0].id);
-            console.log(resultProduct.raw[0].id);
+            let resultProduct = await this.ProductService.createProdWithoutClassify((dataInsert as unknown as productWithoutClassify));
+            product = await this.ProductService.getOne(resultProduct.raw[0].id);
 
+            await this.ProductService.update(product.id, { images: body.images });
             return product;
         } else {
             let {
@@ -49,7 +60,7 @@ export class ProductController {
             if (classify_2.length > 0) {
                 classifys_2 = await this.ProductService.createClassify2(classify_2);
             }
-            let product = await this.ProductService.createProduct(productDetail)
+            product = await this.ProductService.createProduct(productDetail)
             let stockInsert = [];
             if (!classifys_2) {
                 classifys_2 = []
@@ -71,6 +82,8 @@ export class ProductController {
                 }
             }
             let newStock = await this.ProductService.createStock(stockInsert);
+
+            await this.ProductService.update(product.id, { images: body.images });
             return newStock;
         }
 

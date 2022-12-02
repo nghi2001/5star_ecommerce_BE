@@ -1,4 +1,5 @@
 import { IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { MediaFile } from "src/entity/media.entity";
 
 export class CreateProductDto {
     @IsString()
@@ -14,7 +15,7 @@ export class CreateProductDto {
 
     @IsNotEmpty()
     @IsArray()
-    image: string[];
+    images: MediaFile[];
 
     @IsString()
     @IsNotEmpty()

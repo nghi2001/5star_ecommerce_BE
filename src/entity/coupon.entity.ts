@@ -21,11 +21,20 @@ export class Coupon extends BaseEntity {
     @Column()
     quantity: number;
 
+    @Column({ default: 0 })
+    used: number;
+
     @Column()
     type: TypeCoupon;
 
     @Column()
     discount: number;
+
+    @Column({ nullable: true })
+    min_order: number;
+
+    @Column({ nullable: true })
+    max_order: number;
 
     @Column()
     @CreateDateColumn()

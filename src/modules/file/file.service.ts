@@ -21,7 +21,7 @@ export class FileService {
     async getOne(id: number) {
         let data = await this.FileRepository.findOneBy({ id });
         if (!data) {
-            throw new HttpException("Not found", 404);
+            throw new HttpException("Image not found", 404);
         }
         return data
     }
