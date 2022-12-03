@@ -7,5 +7,40 @@ export class CouponRepository extends Repository<Coupon>{
         super(Coupon, dataSource.createEntityManager())
     }
 
+    async createCoupon(coupon) {
+        let data = await this.createQueryBuilder()
+            .insert()
+            .into(Coupon)
+            .values([{ ...coupon }])
+            .execute();
+        return data;
+    }
 
+    async getOne(fillter) {
+        let data = await this.findOne({
+            where: {
+                ...fillter
+            }
+        });
+        return data;
+    }
+
+
+    async getList(filter, pagination) {
+        let data = await this.find({
+            where: {
+                ...filter
+            },
+            ...pagination
+        })
+        let total = await this.count({
+            where: {
+                ...filter
+            }
+        })
+        return {
+            total: total,
+            data: data
+        };
+    }
 }
