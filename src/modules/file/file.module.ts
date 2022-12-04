@@ -5,9 +5,12 @@ import { AwsS3Module } from '../aws_s3/aws_s3.module';
 import { FileController } from './file.controller';
 import { FileRepository } from './file.repository';
 import { FileService } from './file.service';
-
+import { BullModule } from '@nestjs/bull';
 @Module({
   imports: [
+    BullModule.registerQueue({
+      name: 'mail'
+    }),
     AwsS3Module,
     MulterModule.registerAsync({
       imports: [

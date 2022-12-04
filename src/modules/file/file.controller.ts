@@ -1,4 +1,4 @@
-import { Body, Delete, Get, HttpException, Param, UploadedFile, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Delete, Get, HttpException, Inject, Param, UploadedFile, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -7,13 +7,22 @@ import { getSignedUrlDTO } from './dto/getSignedUrl.dto';
 import { FileService } from './file.service';
 import * as fs from 'fs';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 @Controller('file')
 export class FileController {
     constructor(
         private AwsS3Service: AwsS3Service,
         private ConfigService: ConfigService,
-        private FileService: FileService
+        private FileService: FileService,
+        @InjectQueue('mail') private mailQueue: Queue
     ) { }
+
+    @Get("/test")
+    async test() {
+        await this.mailQueue.add({ to: "nguyenduynghi2001@gmail.com", html: "<h1>hello</h1>" })
+        return 'nghi'
+    }
 
     @UseGuards(JwtAuthGuard)
     @Post()

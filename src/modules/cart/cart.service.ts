@@ -19,21 +19,25 @@ export class CartService {
         let cart = await redisClient.hgetall(cartId);
         let keys = Object.keys(cart);
         let cartItems: any[] = []
-        console.log(keys);
 
         for (let key of keys) {
-            let idProduct = key.split(':')[1];
-            let product = await this.ProductService.getStockById(Number(idProduct));
-            if (!product) {
-                await redisClient.hdel(cartId, key);
-                return;
-            }
+            let arr = key.split(':');
+            let idProduct = arr[1];
+            let image = cart[`product:${idProduct}:image`];
+            if (key === `product:${idProduct}`) {
+                let product = await this.ProductService.getStockById(Number(idProduct));
+                if (!product) {
+                    await redisClient.hdel(cartId, key);
+                    return;
+                }
 
-            let cartItem = {
-                ...product,
-                quantity: cart[key]
+                let cartItem = {
+                    ...product,
+                    quantity: cart[key],
+                    image: image
+                }
+                cartItems.push(cartItem);
             }
-            cartItems.push(cartItem);
         }
 
         return cartItems;
@@ -42,18 +46,22 @@ export class CartService {
     async create(idUser: string, cart: createCartDto) {
         let cartId = `${this.prefixCart}${idUser}`;
         let productKey = `product:${cart.id_product}`;
+        let productKeyImg = productKey + ":image"
         let checkProductExist = await this.ProductService.checkStockExist(cart.id_product);
         if (checkProductExist) {
             console.log(cartId);
-
+            let prodImage = await redisClient.hset(cartId, productKeyImg, cart.image || null)
             let prodQuantity = await redisClient.hincrby(cartId, productKey, cart.quantity);
             if (Number(prodQuantity) <= 0) {
                 await redisClient.hdel(cartId, productKey);
+                await redisClient.hdel(cartId, productKeyImg)
             }
             let productInCart = await redisClient.hget(cartId, productKey);
+
             return {
                 product: cart.id_product,
-                quantity: productInCart
+                quantity: productInCart,
+                image: cart.image
             }
         }
     }

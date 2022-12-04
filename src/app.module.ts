@@ -20,8 +20,22 @@ import { CardModule } from './modules/cart/cart.module';
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from 'path';
 import { CouponModule } from './modules/coupon/coupon.module';
+import { BullModule } from '@nestjs/bull';
+import { WorkerModule } from './queue/worker/worker.module';
 @Module({
   imports: [
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService) => ({
+        redis: {
+          host: configService.get("REDIS_HOST"),
+          port: configService.get('REDIS_PORT'),
+          password: configService.get('REDIS_PASSWORD'),
+          username: configService.get('REDIS_USERNAME')
+        }
+      })
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public')
     }),
@@ -43,7 +57,8 @@ import { CouponModule } from './modules/coupon/coupon.module';
     BlogModule,
     CommentModule,
     CardModule,
-    CouponModule
+    CouponModule,
+    WorkerModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],

@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { InternalAccount } from '../../entity/internal_account.entity';
+import { ACCOUNT_STATUS, InternalAccount } from '../../entity/internal_account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
 
 @Injectable()
@@ -30,6 +30,16 @@ export class InternalAccountRepository extends Repository<InternalAccount> {
         return newAccount
     }
 
+    async findByUserName(username: string) {
+        let data = await this.findOne({
+            where: {
+                email: username,
+                status: ACCOUNT_STATUS.ACTIVE
+            }
+        });
+        return data;
+    }
+
     async findUserInfo(username: string) {
         let data = await this.createQueryBuilder("account")
             .innerJoin('account.profile', 'profile')
@@ -43,4 +53,5 @@ export class InternalAccountRepository extends Repository<InternalAccount> {
             .getOne()
         return data;
     }
+
 }

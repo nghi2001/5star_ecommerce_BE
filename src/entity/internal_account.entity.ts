@@ -1,6 +1,11 @@
 import { type } from 'os';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Profile } from './user.entity';
+export enum ACCOUNT_STATUS {
+    ACTIVE = 1,
+    INACTIVE = 2
+}
+
 @Entity()
 export class InternalAccount {
     @PrimaryGeneratedColumn()
@@ -11,6 +16,9 @@ export class InternalAccount {
 
     @Column()
     password: string;
+
+    @Column({ default: 2 })
+    status: ACCOUNT_STATUS;
 
     @Column()
     id_profile: number;
