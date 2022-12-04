@@ -57,11 +57,12 @@ export class CartService {
                 await redisClient.hdel(cartId, productKeyImg)
             }
             let productInCart = await redisClient.hget(cartId, productKey);
+            let imgProd = await redisClient.hget(cartId, productKeyImg);
 
             return {
                 product: cart.id_product,
                 quantity: productInCart,
-                image: cart.image
+                image: imgProd
             }
         }
     }
