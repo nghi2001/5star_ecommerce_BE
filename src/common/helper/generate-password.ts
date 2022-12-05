@@ -1,4 +1,5 @@
-export const generatePassword = (length, characters) => {
+const alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*_-+=";
+export const generatePassword = (length, characters = alpha) => {
     let password = "";
     for (let i = 0; i < length; i++) {
         password += characters.charAt(

@@ -16,6 +16,7 @@ export default async function (job: Job, cb: DoneCallback) {
     transporter.sendMail({
         from: `${process.env.MAIL}`, // sender address
         to: job.data.to, // list of receivers
+        replyTo: `${process.env.MAIL}`,
         subject: job.data.subject, // Subject line
         text: job.data.text, // plain text body
         html: job.data.html, // html body

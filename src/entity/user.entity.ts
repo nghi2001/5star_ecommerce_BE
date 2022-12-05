@@ -26,7 +26,7 @@ export class Profile {
 
     @Column({ nullable: true })
     avatar_id: number;
-    @Column({ nullable: true, default: false })
+    @Column({ nullable: true, default: true })
     is_active: boolean;
 
     @Column({ nullable: true })

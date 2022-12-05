@@ -23,8 +23,8 @@ export class InternalAccount {
     @Column()
     id_profile: number;
 
-    @Column({ nullable: true })
-    code?: string;
+    @Column('jsonb', { default: {}, nullable: true })
+    code?: any;
 
     @OneToOne(type => Profile)
     @JoinColumn({ name: 'id_profile' })

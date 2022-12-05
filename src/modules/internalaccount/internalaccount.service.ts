@@ -3,11 +3,13 @@ import { InternalAccountRepository } from './internalaccount.repository';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { CreateAccountDto } from './dto/create-account.dto';
-import { InternalAccount } from '../../entity/internal_account.entity';
+import { ACCOUNT_STATUS, InternalAccount } from '../../entity/internal_account.entity';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { to } from 'src/common/helper/catchError';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import e from 'express';
+import { ResetPasswordDTO } from './dto/reset-password';
 @Injectable()
 export class InternalaccountService {
     constructor(
@@ -86,7 +88,10 @@ export class InternalaccountService {
     }
 
     async destroy(id: number) {
+        let account = await this.findOne(id);
+
         let result = await this.InternalAccountRepository.delete({ id });
+        await this.UserService.deleteUser(account.id_profile);
         return result
     }
 
@@ -131,5 +136,77 @@ export class InternalaccountService {
             throw new HttpException("Error Update Password", 500);
         }
         return result;
+    }
+    async resetPass(data: ResetPasswordDTO) {
+        let {
+            email,
+            confirmPass,
+            newPass
+        } = data;
+        if (!this.checkConfirmPass(newPass, confirmPass)) {
+            throw new HttpException("Confirm Password not match with NewPassword", 400);
+        }
+        let hashPassWord = await this.hashPassWord(newPass);
+        let [err, result] = await to(this.InternalAccountRepository.update({ email: email }, {
+            password: hashPassWord
+        }))
+        if (err) {
+            throw new HttpException("Error Update Password", 500);
+        }
+        return result;
+    }
+    async removeCode(id: number, code) {
+        let user = await this.findOne(id);
+        if (!user) {
+            throw new HttpException("id not found", 404);
+        }
+        delete user.code[code]
+
+        let result = await this.InternalAccountRepository.update({ id }, { code: user.code })
+        return true;
+    }
+    async updateCode(id: number, code) {
+        let user = await this.findOne(id);
+        if (!user) {
+            throw new HttpException("id not found", 404);
+        }
+        user.code[code.code] = code.timeExpirate;
+
+        let result = await this.InternalAccountRepository.update({ id }, { code: user.code })
+        return true;
+
+    }
+    async findByUserName(email: string) {
+        let data = await this.InternalAccountRepository.findOne({
+            where: {
+                email: email
+            }
+        })
+        return data;
+    }
+
+    async activeAccount(id: number) {
+        let result = await this.InternalAccountRepository.update({ id }, {
+            status: ACCOUNT_STATUS.ACTIVE
+        })
+        console.log(result);
+
+        return result;
+    }
+
+    async checkAccountIsActive(id: number) {
+        let account = await this.findOne(id);
+        if (account.status == ACCOUNT_STATUS.INACTIVE) {
+            return false
+        }
+        return true;
+    }
+
+    async destroyAccountInactive(id: number) {
+        let accountAcctive = await this.checkAccountIsActive(id);
+        if (!accountAcctive) {
+            await this.destroy(id);
+        }
+        return true;
     }
 }
