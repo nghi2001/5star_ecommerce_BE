@@ -22,8 +22,19 @@ import { join } from 'path';
 import { CouponModule } from './modules/coupon/coupon.module';
 import { BullModule } from '@nestjs/bull';
 import { WorkerModule } from './queue/worker/worker.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 @Module({
   imports: [
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          ttl: config.get('THROTTLE_TTL'),
+          limit: config.get('THROTTLE_LIMIT'),
+        }
+      }
+    }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

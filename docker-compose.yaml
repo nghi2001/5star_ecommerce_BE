@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  5star_be:
+    image: "nguyenduynghi2001/5star_be"
+    container_name: 5star_be
+    restart: always
+    ports:
+      - 3001:3001
+    volumes:
+      - ./:/home/app
+    networks:
+      - 5star_be
+  postgres:
+    image: postgres:15.1-alpine
+    container_name: 5star_postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Nghi@#2001
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - 5star_be
+  cache:
+    image: redis:6.2-alpine
+    container_name: 5star_cache
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - 5star_be
+  worker:
+    image: nguyenduynghi2001/5star_worker
+    container_name: 5star_worker
+    restart: always
+    volumes:
+      - ./:/home/app
+    networks:
+      - 5star_be
+  # redisinsight:
+  #   image: redislabs/redisinsight:latest
+  #   ports:
+  #     - '8001:8001'
+networks:
+  5star_be:
+    driver: bridge
+volumes:
+  db:
+    driver: local

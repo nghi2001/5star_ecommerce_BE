@@ -21,7 +21,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "mailworker:dev": "nest start --watch --config nest-cli-mail.json",
     "mailworker": "node dist/worker"
-    
   },
   "dependencies": {
     "@nestjs/bull": "^0.6.2",
@@ -34,6 +33,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/serve-static": "^3.0.0",
     "@nestjs/swagger": "^5.2.1",
+    "@nestjs/throttler": "^3.1.0",
     "@nestjs/typeorm": "^9.0.1",
     "aws-sdk": "^2.1248.0",
     "axios": "^1.2.0",
