@@ -9,7 +9,7 @@ import { Classify_2 } from '../../entity/classify_2.entity';
 import { InternalAccount } from '../../entity/internal_account.entity';
 import { Product } from '../../entity/product.entity';
 import { Stock } from '../../entity/stock.entity';
-import { Profile } from '../../entity/user.entity';
+import { Profile } from '../../entity/profile.entity';
 import { Comment } from '../../entity/comment.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MediaFile } from '../../entity/media.entity';

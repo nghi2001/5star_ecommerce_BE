@@ -1,3 +1,4 @@
+import { Role } from 'src/common/enum/role.enum';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { Blog } from './blog.entity';
 import { Comment } from './comment.entity';
@@ -20,6 +21,14 @@ export class Profile {
 
     @Column({ nullable: true })
     gender: string;
+
+    @Column({
+        type: 'enum',
+        enum: Role,
+        array: true,
+        default: [Role.User]
+    })
+    roles: Role[]
 
     @Column('text', { array: true, nullable: true })
     address: string[];

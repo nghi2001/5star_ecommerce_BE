@@ -1,5 +1,9 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Roles } from 'src/common/decorator/roles.decorator';
+import { Role } from 'src/common/enum/role.enum';
 import { pager } from 'src/common/helper/paging';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { CouponService } from './coupon.service';
 import { CreateCouponDTO } from './dto/create-coupon.dto';
 
@@ -11,6 +15,8 @@ export class CouponController {
 
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Post()
     async create(
         @Body(new ValidationPipe()) body: CreateCouponDTO
@@ -35,6 +41,8 @@ export class CouponController {
         return data
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Put(":id")
     async update(
         @Param('id') id: number,
@@ -43,6 +51,8 @@ export class CouponController {
         let data = await this.CouponService.update(id, body);
         return data;
     }
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Delete(":id")
     async destroy(@Param("id") id: number) {
         let data = await this.CouponService.destroy(id);

@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepository } from './user.repository';
 import mongoose from 'mongoose'
 import { ObjectId } from 'mongoose'
-import { Profile } from '../../entity/user.entity';
+import { Profile } from '../../entity/profile.entity';
 
 @Injectable()
 export class UserService {

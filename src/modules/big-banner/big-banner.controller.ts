@@ -2,7 +2,10 @@ import {
     Controller, Get, Post, Delete, Put,
     Body, HttpException, Param, UseGuards, Query
 } from '@nestjs/common';
+import { Roles } from 'src/common/decorator/roles.decorator';
+import { Role } from 'src/common/enum/role.enum';
 import { pager } from 'src/common/helper/paging';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BigBannerService } from './big-banner.service';
@@ -14,7 +17,8 @@ export class BigBannerController {
         private BannerService: BigBannerService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Post("")
     async create(
         @Body(new ValidationPipe()) createBannerDto: CreateBannerDTO
@@ -42,14 +46,16 @@ export class BigBannerController {
         return banner
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Delete("/:id")
     async destroy(@Param('id') id) {
         let result = await this.BannerService.deleteOne(id);
         return result
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Put(":id")
     async update(
         @Param("id") id: string,

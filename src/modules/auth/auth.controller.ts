@@ -29,7 +29,7 @@ export class AuthController {
             domain: this.ConfigService.get<string>('FRONTEND_DOMAIN')
         });
         let user = await this.InternalAccountService.getUserInfo(AuthDTO.username);
-        console.log(user);
+        // console.log(user);
 
         res.json({
             statusCode: 200,
@@ -44,13 +44,17 @@ export class AuthController {
     @Post("resettoken")
     async resetToken(@Request() req, @Res() res: Response) {
         let id = req.user.id;
+        let roles = req.user.roles;
+        console.log(req.user.roles);
+
         let user = await this.InternalAccountService.findOne(id);
         console.log(req.user);
 
         if (user.refresh_token !== req.user.refreshToken) {
             throw new HttpException("token not valid", HttpStatus.NOT_FOUND);
         }
-        let token = await this.AuthService.getTokens({ id: id });
+
+        let token = await this.AuthService.getTokens({ id: id, roles: roles });
         await this.AuthService.updateRefreshToken(token.refreshToken, id);
 
         res.cookie("refreshToken", token.refreshToken, {

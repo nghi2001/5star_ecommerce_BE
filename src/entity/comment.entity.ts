@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Blog } from "./blog.entity";
-import { Profile } from "./user.entity";
+import { Profile } from "./profile.entity";
 
 @Entity()
 export class Comment extends BaseEntity {

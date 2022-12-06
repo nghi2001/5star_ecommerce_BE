@@ -2,6 +2,9 @@ import {
     Controller,
     Post, Get, Delete, Put, UseGuards, Body, Param
 } from '@nestjs/common';
+import { Role } from 'src/common/enum/role.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from '../../common/decorator/roles.decorator';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CategoryService } from './category.service';
@@ -14,7 +17,8 @@ export class CategoryController {
         private CategoryService: CategoryService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Post()
     async store(@Body(new ValidationPipe()) createDto: createCategoryDTO) {
         let category = await this.CategoryService.createCategory(createDto);
@@ -34,14 +38,16 @@ export class CategoryController {
         return category;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Delete(":id")
     async destroy(@Param('id') id: string) {
         let result = await this.CategoryService.deleteOne(id);
         return result;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Put(":id")
     async update(
         @Param('id') id: number,

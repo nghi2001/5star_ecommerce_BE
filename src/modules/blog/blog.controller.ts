@@ -2,6 +2,9 @@ import {
     Body, Controller, Delete, Get, Param, Post,
     Req, Put, UseGuards, ValidationPipe
 } from '@nestjs/common';
+import { Roles } from 'src/common/decorator/roles.decorator';
+import { Role } from 'src/common/enum/role.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CommentService } from '../comment/comment.service';
 import { BlogService } from './blog.service';
@@ -44,7 +47,8 @@ export class BlogController {
         return blogs;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Post("")
     async create(
         @Body(new ValidationPipe()) createData: CreateBlogDTO,
@@ -63,14 +67,16 @@ export class BlogController {
         return blog;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Delete(":id")
     async destroy(@Param('id') id: number) {
         let result = await this.BlogService.delete(id);
         return result;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Put(":id")
     async update(
         @Param("id") id: number,

@@ -1,4 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Roles } from 'src/common/decorator/roles.decorator';
+import { Role } from 'src/common/enum/role.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BrandService } from './brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
@@ -11,7 +14,8 @@ export class BrandController {
     ) { }
 
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Post()
     async create(
         @Body(new ValidationPipe()) body: CreateBrandDto
@@ -20,14 +24,16 @@ export class BrandController {
         return newBrand;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Delete(":id")
     async destroy(@Param('id') id) {
         let result = await this.BrandService.delete(id);
         return result;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Put(":id")
     async update(
         @Param("id") id: number,

@@ -7,6 +7,9 @@ import { ProductService } from './product.service';
 import { productWithoutClassify } from './types/productWithoutClassify';
 import { FileService } from '../file/file.service';
 import { MediaFile } from 'src/entity/media.entity';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Role } from 'src/common/enum/role.enum';
+import { Roles } from 'src/common/decorator/roles.decorator';
 @Controller('product')
 export class ProductController {
     constructor(
@@ -14,7 +17,8 @@ export class ProductController {
         private MediaService: FileService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Post("")
     async create(
         @Body(new ValidationPipe()) body: CreateProductDto
@@ -105,18 +109,25 @@ export class ProductController {
         let products = await this.ProductService.getAll();
         return products
     }
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Delete("/stock/:id")
     async destroyStock(@Param("id") id: number) {
         let result = await this.ProductService.deleteStock(id);
         return result;
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Delete(":id")
     async destroy(@Param("id") id: number) {
         let result = await this.ProductService.delete(id);
         return result;
     }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Put("/stock/:id")
     async updateStock(
         @Param("id") id: number,
@@ -128,6 +139,9 @@ export class ProductController {
         }
         return 1;
     }
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     @Put(":id")
     async update(
         @Param("id") id: number,

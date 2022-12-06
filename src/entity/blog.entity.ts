@@ -1,5 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, OneToOne, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Profile } from "./user.entity";
+import { Profile } from "./profile.entity";
 import { Comment } from "./comment.entity";
 import { MediaFile } from './media.entity';
 @Entity()

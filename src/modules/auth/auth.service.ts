@@ -23,10 +23,13 @@ export class AuthService {
         throw new HttpException("wrong password", HttpStatus.FORBIDDEN)
     }
     async SigIn(data: AuthDTO) {
-        let user: any = await this.InternalAccountService.checkAccountExist(data.username);
+        let user = await this.InternalAccountService.checkAccountExist(data.username);
         let verifyPass = await this.verifyPassword(data.password, user.password);
+        // console.log(user);
+
         if (verifyPass) {
-            let tokens = await this.getTokens({ id: user.id });
+            let profile = await this.UserService.findOne(user.id_profile);
+            let tokens = await this.getTokens({ id: user.id, roles: profile.roles });
             await this.updateRefreshToken(tokens.refreshToken, user.id)
             return tokens
         }
