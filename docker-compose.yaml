@@ -7,9 +7,9 @@ services:
     ports:
       - 3001:3001
     volumes:
+      - ./:/home/app
       - /home/node_modules
-      - /dist:/home/dist
-      # - ./:/home/app
+      # - /dist:/home/dist
     networks:
       - 5star_be
   postgres:
@@ -38,9 +38,9 @@ services:
     container_name: 5star_worker
     restart: always
     volumes:
+      - ./:/home/app
       - /home/node_modules
-      - /dist:/home/dist
-      # - ./:/home/app
+      # - /dist:/home/dist
     networks:
       - 5star_be
   # redisinsight:
