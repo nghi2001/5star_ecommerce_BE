@@ -7,6 +7,23 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="http://localhost"></a>
+
+    <script>
+        let url = "http://localhost:3001/auth/login";
+        fetch(url, {
+            body: JSON.stringify({
+                username: "nguyenduynghi2001@gmail.com",
+                password: "123456"
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST"
+        })
+        .then(data => data.json())
+        .then(data => {
+            console.log(data);
+        })
+    </script>    
 </body>
 </html>
