@@ -6,9 +6,12 @@ services:
     restart: always
     ports:
       - 3001:3001
+    environment:
+      - FRONTEND_URL="*"
     volumes:
-      - ./:/home/app
-      - /home/node_modules
+      - /public:/home/app/public
+      #- ./:/home/app
+      #- /home/app/node_modules
       # - /dist:/home/dist
     networks:
       - 5star_be
@@ -37,10 +40,10 @@ services:
     image: nguyenduynghi2001/5star_worker
     container_name: 5star_worker
     restart: always
-    volumes:
-      - ./:/home/app
-      - /home/node_modules
-      # - /dist:/home/dist
+    # volumes:
+    #   - ./:/home/app
+    #   - /home/node_modules
+    #   - /dist:/home/dist
     networks:
       - 5star_be
   # redisinsight:

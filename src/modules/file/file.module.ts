@@ -6,6 +6,8 @@ import { FileController } from './file.controller';
 import { FileRepository } from './file.repository';
 import { FileService } from './file.service';
 import { BullModule } from '@nestjs/bull';
+import * as path from 'path';
+import { diskStorage } from 'multer';
 @Module({
   imports: [
     BullModule.registerQueue({
@@ -17,7 +19,13 @@ import { BullModule } from '@nestjs/bull';
         ConfigModule
       ],
       useFactory: async (configService: ConfigService) => ({
-        dest: configService.get<string>("MULTER_DEST")
+        dest: configService.get<string>("MULTER_DEST"),
+        storage: diskStorage({
+          filename: (req, file, cb) => {
+            let filename = Date.now() + path.extname(file.originalname);
+            cb(null, filename)
+          }
+        })
       }),
       inject: [ConfigService]
     })
