@@ -23,6 +23,7 @@ import { CouponModule } from './modules/coupon/coupon.module';
 import { BullModule } from '@nestjs/bull';
 import { WorkerModule } from './queue/worker/worker.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { OrderModule } from './modules/order/order.module';
 @Module({
   imports: [
     ThrottlerModule.forRootAsync({
@@ -69,7 +70,8 @@ import { ThrottlerModule } from '@nestjs/throttler';
     CommentModule,
     CardModule,
     CouponModule,
-    WorkerModule
+    WorkerModule,
+    OrderModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [AppService],

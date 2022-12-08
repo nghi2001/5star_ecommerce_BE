@@ -3,12 +3,14 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { TranformInterceptor } from './Interceptors/tranform.interceptor';
 import * as cookieParser from 'cookie-parser';
+import * as origin from './config/origin/config.json';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  console.log(origin.origin);
 
   app.use(cookieParser());
   app.enableCors({
-    origin: process.env.FRONTEND_URL,
+    origin: origin.origin,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
