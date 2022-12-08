@@ -14,6 +14,8 @@ import { Comment } from '../../entity/comment.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MediaFile } from '../../entity/media.entity';
 import { Coupon } from 'src/entity/coupon.entity';
+import { Order } from 'src/entity/order';
+import { OrderDetail } from 'src/entity/order _detail';
 
 console.log(process.env.DB);
 @Module({
@@ -40,7 +42,9 @@ console.log(process.env.DB);
                     Blog,
                     Comment,
                     MediaFile,
-                    Coupon
+                    Coupon,
+                    Order,
+                    OrderDetail
                 ],
                 synchronize: true
             }),

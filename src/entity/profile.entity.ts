@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { Blog } from './blog.entity';
 import { Comment } from './comment.entity';
 import { MediaFile } from './media.entity';
+import { Order } from './order';
 @Entity()
 export class Profile {
     @PrimaryGeneratedColumn()
@@ -49,6 +50,8 @@ export class Profile {
     @OneToMany(() => Blog, (blog) => blog.user)
     blogs: Blog[];
 
+    @OneToMany(() => Order, (order) => order.user)
+    orders: Order[]
     @OneToMany(() => Comment, (comment) => comment.profile)
     comments: Comment[];
 

@@ -137,4 +137,21 @@ export class CouponService {
         data = await this.getById(id);
         return data;
     }
+
+    async checkCoupon(code: string, totalAmount: number) {
+        let coupon = await this.CouponRepository.getOne({ code });
+        if (!coupon) {
+            return new Error("coupon not correct");
+        }
+        if (totalAmount > coupon.max_order || totalAmount < coupon.min_order) {
+            return new Error("totalAmount can't use this coupon");
+        }
+        let now = new Date();
+        let expirateDate = new Date(coupon.expirate_date);
+        let starDate = new Date(coupon.start_date);
+        if (moment(now).isAfter(expirateDate) || moment(now).isBefore(starDate)) {
+            return new Error("coupon not avaiable")
+        }
+        return coupon;
+    }
 }

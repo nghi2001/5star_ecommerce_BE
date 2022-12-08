@@ -27,12 +27,13 @@ export class AuthController {
     ) {
         // let domain = req.headers.origin.split(":")[1];
         // domain = domain.replace(/[^a-zA-Z ]/g, "")
-        // console.log(domain);
+        console.log(req.hostname);
 
         let tokens = await this.AuthService.SigIn(AuthDTO);
         res.cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
-            maxAge: 60 * 60 * 24 * 10
+            maxAge: 60 * 60 * 24 * 10,
+            domain: req.hostname
         });
         let user = await this.InternalAccountService.getUserInfo(AuthDTO.username);
         // console.log(user);

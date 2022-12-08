@@ -1,5 +1,6 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { OrderDetail } from "./order _detail";
+import { Profile } from "./profile.entity";
 
 export enum ORDER_STATUS {
     PAID = 1,
@@ -10,12 +11,11 @@ export class Order extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: 'jsonb', nullable: true })
-    user_info: any;
-
     @Column({ nullable: true })
     coupon_id: number;
 
+    @Column()
+    user_id: number;
     @Column({ type: 'int', nullable: true })
     order_method_id: number
 
@@ -48,4 +48,15 @@ export class Order extends BaseEntity {
 
     @OneToMany(() => OrderDetail, (order_detail) => order_detail.order, { onDelete: 'CASCADE' })
     details: OrderDetail[]
+
+    @ManyToOne(() => Profile, (profile) => profile.orders)
+    @JoinColumn({ name: "user_id" })
+    user: Profile
+    @Column({ nullable: true })
+    @CreateDateColumn()
+    create_at: Date;
+
+    @Column({ nullable: true })
+    @UpdateDateColumn()
+    update_at: Date;
 }

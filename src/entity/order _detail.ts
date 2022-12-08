@@ -9,6 +9,9 @@ export class OrderDetail extends BaseEntity {
     order_id: number;
 
     @Column()
+    product_id: number;
+
+    @Column()
     quantity: number;
 
     @Column()

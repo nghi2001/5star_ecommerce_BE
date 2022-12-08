@@ -9,7 +9,7 @@ services:
     environment:
       - FRONTEND_URL="*"
     volumes:
-      - /public:/home/app/public
+      - ./public:/home/app/public
       #- ./:/home/app
       #- /home/app/node_modules
       # - /dist:/home/dist
@@ -25,7 +25,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - db:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
     networks:
       - 5star_be
   cache:

@@ -62,7 +62,9 @@ export class ProductController {
             let classifys_1 = await this.ProductService.createClassify1(classify_1);
             let classifys_2
             if (classify_2.length > 0) {
-                classifys_2 = await this.ProductService.createClassify2(classify_2);
+                if (classify_2[0].attribute.length > 0) {
+                    classifys_2 = await this.ProductService.createClassify2(classify_2);
+                }
             }
             product = await this.ProductService.createProduct(productDetail)
             let stockInsert = [];
