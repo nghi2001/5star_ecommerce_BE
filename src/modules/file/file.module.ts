@@ -23,8 +23,10 @@ import { diskStorage } from 'multer';
         storage: diskStorage({
           filename: (req, file, cb) => {
             let filename = Date.now() + path.extname(file.originalname);
+            file.filename = filename;
             cb(null, filename)
-          }
+          },
+          destination: (req, file, cb) => cb(null, configService.get<string>("MULTER_DEST")),
         })
       }),
       inject: [ConfigService]
