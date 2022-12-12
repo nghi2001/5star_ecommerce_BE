@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Delete, Get, HttpException, Param, Post, Put, Query, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { Role } from 'src/common/enum/role.enum';
 import { pager } from 'src/common/helper/paging';
@@ -8,6 +8,7 @@ import { CouponService } from './coupon.service';
 import { CreateCouponDTO } from './dto/create-coupon.dto';
 
 @Controller('coupon')
+@UseInterceptors(CacheInterceptor)
 export class CouponController {
     constructor(
         private CouponService: CouponService

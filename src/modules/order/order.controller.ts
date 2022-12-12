@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Get, Param, Post, Put, Query, Req, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderService } from './order.service';
@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { UpdateStatusDTO } from './dto/update-status.dto';
 
 @Controller('order')
+@UseInterceptors(CacheInterceptor)
 export class OrderController {
     constructor(
         private OrderService: OrderService,

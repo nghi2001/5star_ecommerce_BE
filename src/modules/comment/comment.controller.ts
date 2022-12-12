@@ -1,13 +1,15 @@
 import {
     Controller, Get, Post, Delete,
-    Req, Put, Param, ValidationPipe, Body, UseGuards
+    Req, Put, Param, ValidationPipe, Body, UseGuards, CacheInterceptor, UseInterceptors
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create_comment.dto';
 import { UpdateCommentDto } from './dto/update_comment.dto';
 import { Comment } from './interfaces/comment.interface';
+
 @Controller('comment')
+@UseInterceptors(CacheInterceptor)
 export class CommentController {
     constructor(
         private CommentService: CommentService

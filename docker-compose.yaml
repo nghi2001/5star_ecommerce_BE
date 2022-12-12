@@ -7,12 +7,14 @@ services:
     ports:
       - 3001:3001
     environment:
-      - FRONTEND_URL="*"
+      REDIS_HOST: 5star_cache
+      REDIS_PORT: 6379
+      DB_HOST: 5star_postgres
+      DB_PORT: 5432
+      THROTTLE_LIMIT: 60
+      THROTTLE_TTL: 60
     volumes:
       - ./public:/home/app/public
-      #- ./:/home/app
-      #- /home/app/node_modules
-      # - /dist:/home/dist
     networks:
       - 5star_be
   postgres:
@@ -40,16 +42,8 @@ services:
     image: nguyenduynghi2001/5star_worker
     container_name: 5star_worker
     restart: always
-    # volumes:
-    #   - ./:/home/app
-    #   - /home/node_modules
-    #   - /dist:/home/dist
     networks:
       - 5star_be
-  # redisinsight:
-  #   image: redislabs/redisinsight:latest
-  #   ports:
-  #     - '8001:8001'
 networks:
   5star_be:
     driver: bridge

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Delete, Get, HttpException, Param, Post, Put, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -10,7 +10,9 @@ import { MediaFile } from 'src/entity/media.entity';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Role } from 'src/common/enum/role.enum';
 import { Roles } from 'src/common/decorator/roles.decorator';
+
 @Controller('product')
+@UseInterceptors(CacheInterceptor)
 export class ProductController {
     constructor(
         private ProductService: ProductService,

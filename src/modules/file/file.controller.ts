@@ -1,4 +1,4 @@
-import { Body, Delete, Get, HttpException, Inject, Param, UploadedFile, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Delete, Get, HttpException, Inject, Param, UploadedFile, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -9,7 +9,9 @@ import * as fs from 'fs';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+
 @Controller('file')
+@UseInterceptors(CacheInterceptor)
 export class FileController {
     constructor(
         private AwsS3Service: AwsS3Service,
@@ -50,7 +52,7 @@ export class FileController {
     @UseGuards(JwtAuthGuard)
     @Post("/upload")
     @UseInterceptors(FileInterceptor('file'))
-    async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    async uploadFile(@UploadedFile() file) {
         let result = await this.FileService.createFile({
             destination: file.destination,
             file_name: file.filename,

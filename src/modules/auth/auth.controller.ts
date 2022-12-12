@@ -1,20 +1,18 @@
-import { Controller, Get, Post, Body, UseGuards, HttpException, HttpStatus, Res, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, HttpException, HttpStatus, Res, Req, UseInterceptors, CacheInterceptor } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
-import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './dto/auth.dto';
 import { RefreshTokenAuthGuard } from '../../guards/refresh-token-auth.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { InternalaccountService } from '../internalaccount/internalaccount.service';
 import { ConfigService } from '@nestjs/config';
-import * as moment from 'moment';
 
 @Controller('auth')
+@UseInterceptors(CacheInterceptor)
 export class AuthController {
     constructor(
         private AuthService: AuthService,
-        private UserService: UserService,
         private InternalAccountService: InternalaccountService,
         private ConfigService: ConfigService
     ) { }
@@ -25,8 +23,6 @@ export class AuthController {
         @Res() res: Response,
         @Req() req: Request
     ) {
-        // let domain = req.headers.origin.split(":")[1];
-        // domain = domain.replace(/[^a-zA-Z ]/g, "")
         console.log(req.hostname);
 
         let tokens = await this.AuthService.SigIn(AuthDTO);

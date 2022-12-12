@@ -22,10 +22,14 @@ import { join } from 'path';
 import { CouponModule } from './modules/coupon/coupon.module';
 import { BullModule } from '@nestjs/bull';
 import { WorkerModule } from './queue/worker/worker.module';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { OrderModule } from './modules/order/order.module';
+import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
+    CacheModule.register({
+      isGlobal: true
+    }),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -74,6 +78,12 @@ import { OrderModule } from './modules/order/order.module';
     OrderModule
   ],
   controllers: [AppController, AwsS3Controller],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    }
+  ],
 })
 export class AppModule { }

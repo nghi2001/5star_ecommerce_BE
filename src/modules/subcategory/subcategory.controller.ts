@@ -1,14 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Delete, Get, Param, Post, Put, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { identity } from 'rxjs';
 import { createCategoryDTO } from './dto/create-category.dto';
 import { updateCategoryDTO } from './dto/update-category.dto';
 import { SubcategoryService } from './subcategory.service';
 
 @Controller('subcategory')
+@UseInterceptors(CacheInterceptor)
 export class SubcategoryController {
     constructor(
         private SubCategoryService: SubcategoryService
-    ){}
+    ) { }
 
     @Get()
     async shows() {

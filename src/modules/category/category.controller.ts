@@ -1,6 +1,6 @@
 import {
     Controller,
-    Post, Get, Delete, Put, UseGuards, Body, Param
+    Post, Get, Delete, Put, UseGuards, Body, Param, UseInterceptors, CacheInterceptor
 } from '@nestjs/common';
 import { Role } from 'src/common/enum/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -11,6 +11,7 @@ import { CategoryService } from './category.service';
 import { createCategoryDTO } from './dto/create-category.dto';
 
 @Controller('category')
+@UseInterceptors(CacheInterceptor)
 export class CategoryController {
 
     constructor(

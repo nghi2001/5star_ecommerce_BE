@@ -1,6 +1,6 @@
 import {
     Controller, Get, Post, Delete, Put,
-    Body, HttpException, Param, UseGuards, Query
+    Body, HttpException, Param, UseGuards, Query, UseInterceptors, CacheInterceptor
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { Role } from 'src/common/enum/role.enum';
@@ -12,6 +12,7 @@ import { BigBannerService } from './big-banner.service';
 import { CreateBannerDTO } from './dto/createBanner.dto';
 
 @Controller('banner')
+@UseInterceptors(CacheInterceptor)
 export class BigBannerController {
     constructor(
         private BannerService: BigBannerService

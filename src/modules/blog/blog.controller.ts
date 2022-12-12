@@ -1,6 +1,6 @@
 import {
     Body, Controller, Delete, Get, Param, Post,
-    Req, Put, UseGuards, ValidationPipe
+    Req, Put, UseGuards, ValidationPipe, UseInterceptors, CacheInterceptor
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { Role } from 'src/common/enum/role.enum';
@@ -12,6 +12,7 @@ import { CreateBlogDTO } from './dto/createBlogDTO';
 import { UpdateBlogDTO } from './dto/updateBlogDTO';
 
 @Controller('blog')
+@UseInterceptors(CacheInterceptor)
 export class BlogController {
 
     constructor(

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Delete, Get, Param, Post, Put, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { Role } from 'src/common/enum/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -8,6 +8,7 @@ import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 
 @Controller('brand')
+@UseInterceptors(CacheInterceptor)
 export class BrandController {
     constructor(
         private BrandService: BrandService

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Req, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Req, Post, ValidationPipe, CacheInterceptor, UseInterceptors } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { GetResetPasswordTokenDTO } from './dto/forgot-password.dto';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
@@ -11,7 +11,10 @@ import { generatePassword } from 'src/common/helper/generate-password';
 import * as moment from 'moment';
 import { ActiveAccountDTO } from './dto/active-account';
 import { GetActiveAccountDTO } from './dto/get-active-account';
+import { Throttle } from '@nestjs/throttler';
+
 @Controller('internalaccount')
+@UseInterceptors(CacheInterceptor)
 export class InternalaccountController {
     constructor(
         private AccountService: InternalaccountService,
@@ -74,6 +77,7 @@ export class InternalaccountController {
         return true;
     }
 
+    @Throttle(10, 60)
     @Post("/active")
     async activeAccount(@Body(new ValidationPipe()) body: ActiveAccountDTO) {
         let user = await this.AccountService.findByUserName(body.email);

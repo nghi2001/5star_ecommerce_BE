@@ -1,4 +1,4 @@
-import { Controller, HttpException, Param, Put, Query, Res, UseGuards } from '@nestjs/common';
+import { CacheInterceptor, Controller, HttpException, Param, Put, Query, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Post, Body, Delete } from '@nestjs/common';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
@@ -9,7 +9,9 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { Role } from 'src/common/enum/role.enum';
 import { changeRoleDTO } from './dto/change-role.dto';
+
 @Controller('user')
+@UseInterceptors(CacheInterceptor)
 export class UserController {
     constructor(
         private UserService: UserService
