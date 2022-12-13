@@ -1,4 +1,4 @@
-import { Body, CacheInterceptor, Controller, Delete, Get, HttpException, Param, Post, Put, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Delete, Get, HttpException, Param, Post, Put, Query, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -10,6 +10,7 @@ import { MediaFile } from 'src/entity/media.entity';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Role } from 'src/common/enum/role.enum';
 import { Roles } from 'src/common/decorator/roles.decorator';
+import { pager } from 'src/common/helper/paging';
 
 @Controller('product')
 @UseInterceptors(CacheInterceptor)
@@ -109,8 +110,10 @@ export class ProductController {
         return product
     }
     @Get("")
-    async shows() {
-        let products = await this.ProductService.getAll();
+    async shows(@Query() query) {
+        let paginaton = pager(query);
+        let filter = await this.ProductService.renderCondition(query);
+        let products = await this.ProductService.getAll(filter, paginaton);
         return products
     }
 

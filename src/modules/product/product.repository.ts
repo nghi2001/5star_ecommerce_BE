@@ -110,4 +110,25 @@ export class ProductRepository extends Repository<Product> {
             .getMany()
         return product
     }
+
+    async getList(filter = {}, paginaton = {}) {
+        let data = await this.find({
+            where: filter,
+            relations: {
+                stocks: {
+                    classify_1: true,
+                    classify_2: true
+                },
+                images: true
+            },
+            ...paginaton
+        })
+        let total = await this.count({
+            where: filter
+        })
+        return {
+            total,
+            data
+        }
+    }
 }

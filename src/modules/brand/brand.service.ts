@@ -17,7 +17,10 @@ export class BrandService {
         return result
     }
 
-    // async getAll()
+    async getAll(query) {
+        let data = await this.BrandRepository.getList({}, query);
+        return data;
+    }
     async getOne(id) {
         let brand = await this.BrandRepository.findOneBy({ id });
         return brand; 8

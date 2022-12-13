@@ -3,7 +3,6 @@ import { Brand } from './brand.entity';
 import { Category } from './category.entity';
 import { MediaFile } from './media.entity';
 import { Stock } from './stock.entity';
-import { Sub_Category } from './sub_category.entity';
 
 @Entity()
 export class Product extends BaseEntity {

@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Between, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 import { to } from '../../common/helper/catchError';
 import { BrandService } from '../brand/brand.service';
 import { CategoryService } from '../category/category.service';
@@ -25,6 +26,44 @@ export class ProductService {
         private CategoryService: CategoryService
     ) { }
 
+    async renderCondition(query) {
+        let {
+            id,
+            slug,
+            name,
+            id_brand,
+            id_category,
+            price_from,
+            price_to
+        } = query;
+        let condition: any = {};
+        if (id) {
+            condition.id = id;
+        }
+        if (id_brand) {
+            condition.id_brand = id_brand;
+        }
+        if (id_category) {
+            condition.id_category = id_category;
+        }
+        if (slug) {
+            condition.slug = Like(`%${slug}%`);
+        }
+        if (name) {
+            condition.name = Like(`%${name}%`);
+        }
+        if (price_from) {
+            condition.stocks = {
+                price: MoreThanOrEqual(price_from)
+            }
+        }
+        if (price_to) {
+            condition.stocks = {
+                price: LessThanOrEqual(price_to)
+            }
+        }
+        return condition
+    }
     async createProdWithoutClassify(product: productWithoutClassify) {
         let slugExist = await this.checkSlugExist(product.slug);
         let {
@@ -59,9 +98,9 @@ export class ProductService {
         }
         return true
     }
-    async getAll() {
-        let products = await this.ProductRepository.getManyProduct();
-        return products
+    async getAll(filter = {}, paginaton = {}) {
+        let data = await this.ProductRepository.getList(filter, paginaton);
+        return data;
     }
     async getOne(id: number) {
         let checkId = this.checkId(id);

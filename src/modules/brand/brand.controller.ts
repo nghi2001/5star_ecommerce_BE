@@ -1,4 +1,4 @@
-import { Body, CacheInterceptor, Controller, Delete, Get, Param, Post, Put, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { Role } from 'src/common/enum/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BrandService } from './brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
+import { pager } from '../../common/helper/paging';
 
 @Controller('brand')
 @UseInterceptors(CacheInterceptor)
@@ -42,6 +43,13 @@ export class BrandController {
     ) {
         let result = await this.BrandService.update(id, body);
         return result;
+    }
+
+    @Get("")
+    async shows(@Query() query) {
+        let pagination = pager(query);
+        let data = await this.BrandService.getAll(pagination);
+        return data
     }
 
     @Get(":idSlug")

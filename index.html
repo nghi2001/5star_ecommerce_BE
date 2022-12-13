@@ -9,17 +9,7 @@
 <body>
 
     <script>
-        let url = "http://localhost:3001/auth/login";
-        fetch(url, {
-            body: JSON.stringify({
-                username: "nguyenduynghi2001@gmail.com",
-                password: "123456"
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "POST"
-        })
+        fetch("http://5starfashion.xyz:3001/internalaccount")
         .then(data => data.json())
         .then(data => {
             console.log(data);
