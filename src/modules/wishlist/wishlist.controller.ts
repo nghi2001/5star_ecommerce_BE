@@ -39,7 +39,7 @@ export class WishlistController {
     }
 
     @Delete(":id")
-    async destroy(@Param(":id") id: number) {
+    async destroy(@Param("id") id: number) {
         let data = await this.WishLishService.destroy(id);
         return data;
     }

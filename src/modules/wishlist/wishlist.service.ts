@@ -37,11 +37,13 @@ export class WishlistService {
     }
 
     async getOne(id: number) {
-        let data = await this.WishLishRepository.findOneBy({ id });
+        let data = await this.WishLishRepository.geyOne(id);
         return data;
     }
 
     async destroy(id: number) {
+        console.log(id);
+
         let data = await this.WishLishRepository.delete({ id });
         return data;
     }

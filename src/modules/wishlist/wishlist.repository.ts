@@ -12,13 +12,33 @@ export class WishlistRepository extends Repository<Wishlish> {
     ) {
         super(Wishlish, dataSource.createEntityManager())
     }
+    async geyOne(id: number) {
+        let data = await this.findOne({
+            where: {
+                id: id
+            },
+            relations: {
+                stocks: {
+                    product: {
+                        images: true
+                    }
+                }
+            },
+            select: [
 
+            ]
+        })
+        return data
+    }
     async getList(filter, pagination) {
         let data = await this.find({
             where: filter,
             relations: {
-                users: true,
-                stocks: true
+                stocks: {
+                    product: {
+                        images: true
+                    }
+                }
             },
             order: {
                 id: 'ASC'
