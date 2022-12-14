@@ -16,6 +16,7 @@ import { MediaFile } from '../../entity/media.entity';
 import { Coupon } from 'src/entity/coupon.entity';
 import { Order } from 'src/entity/order';
 import { OrderDetail } from 'src/entity/order _detail';
+import { Wishlish } from 'src/entity/wishlist.entity';
 
 console.log(process.env.DB);
 @Module({
@@ -44,7 +45,8 @@ console.log(process.env.DB);
                     MediaFile,
                     Coupon,
                     Order,
-                    OrderDetail
+                    OrderDetail,
+                    Wishlish
                 ],
                 synchronize: true
             }),

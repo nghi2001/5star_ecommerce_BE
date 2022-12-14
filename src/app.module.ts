@@ -25,6 +25,7 @@ import { WorkerModule } from './queue/worker/worker.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { OrderModule } from './modules/order/order.module';
 import { APP_GUARD } from '@nestjs/core';
+import { WishlistModule } from './modules/wishlist/wishlist.module';
 @Module({
   imports: [
     CacheModule.register({
@@ -75,7 +76,8 @@ import { APP_GUARD } from '@nestjs/core';
     CardModule,
     CouponModule,
     WorkerModule,
-    OrderModule
+    OrderModule,
+    WishlistModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [
