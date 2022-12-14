@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Profile } from "./profile.entity";
+import { Stock } from "./stock.entity";
 
 @Entity()
 export class Wishlish extends BaseEntity {
@@ -10,4 +12,12 @@ export class Wishlish extends BaseEntity {
 
     @Column()
     id_product: number;
+
+    @ManyToOne(() => Stock)
+    @JoinColumn({ name: 'id_product' })
+    stocks: Stock[];
+
+    @ManyToOne(() => Profile)
+    @JoinColumn({ name: "id_user" })
+    users: Profile[];
 }

@@ -16,6 +16,10 @@ export class WishlistRepository extends Repository<Wishlish> {
     async getList(filter, pagination) {
         let data = await this.find({
             where: filter,
+            relations: {
+                users: true,
+                stocks: true
+            },
             order: {
                 id: 'ASC'
             },
