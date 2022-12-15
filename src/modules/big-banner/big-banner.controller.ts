@@ -38,7 +38,7 @@ export class BigBannerController {
         @Query() query
     ) {
         let pagination = pager(query);
-        let filter = await this.BannerService.getAll(query);
+        let filter = await this.BannerService.renderCondition(query);
         let banners = await this.BannerService.getAll(filter, pagination);
         return banners;
     }
@@ -67,6 +67,7 @@ export class BigBannerController {
         await this.BannerService.update(id, body);
         let banner = await this.BannerService.getOne(id);
         return banner
+
     }
 
 

@@ -89,9 +89,13 @@ export class BigBannerService {
             if (data.title && data.title != banner.title) {
                 dataUpdate.title = data.title
             }
-            if (Object.keys(dataUpdate).length > 0) {
-                this.BannerRepository.update({ id }, dataUpdate);
+            if (data.link && data.link != banner.link) {
+                dataUpdate.link = data.link
             }
+            if (Object.keys(dataUpdate).length > 0) {
+                await this.BannerRepository.update({ id }, dataUpdate);
+            }
+
             return true;
         }
     }

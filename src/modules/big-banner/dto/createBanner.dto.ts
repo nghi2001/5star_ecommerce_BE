@@ -16,4 +16,8 @@ export class CreateBannerDTO {
     @IsEnum(BANNER_STATUS)
     @IsPositive()
     status: BANNER_STATUS;
+
+    @IsString()
+    @IsNotEmpty()
+    link: string;
 }

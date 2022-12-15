@@ -18,6 +18,9 @@ export class Banner extends BaseEntity {
     @Column({ nullable: true })
     image?: number;
 
+    @Column({ nullable: true })
+    link?: string;
+
 
     @Column({ default: 1 })
     status: BANNER_STATUS

@@ -18,4 +18,9 @@ export class UpdateBannerDTO {
     @IsEnum(BANNER_STATUS)
     @IsOptional()
     status?: BANNER_STATUS;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    link?: string;
 }
