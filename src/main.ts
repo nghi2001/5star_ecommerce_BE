@@ -4,10 +4,19 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { TranformInterceptor } from './Interceptors/tranform.interceptor';
 import * as cookieParser from 'cookie-parser';
 import * as origin from './config/origin/config.json';
+import * as Fingerprint from 'express-fingerprint';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   console.log(origin.origin);
 
+  app.use(Fingerprint({
+    parameters: [
+      // Defaults
+      Fingerprint.useragent,
+      Fingerprint.acceptHeaders,
+      Fingerprint.geoip,
+    ]
+  }))
   app.use(cookieParser());
   app.enableCors({
     origin: origin.origin,

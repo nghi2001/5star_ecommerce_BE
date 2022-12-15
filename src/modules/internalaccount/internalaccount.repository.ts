@@ -54,4 +54,16 @@ export class InternalAccountRepository extends Repository<InternalAccount> {
         return data;
     }
 
+    async getListDevice(idUser: number) {
+        let data = await this.findOne({
+            where: {
+                id: idUser
+            },
+            select: [
+                'refresh_token'
+            ]
+        })
+        return data;
+    }
+
 }

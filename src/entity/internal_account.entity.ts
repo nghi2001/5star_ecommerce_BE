@@ -31,8 +31,8 @@ export class InternalAccount {
     profile: Profile;
 
 
-    @Column({ nullable: true })
-    refresh_token?: string;
+    @Column('jsonb', { default: {} })
+    refresh_token?: any;
 
     @Column()
     @CreateDateColumn()

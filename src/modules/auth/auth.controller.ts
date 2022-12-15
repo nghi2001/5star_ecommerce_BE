@@ -7,6 +7,7 @@ import { RefreshTokenAuthGuard } from '../../guards/refresh-token-auth.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { InternalaccountService } from '../internalaccount/internalaccount.service';
 import { ConfigService } from '@nestjs/config';
+import { RevokeDeviceDTO } from './dto/revoke-device';
 
 @Controller('auth')
 @UseInterceptors(CacheInterceptor)
@@ -21,18 +22,17 @@ export class AuthController {
     async login(
         @Body(new ValidationPipe()) AuthDTO: AuthDTO,
         @Res() res: Response,
-        @Req() req: Request
+        @Req() req
     ) {
-        console.log(req.hostname);
+        let { device_info, hashAndIp } = this.AuthService.getDeviceInfo(req);
 
-        let tokens = await this.AuthService.SigIn(AuthDTO);
+        let tokens = await this.AuthService.SigIn(AuthDTO, device_info, hashAndIp);
         res.cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
             maxAge: 60 * 60 * 24 * 10,
-            domain: req.hostname
+            domain: this.ConfigService.get<string>("FRONTEND_DOMAIN")
         });
         let user = await this.InternalAccountService.getUserInfo(AuthDTO.username);
-        // console.log(user);
 
         res.json({
             statusCode: 200,
@@ -48,17 +48,19 @@ export class AuthController {
     async resetToken(@Req() req, @Res() res: Response) {
         let id = req.user.id;
         let roles = req.user.roles;
-        console.log(req.user.roles);
-
+        let { device_info, hashAndIp } = this.AuthService.getDeviceInfo(req);
         let user = await this.InternalAccountService.findOne(id);
-        console.log(req.user);
 
-        if (user.refresh_token !== req.user.refreshToken) {
+        if (!user.refresh_token[hashAndIp]) {
+            throw new HttpException("Forbiden", HttpStatus.FORBIDDEN);
+        }
+        if (user.refresh_token[hashAndIp].refreshToken !== req.user.refreshToken) {
             throw new HttpException("token not valid", HttpStatus.NOT_FOUND);
         }
 
         let token = await this.AuthService.getTokens({ id: id, roles: roles });
-        await this.AuthService.updateRefreshToken(token.refreshToken, id);
+
+        await this.AuthService.updateRefreshToken(token.refreshToken, id, hashAndIp, device_info);
 
         res.cookie("refreshToken", token.refreshToken, {
             httpOnly: true,
@@ -75,16 +77,29 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Post("logout")
     async logout(@Req() req, @Res() res: Response) {
-        await this.AuthService.updateRefreshToken(null, req.user.id);
+        let id = req.user.id;
+        let { hashAndIp } = this.AuthService.getDeviceInfo(req);
+        await this.AuthService.revokeRefreshToken(id, hashAndIp);
         res.clearCookie("refreshToken");
         res.json(true);
     }
 
-    @UseGuards(RefreshTokenAuthGuard)
-    @Get("/a")
-    async test(@Req() req) {
-        console.log(req.user);
+    @UseGuards(JwtAuthGuard)
+    @Get("/list-device")
+    async getListDevice(@Req() req) {
+        let data = await this.InternalAccountService.getListDevice(req.user.id);
 
-        return 'nghi'
+        return data
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("/revoke-device")
+    async revoleDevice(
+        @Req() req,
+        @Body(new ValidationPipe()) body: RevokeDeviceDTO) {
+        let id = req.user.id;
+        let hash = body.hash;
+        let result = await this.AuthService.revokeRefreshToken(id, hash);
+        return result;
     }
 }

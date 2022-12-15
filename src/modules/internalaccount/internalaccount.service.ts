@@ -38,7 +38,17 @@ export class InternalaccountService {
         return hashPass
     }
     async show() {
-        let result = await this.InternalAccountRepository.findAndCountAll();
+        let result = await this.InternalAccountRepository.find({
+            select: [
+                'id',
+                'email',
+                'id_profile',
+                'profile',
+                'create_at',
+                'update_at',
+                'status'
+            ]
+        });
         return result
     }
     async checkProfileExit(id: number) {
@@ -208,5 +218,18 @@ export class InternalaccountService {
             await this.destroy(id);
         }
         return true;
+    }
+
+    async getListDevice(idUser: number) {
+        let listDevice = await this.InternalAccountRepository.getListDevice(idUser);
+        if (listDevice) {
+            let keys = Object.keys(listDevice.refresh_token)
+            let data = {};
+            for (let key of keys) {
+                data[key] = listDevice.refresh_token[key].deviceInfo;
+            }
+            return data
+        }
+        return null;
     }
 }

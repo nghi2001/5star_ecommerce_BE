@@ -44,6 +44,7 @@ export class InternalaccountController {
             });
             this.mailQueue.add({
                 to: body.email,
+                subject: "Mã kích hoạt tài khoản",
                 html: `
                     <p>Đây là mã kích hoạt tài khoản của bạn: ${code} </p>
                 `
@@ -118,8 +119,9 @@ export class InternalaccountController {
 
         this.mailQueue.add({
             to: body.email,
+            subject: "Quên mật khẩu",
             html: `
-                <p>Đây là mã kích hoạt tài khoản của bạn: ${code} </p>
+                <p>Đây là mã kích quên mật khẩu của bạn: ${code} </p>
             `
         })
         let now = new Date();
