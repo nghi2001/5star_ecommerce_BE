@@ -9,6 +9,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { Role } from 'src/common/enum/role.enum';
 import { changeRoleDTO } from './dto/change-role.dto';
+import { pager } from 'src/common/helper/paging';
 
 @Controller('user')
 @UseInterceptors(CacheInterceptor)
@@ -48,9 +49,11 @@ export class UserController {
 
     }
     @Get("/")
-    async show() {
-        let [profiles, count] = await this.UserService.getAllUser();
-        return { profiles, count };
+    async show(@Query() query) {
+        let pagination = pager(query);
+        let condition = await this.UserService.renderCondition(query);
+        let data = await this.UserService.getAllUser(condition, pagination);
+        return data;
 
     }
     @Post("/")

@@ -18,6 +18,33 @@ export class UserService {
         return false
     }
 
+    async renderCondition(query) {
+        let {
+            id,
+            first_name,
+            last_name,
+            email,
+            is_active
+        } = query;
+        let condition: any = {};
+        if (id) {
+            condition.id = id;
+        }
+        if (first_name) {
+            condition.first_name = first_name;
+        }
+        if (last_name) {
+            condition.last_name = last_name;
+        }
+        if (email) {
+            condition.email = email;
+        }
+        if (is_active) {
+            condition.is_active = is_active;
+        }
+        return condition
+    }
+
     async createUser(createUserDto: CreateUserDto) {
 
         let result = await this.UserRepository.createProfile({
@@ -67,9 +94,9 @@ export class UserService {
         return user
     }
 
-    async getAllUser() {
-        let [users, count] = await this.UserRepository.findAndCount();
-        return [users, count]
+    async getAllUser(filter, pagination) {
+        let data = await this.UserRepository.getList(filter, pagination);
+        return data
     }
 
 

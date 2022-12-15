@@ -33,10 +33,8 @@ export class updateUserDTO {
     @IsOptional()
     gender?: string
 
-    @MaxLength(20, { each: true })
-    @IsNotEmpty()
     @IsOptional()
-    address?: string[]
+    address?: any
 
     @IsInt()
     @IsOptional()

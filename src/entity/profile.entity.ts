@@ -31,8 +31,8 @@ export class Profile {
     })
     roles: Role[]
 
-    @Column('text', { array: true, nullable: true })
-    address: string[];
+    @Column('jsonb', { default: {} })
+    address: any;
 
     @Column({ nullable: true })
     avatar_id: number;
