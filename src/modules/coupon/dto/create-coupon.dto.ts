@@ -1,5 +1,5 @@
-import { IsDate, IsEnum, IsIn, IsInt, IsPositive, IsString } from "class-validator";
-import { TypeCoupon } from "src/entity/coupon.entity";
+import { IsDate, IsEnum, IsIn, IsInt, IsOptional, IsPositive, IsString } from "class-validator";
+import { COUPON_STATUS, TypeCoupon } from "src/entity/coupon.entity";
 
 export class CreateCouponDTO {
     @IsString()
@@ -19,6 +19,10 @@ export class CreateCouponDTO {
 
     @IsInt()
     discount: number;
+
+    @IsEnum(COUPON_STATUS)
+    @IsOptional()
+    status: COUPON_STATUS;
 
     @IsInt()
     min_order: number;

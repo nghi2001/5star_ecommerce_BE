@@ -81,10 +81,9 @@ export class UserController {
         @Body(new ValidationPipe()) body: updateUserDTO
     ) {
         if (this.UserService.checkObjectId(id)) {
-
             let result = await this.UserService.update(id, body);
-
-            return result;
+            let data = await this.UserService.findOne(id);
+            return data
         }
     }
 }

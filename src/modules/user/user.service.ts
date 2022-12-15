@@ -1,15 +1,14 @@
-import * as bcrypt from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { FileService } from '../file/file.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { updateUserDTO } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
-import mongoose from 'mongoose'
-import { ObjectId } from 'mongoose'
-import { Profile } from '../../entity/profile.entity';
 
 @Injectable()
 export class UserService {
     constructor(
-        private UserRepository: UserRepository
+        private UserRepository: UserRepository,
+        private FileService: FileService
     ) { }
 
     isInternalAccount(kind: string): boolean {
@@ -83,6 +82,12 @@ export class UserService {
         return true
     }
     async update(id, update) {
+        if (update.avatar_id) {
+            let check = await this.FileService.checkExits(update.avatar_id)
+            if (!check) {
+                throw new HttpException("avatar_id not found", 404);
+            }
+        }
         let data = await this.UserRepository.update({ id }, update)
         return data
     }

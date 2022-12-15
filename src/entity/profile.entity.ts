@@ -40,6 +40,8 @@ export class Profile {
     is_active: boolean;
 
     @Column({ nullable: true })
+    birth_day: string;
+    @Column({ nullable: true })
     @CreateDateColumn()
     create_at: Date;
 

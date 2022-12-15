@@ -38,7 +38,8 @@ export class CouponController {
     @Get()
     async shows(@Query() query) {
         let paging = pager(query);
-        let data = await this.CouponService.getList({}, paging);
+        let filter = await this.CouponService.renderCondition(query);
+        let data = await this.CouponService.getList(filter, paging);
         return data
     }
 

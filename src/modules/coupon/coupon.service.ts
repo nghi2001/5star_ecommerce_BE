@@ -1,5 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
+import { COUPON_STATUS } from 'src/entity/coupon.entity';
 import { CouponRepository } from './coupon.repository';
 import { CreateCouponDTO } from './dto/create-coupon.dto';
 import { UpdateCouponDTO } from './dto/update-coupon.dto';
@@ -9,7 +10,26 @@ export class CouponService {
     constructor(private CouponRepository: CouponRepository) {
 
     }
+    async renderCondition(query) {
+        let {
+            code,
+            status,
+            type
+        } = query;
+        console.log(query, "nghi");
 
+        let condition: any = {};
+        if (code) {
+            condition.code = code;
+        }
+        if (status) {
+            condition.status = status;
+        }
+        if (type) {
+            condition.type = type;
+        }
+        return condition;
+    }
     async checkCode(code) {
         let checkData = await this.CouponRepository.getOne({ code: code });
         if (checkData) {
@@ -27,7 +47,8 @@ export class CouponService {
             type: coupon.type,
             discount: coupon.discount,
             min_order: coupon.min_order,
-            max_order: coupon.max_order
+            max_order: coupon.max_order,
+            status: coupon.status || COUPON_STATUS.ACTIVE
         };
         let checkData = await this.checkCode(dataInsert.code);
         let start_date = new Date(coupon.start_date);
@@ -41,7 +62,6 @@ export class CouponService {
         if (!checkStartDate || !checkExpirateDate) {
             throw new HttpException("start date or expirate day not correct", 400);
         }
-
         dataInsert.expirate_date = moment(dataInsert.expirate_date).format("YYYY-MM-DD");
         let newCoupon = await this.CouponRepository.createCoupon(dataInsert);
         return newCoupon;
@@ -92,7 +112,8 @@ export class CouponService {
             type,
             discount,
             min_order,
-            max_order
+            max_order,
+            status
         } = coupon;
         let dataUpdate: any = {};
         let startDate = new Date(start_date);
@@ -100,6 +121,9 @@ export class CouponService {
         let data = await this.CouponRepository.getOne({ id });
         if (!data) {
             throw new HttpException("Coupon not found", 404);
+        }
+        if (status && status != data.status) {
+            dataUpdate.status = status;
         }
         if (code && code != data.code) {
             let checkCode = await this.checkCode(code);

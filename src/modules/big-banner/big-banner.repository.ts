@@ -21,6 +21,8 @@ export class BannerRepository extends Repository<Banner> {
     }
 
     async getAll(filter = {}, pagination = {}) {
+        // console.log(filter);
+
         let data = await this.find({
             where: filter,
             relations: {

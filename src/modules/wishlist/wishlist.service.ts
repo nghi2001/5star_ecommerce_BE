@@ -5,7 +5,7 @@ import { WishlistRepository } from './wishlist.repository';
 @Injectable()
 export class WishlistService {
     constructor(
-        private WishLishRepository: WishlistRepository
+        private WishListRepository: WishlistRepository
     ) { }
 
     async renderCondition(query) {
@@ -27,24 +27,24 @@ export class WishlistService {
         let wishlist = new Wishlish();
         wishlist.id_product = data.id_product;
         wishlist.id_user = idUser;
-        let result = await this.WishLishRepository.save(wishlist);
+        let result = await this.WishListRepository.save(wishlist);
         return result
     }
 
     async getList(filter, pagination) {
-        let data = await this.WishLishRepository.getList(filter, pagination);
+        let data = await this.WishListRepository.getList(filter, pagination);
         return data;
     }
 
     async getOne(id: number) {
-        let data = await this.WishLishRepository.geyOne(id);
+        let data = await this.WishListRepository.geyOne(id);
         return data;
     }
 
     async destroy(id: number) {
         console.log(id);
 
-        let data = await this.WishLishRepository.delete({ id });
+        let data = await this.WishListRepository.delete({ id });
         return data;
     }
 }

@@ -10,6 +10,7 @@ import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BigBannerService } from './big-banner.service';
 import { CreateBannerDTO } from './dto/createBanner.dto';
+import { UpdateBannerDTO } from './dto/updateBanner.dto';
 
 @Controller('banner')
 @UseInterceptors(CacheInterceptor)
@@ -37,7 +38,8 @@ export class BigBannerController {
         @Query() query
     ) {
         let pagination = pager(query);
-        let banners = await this.BannerService.getAll(pagination);
+        let filter = await this.BannerService.getAll(query);
+        let banners = await this.BannerService.getAll(filter, pagination);
         return banners;
     }
 
@@ -60,10 +62,11 @@ export class BigBannerController {
     @Put(":id")
     async update(
         @Param("id") id: string,
-        @Body(new ValidationPipe()) createDto: CreateBannerDTO
+        @Body(new ValidationPipe()) body: UpdateBannerDTO
     ) {
-        let result = await this.BannerService.update(id, createDto);
-        return result
+        await this.BannerService.update(id, body);
+        let banner = await this.BannerService.getOne(id);
+        return banner
     }
 
 

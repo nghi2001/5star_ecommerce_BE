@@ -7,6 +7,24 @@ export class BrandService {
         private BrandRepository: BrandRepository
     ) { }
 
+    async renderCondition(query) {
+        let {
+            status,
+            name,
+            slug
+        } = query;
+        let condition: any = {};
+        if (status) {
+            condition.status = status;
+        }
+        if (name) {
+            condition.name = name;
+        }
+        if (slug) {
+            condition.slug = slug;
+        }
+        return condition
+    }
     async create(brand) {
         let result = await this.BrandRepository.createBrand(brand);
         return result;
@@ -17,8 +35,8 @@ export class BrandService {
         return result
     }
 
-    async getAll(query) {
-        let data = await this.BrandRepository.getList({}, query);
+    async getAll(filter, query) {
+        let data = await this.BrandRepository.getList(filter, query);
         return data;
     }
     async getOne(id) {

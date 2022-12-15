@@ -22,6 +22,11 @@ export class CreateUserDto {
     @IsNotEmpty()
     gender?: string
 
+
+    @IsString()
+    @IsNotEmpty()
+    birth_day?: string
+
     @MaxLength(20, { each: true })
     @IsNotEmpty()
     address?: string[]

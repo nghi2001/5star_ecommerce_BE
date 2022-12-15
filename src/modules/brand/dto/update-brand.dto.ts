@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { BRAND_STATUS } from "src/entity/brand.entity";
 
 
 export class UpdateBrandDto {
@@ -11,4 +12,9 @@ export class UpdateBrandDto {
     @IsNotEmpty()
     @IsOptional()
     slug: string;
+
+
+    @IsOptional()
+    @IsEnum(BRAND_STATUS)
+    status: BRAND_STATUS;
 }

@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsInt, IsNegative, IsPositive, IsString, IsEnum } from "class-validator";
+import { BANNER_STATUS } from "src/entity/banner.entity";
 export class CreateBannerDTO {
     @IsString()
     @IsNotEmpty()
@@ -9,10 +10,10 @@ export class CreateBannerDTO {
     @IsNotEmpty()
     sub_title: string;
 
-    @IsString()
-    image: string;
+    @IsInt()
+    image: number;
 
-    @IsEnum({ ACTIVE: 1, NOT_ACTIVE: 2 })
+    @IsEnum(BANNER_STATUS)
     @IsPositive()
-    status: number;
+    status: BANNER_STATUS;
 }

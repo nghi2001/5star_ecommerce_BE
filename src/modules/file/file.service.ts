@@ -29,4 +29,9 @@ export class FileService {
         let result = await this.FileRepository.delete({ id });
         return result
     }
+
+    async checkExits(id) {
+        let image = await this.FileRepository.checkExits(id);
+        return image ? image : null
+    }
 }

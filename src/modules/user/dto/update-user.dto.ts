@@ -22,6 +22,12 @@ export class updateUserDTO {
     @IsOptional()
     phone?: string
 
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    birth_day?: string
+
     @IsString()
     @IsNotEmpty()
     @IsOptional()

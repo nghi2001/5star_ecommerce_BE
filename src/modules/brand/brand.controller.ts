@@ -48,7 +48,8 @@ export class BrandController {
     @Get("")
     async shows(@Query() query) {
         let pagination = pager(query);
-        let data = await this.BrandService.getAll(pagination);
+        let conditon = await this.BrandService.renderCondition(query);
+        let data = await this.BrandService.getAll(conditon, pagination);
         return data
     }
 

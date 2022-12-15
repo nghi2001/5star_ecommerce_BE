@@ -20,4 +20,16 @@ export class FileRepository extends Repository<MediaFile> {
             .execute()
         return result
     }
+
+    async checkExits(id: number) {
+        let data = await this.findOne({
+            where: {
+                id: id
+            },
+            select: [
+                "id"
+            ]
+        });
+        return data;
+    }
 }

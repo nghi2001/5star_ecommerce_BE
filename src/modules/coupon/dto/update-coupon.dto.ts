@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, IsIn, IsInt, IsOptional, IsPositive, IsString } from "class-validator";
-import { TypeCoupon } from "src/entity/coupon.entity";
+import { COUPON_STATUS, TypeCoupon } from "src/entity/coupon.entity";
 
 export class UpdateCouponDTO {
     @IsString()
@@ -14,6 +14,10 @@ export class UpdateCouponDTO {
 
     // @IsDate()
     start_date: string;
+
+    @IsEnum(COUPON_STATUS)
+    @IsOptional()
+    status: COUPON_STATUS;
 
     @IsInt()
     @IsPositive()
