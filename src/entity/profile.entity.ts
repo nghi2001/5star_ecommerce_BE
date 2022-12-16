@@ -1,4 +1,4 @@
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from 'src/common/enum';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { Blog } from './blog.entity';
 import { Comment } from './comment.entity';

@@ -2,7 +2,7 @@ import {
     Controller,
     Post, Get, Delete, Put, UseGuards, Body, Param, UseInterceptors, CacheInterceptor
 } from '@nestjs/common';
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from 'src/common/enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from '../../common/decorator/roles.decorator';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';

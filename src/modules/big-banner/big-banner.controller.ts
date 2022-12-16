@@ -3,7 +3,7 @@ import {
     Body, HttpException, Param, UseGuards, Query, UseInterceptors, CacheInterceptor
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from 'src/common/enum';
 import { pager } from 'src/common/helper/paging';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';

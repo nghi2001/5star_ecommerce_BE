@@ -7,7 +7,7 @@ import { updateUserDTO } from './dto/update-user.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/common/decorator/roles.decorator';
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from 'src/common/enum';
 import { changeRoleDTO } from './dto/change-role.dto';
 import { pager } from 'src/common/helper/paging';
 

@@ -1,11 +1,7 @@
 import { type } from 'os';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Profile } from './profile.entity';
-export enum ACCOUNT_STATUS {
-    ACTIVE = 1,
-    INACTIVE = 2
-}
-
+import { ACCOUNT_STATUS } from 'src/common/enum';
 @Entity()
 export class InternalAccount {
     @PrimaryGeneratedColumn()

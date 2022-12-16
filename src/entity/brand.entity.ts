@@ -1,10 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Product } from './product.entity';
-
-export enum BRAND_STATUS {
-    ACTIVE = 1,
-    INACTIVE = 2,
-}
+import { BRAND_STATUS } from 'src/common/enum';
 @Entity()
 export class Brand extends BaseEntity {
     @PrimaryGeneratedColumn()

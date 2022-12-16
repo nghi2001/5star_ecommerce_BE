@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
-import { COUPON_STATUS } from 'src/entity/coupon.entity';
+import { COUPON_STATUS } from 'src/common/enum';
 import { CouponRepository } from './coupon.repository';
 import { CreateCouponDTO } from './dto/create-coupon.dto';
 import { UpdateCouponDTO } from './dto/update-coupon.dto';

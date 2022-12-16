@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { ACCOUNT_STATUS, InternalAccount } from '../../entity/internal_account.entity';
+import { ACCOUNT_STATUS } from 'src/common/enum';
+import { InternalAccount } from '../../entity/internal_account.entity';
 import { CreateAccountDto } from './dto/create-account.dto';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Body, CacheInterceptor, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from 'src/common/enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BrandService } from './brand.service';

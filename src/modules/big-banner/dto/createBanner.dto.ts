@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsInt, IsNegative, IsPositive, IsString, IsEnum } from "class-validator";
-import { BANNER_STATUS } from "src/entity/banner.entity";
+import { BANNER_STATUS } from "../../../common/enum";
 export class CreateBannerDTO {
     @IsString()
     @IsNotEmpty()

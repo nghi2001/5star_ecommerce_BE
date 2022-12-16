@@ -1,14 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, OneToOne, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { COUPON_STATUS, TypeCoupon as TypeCouponEnum } from 'src/common/enum';
 
-export enum TypeCoupon {
-    PERCENT = 1,
-    CASH = 2
-}
-
-export enum COUPON_STATUS {
-    ACTIVE = 1,
-    INACTIVE = 2
-}
 @Entity()
 export class Coupon extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -30,7 +22,7 @@ export class Coupon extends BaseEntity {
     used: number;
 
     @Column()
-    type: TypeCoupon;
+    type: TypeCouponEnum;
 
     @Column()
     discount: number;

@@ -1,11 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { OrderDetail } from "./order _detail";
 import { Profile } from "./profile.entity";
-
-export enum ORDER_STATUS {
-    PAID = 1,
-    UNPAID = 2
-}
+import { ORDER_STATUS } from 'src/common/enum';
 @Entity()
 export class Order extends BaseEntity {
     @PrimaryGeneratedColumn()

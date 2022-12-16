@@ -3,7 +3,7 @@ import { InternalAccountRepository } from './internalaccount.repository';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { CreateAccountDto } from './dto/create-account.dto';
-import { ACCOUNT_STATUS, InternalAccount } from '../../entity/internal_account.entity';
+import { ACCOUNT_STATUS } from 'src/common/enum';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { to } from 'src/common/helper/catchError';
 import { JwtService } from '@nestjs/jwt';

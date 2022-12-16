@@ -3,7 +3,7 @@ import {
     Req, Put, UseGuards, ValidationPipe, UseInterceptors, CacheInterceptor
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from 'src/common/enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CommentService } from '../comment/comment.service';

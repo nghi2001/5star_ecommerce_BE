@@ -1,5 +1,5 @@
 import { IsDate, IsEnum, IsIn, IsInt, IsOptional, IsPositive, IsString } from "class-validator";
-import { COUPON_STATUS, TypeCoupon } from "src/entity/coupon.entity";
+import { COUPON_STATUS, TypeCoupon } from "src/common/enum";
 
 export class CreateCouponDTO {
     @IsString()

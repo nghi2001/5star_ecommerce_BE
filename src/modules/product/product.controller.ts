@@ -8,7 +8,7 @@ import { productWithoutClassify } from './types/productWithoutClassify';
 import { FileService } from '../file/file.service';
 import { MediaFile } from 'src/entity/media.entity';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { Role } from 'src/common/enum/role.enum';
+import { Role } from 'src/common/enum';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { pager } from 'src/common/helper/paging';
 

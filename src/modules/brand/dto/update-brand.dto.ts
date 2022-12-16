@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { BRAND_STATUS } from "src/entity/brand.entity";
+import { BRAND_STATUS } from "src/common/enum";
 
 
 export class UpdateBrandDto {

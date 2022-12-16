@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { TypeCoupon } from 'src/entity/coupon.entity';
+import { TypeCoupon } from 'src/common/enum';
 import { DataSource } from 'typeorm';
 import { CouponService } from '../coupon/coupon.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -7,7 +7,7 @@ import { OrderRepository } from './order.repository';
 import { ProductService } from '../product/product.service';
 import { OrderDetail } from 'src/entity/order _detail';
 import { OrderDetailRepository } from './order_detail.repository';
-import { ORDER_STATUS } from '../../entity/order';
+import { ORDER_STATUS } from 'src/common/enum';
 
 @Injectable()
 export class OrderService {

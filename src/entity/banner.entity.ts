@@ -1,10 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn } from 'typeorm';
 import { MediaFile } from './media.entity';
-
-export enum BANNER_STATUS {
-    ACTIVE = 1,
-    INACTIVE = 2,
-}
+import { BANNER_STATUS } from 'src/common/enum';
 @Entity()
 export class Banner extends BaseEntity {
     @PrimaryGeneratedColumn()
