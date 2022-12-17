@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { StoreSystemService } from './store-system.service';
 import { pager } from '../../common/helper/paging'
 import { CreateStoreSystemDTO } from './dto/create-store-system.dto';
@@ -36,6 +36,12 @@ export class StoreSystemController {
         @Body(new ValidationPipe()) body: UpdateStoreSystemDTO
     ) {
         let data = await this.StoreSystemService.update(id, body);
+        return data;
+    }
+
+    @Delete(":id")
+    async destroy(@Param("id") id: number) {
+        let data = await this.StoreSystemService.destroy(id);
         return data;
     }
 }

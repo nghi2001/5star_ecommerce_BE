@@ -86,9 +86,9 @@ export class CouponService {
         if (!moment.isDate(startDate)) {
             throw new HttpException("start date not type Date", 400);
         }
-        if (!moment(startDate).isAfter(new Date)) {
-            throw new HttpException("start date should be affter now", 400)
-        }
+        // if (!moment(startDate).is(new Date)) {
+        //     throw new HttpException("start date should be affter now", 400)
+        // }
         return true;
     }
     checkExpirateDate(expirateDate: string | Date, startDate) {

@@ -5,6 +5,7 @@ import { COUPON_STATUS, TypeCoupon } from './coupon.enum';
 import { ACCOUNT_STATUS } from './account.enum';
 import { ORDER_STATUS } from './order.enum';
 import { BLOG_STATUS } from './blog.enum';
+import { PAYMENT_METHOD_STATUS } from './payment-methos.enum';
 
 export {
     BANNER_STATUS,
@@ -14,5 +15,6 @@ export {
     TypeCoupon,
     ACCOUNT_STATUS,
     ORDER_STATUS,
-    BLOG_STATUS
+    BLOG_STATUS,
+    PAYMENT_METHOD_STATUS
 }

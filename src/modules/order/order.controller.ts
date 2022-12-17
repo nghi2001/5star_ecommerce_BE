@@ -6,6 +6,7 @@ import { UserService } from '../user/user.service';
 import * as moment from 'moment';
 import { ConfigService } from '@nestjs/config';
 import { UpdateStatusDTO } from './dto/update-status.dto';
+import { v4 } from 'uuid';
 
 @Controller('order')
 @UseInterceptors(CacheInterceptor)
@@ -27,7 +28,10 @@ export class OrderController {
         return query;
     }
     @Get("/:id/order-payment-vnpay/")
-    async paymentVNPAY(@Param("id") id: number) {
+    async paymentVNPAY(
+        @Param("id") id: number,
+        @Req() req
+    ) {
         let order = await this.OrderService.find(id);
         let now: Date | string = new Date();
         let refCode = moment(now).format('ymdHms');
@@ -37,7 +41,7 @@ export class OrderController {
         vnp_Params['vnp_Command'] = 'pay';
         vnp_Params['vnp_CreateDate'] = now;
         vnp_Params['vnp_CurrCode'] = "VND";
-        vnp_Params['vnp_IpAddr'] = '127.0.0.1';
+        vnp_Params['vnp_IpAddr'] = req.ip || '127.0.0.1';
         vnp_Params['vnp_Locale'] = 'vn';
         vnp_Params['vnp_OrderInfo'] = 'vnp_OrderInfo=Thanh+toan+don+hang';
         vnp_Params['vnp_OrderType'] = "topup"

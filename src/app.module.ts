@@ -27,6 +27,7 @@ import { OrderModule } from './modules/order/order.module';
 import { APP_GUARD } from '@nestjs/core';
 import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { StoreSystemModule } from './modules/store-system/store-system.module';
+import { PaymentMethodModule } from './modules/payment-method/payment-method.module';
 @Module({
   imports: [
     CacheModule.register({
@@ -79,7 +80,8 @@ import { StoreSystemModule } from './modules/store-system/store-system.module';
     WorkerModule,
     OrderModule,
     WishlistModule,
-    StoreSystemModule
+    StoreSystemModule,
+    PaymentMethodModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [
