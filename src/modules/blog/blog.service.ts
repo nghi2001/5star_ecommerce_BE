@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { FileService } from '../file/file.service';
 import { BlogRepository } from './blog.repository';
 import { CreateBlogDTO } from './dto/createBlogDTO';
 import { UpdateBlogDTO } from './dto/updateBlogDTO';
@@ -8,7 +9,8 @@ import { Blog } from './interfaces/blog.interface';
 export class BlogService {
 
     constructor(
-        private BlogRepository: BlogRepository
+        private BlogRepository: BlogRepository,
+        private FileService: FileService
     ) { }
 
     async renderCondition(query) {
@@ -38,6 +40,16 @@ export class BlogService {
         return condition
     }
     async create(blog: CreateBlogDTO, user_id: number) {
+        if (blog.image) {
+            let checkData = await this.BlogRepository.findOne({
+                where: {
+                    image: blog.image
+                }
+            })
+            if (checkData) {
+                throw new HttpException("Image duplicate", 409);
+            }
+        }
         let newBlog = await this.BlogRepository.createBlog(blog, user_id);
 
         return newBlog;
