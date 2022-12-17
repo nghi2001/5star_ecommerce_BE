@@ -67,11 +67,7 @@ export class FileController {
     @UseGuards(JwtAuthGuard)
     @Delete("/:id")
     async destroy(@Param("id") id: number) {
-        let file = await this.FileService.getOne(id);
-        fs.unlink(file.path, async (err) => {
-            if (err) throw new HttpException("DELETE FILE", 500);
-            await this.FileService.delete(id);
-        })
-        return file;
+        let result = await this.FileService.deleteFile(id);
+        return result;
     }
 }

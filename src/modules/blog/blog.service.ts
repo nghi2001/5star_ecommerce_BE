@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { to } from 'src/common/helper/catchError';
 import { FileService } from '../file/file.service';
 import { BlogRepository } from './blog.repository';
 import { CreateBlogDTO } from './dto/createBlogDTO';
@@ -80,6 +81,7 @@ export class BlogService {
     }
     async update(id: number, data: UpdateBlogDTO) {
         let checkBlogExist = await this.checkBlogExist(id);
+        let oldImage = null;
         if (checkBlogExist) {
             let blog = await this.findOne(id);
             let updateData: Blog = {};
@@ -90,7 +92,12 @@ export class BlogService {
                 updateData.title = data.title;
             }
             if (data.image && data.image != blog.image) {
+                let checkData = await this.FileService.getOne(data.image);
+                if (!checkData) {
+                    throw new HttpException("image not exist", 404);
+                }
                 updateData.image = data.image;
+                oldImage = data.image;
             }
             if (data.slug && data.slug != blog.slug) {
                 updateData.slug = data.slug
@@ -102,10 +109,14 @@ export class BlogService {
                 updateData.content = data.content;
             }
 
-            let result = await this.BlogRepository.update({
+            let [err, result] = await to(this.BlogRepository.update({
                 id: id
-            }, updateData);
-
+            }, updateData));
+            if (err) {
+                console.log("Err Update Blog:", err);
+                throw new HttpException("Can't update blog", 500);
+            }
+            this.FileService.deleteFile(oldImage)
             return result;
         }
     }
