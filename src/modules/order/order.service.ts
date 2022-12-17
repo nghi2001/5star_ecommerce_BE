@@ -29,10 +29,17 @@ export class OrderService {
 
     async renderCondition(query) {
         let {
-
+            user_id,
+            status
         } = query;
         let condition: any = {};
-        return condition
+        if (user_id) {
+            condition.user_id = user_id;
+        }
+        if (status) {
+            condition.status = status;
+        }
+        return condition;
     }
 
     async getList(filter = {}, pagination = {}) {

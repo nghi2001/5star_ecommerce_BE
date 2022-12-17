@@ -21,7 +21,8 @@ export class OrderController {
     async shows(@Query() query) {
         let pagination = pager(query);
         let condition = await this.OrderService.renderCondition(query);
-        let data = await this.OrderService.getList();
+        let data = await this.OrderService.getList(condition, pagination);
+        return data;
     }
     @Get("/return")
     async Test(

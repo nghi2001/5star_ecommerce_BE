@@ -98,6 +98,10 @@ export class BlogService {
             if (data.status && data.status != blog.status) {
                 updateData.status = data.status;
             }
+            if (data.content && data.content != blog.content) {
+                updateData.content = data.content;
+            }
+
             let result = await this.BlogRepository.update({
                 id: id
             }, updateData);
