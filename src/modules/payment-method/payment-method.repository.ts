@@ -33,4 +33,12 @@ export class PaymentMethodRepository extends Repository<PaymentMethod> {
         });
         return { total, data }
     }
+    async findByName(name: string) {
+        let data = await this.findOne({
+            where: {
+                name: name
+            }
+        })
+        return data;
+    }
 }

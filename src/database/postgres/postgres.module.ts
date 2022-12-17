@@ -18,6 +18,7 @@ import { Order } from 'src/entity/order';
 import { OrderDetail } from 'src/entity/order _detail';
 import { Wishlish } from 'src/entity/wishlist.entity';
 import { StoreSystem } from 'src/entity/store-system.entity';
+import { PaymentMethod } from 'src/entity/payment-method.entity';
 
 @Module({
     imports: [
@@ -47,7 +48,8 @@ import { StoreSystem } from 'src/entity/store-system.entity';
                     Order,
                     OrderDetail,
                     Wishlish,
-                    StoreSystem
+                    StoreSystem,
+                    PaymentMethod
                 ],
                 synchronize: true
             }),

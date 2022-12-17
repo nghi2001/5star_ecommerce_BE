@@ -37,7 +37,7 @@ export class PaymentMethodController {
 
     @Delete(":id")
     async destroy(@Param("id") id: number) {
-        let data = await this.destroy(id);
+        let data = await this.PaymentMethosService.destroy(id);
         return data;
     }
 

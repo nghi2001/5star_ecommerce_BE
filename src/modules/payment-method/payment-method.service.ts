@@ -26,6 +26,10 @@ export class PaymentMethodService {
     }
 
     async create(dataInsert: CreatePaymentMethodDTO) {
+        let checkData = await this.PaymentMethodRepository.findByName(dataInsert.name);
+        if (checkData) {
+            throw new HttpException("name duplicate", 409);
+        }
         let [err, data] = await to(this.PaymentMethodRepository.createPaymentMethod(dataInsert));
         if (err) {
             console.log("Create Payment Method: ", err);

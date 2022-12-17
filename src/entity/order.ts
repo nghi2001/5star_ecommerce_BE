@@ -12,11 +12,9 @@ export class Order extends BaseEntity {
 
     @Column()
     user_id: number;
-    @Column({ type: 'int', nullable: true })
-    order_method_id: number
 
     @Column({ type: 'int', default: ORDER_STATUS.UNPAID })
-    order_status: ORDER_STATUS
+    status: ORDER_STATUS
     @Column({
         nullable: true
     })
@@ -41,6 +39,12 @@ export class Order extends BaseEntity {
         nullable: true
     })
     total: number
+
+    @Column()
+    payment_method_id: number;
+
+    @Column({ default: null })
+    payment_code: string;
 
     @OneToMany(() => OrderDetail, (order_detail) => order_detail.order, { onDelete: 'CASCADE' })
     details: OrderDetail[]

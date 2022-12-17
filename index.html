@@ -9,11 +9,28 @@
 <body>
 
     <script>
-        fetch("http://5starfashion.xyz:3001/internalaccount")
-        .then(data => data.json())
-        .then(data => {
-            console.log(data);
-        })
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+            });
+            // Kiểm tra cái giao dịch này có thành công hay không 00: success -> ngoài ra cho là fail 
+            if(params.vnp_ResponseCode == 00){
+                console.log('success');
+                console.log(params.vnp_TxnRef);
+                let url = 'http://localhost:3001/order/payment-success'
+                fetch(url, {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: "PUT",
+                    body: JSON.stringify({
+                        payment_code: params.vnp_TxnRef
+                    })
+                })
+                .then(data => data.json())
+                .then(data => {
+                    console.log(data);
+                })
+            }
     </script>    
 </body>
 </html>

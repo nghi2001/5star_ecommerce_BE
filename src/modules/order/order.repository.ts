@@ -24,10 +24,13 @@ export class OrderRepository extends Repository<Order> {
                     note: order.note,
                     phone: order.phone,
                     total: order.total,
-                    user_id: order.user_id
+                    user_id: order.user_id,
+                    payment_method_id: order.payment_method_id
                 }]
             )
             .execute();
+        console.log(order);
+
         return data
     }
 

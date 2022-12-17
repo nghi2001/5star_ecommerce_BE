@@ -11,6 +11,8 @@ export class OrderDetail extends BaseEntity {
     @Column()
     product_id: number;
 
+    @Column('jsonb', { default: {} })
+    product_info;
     @Column()
     quantity: number;
 

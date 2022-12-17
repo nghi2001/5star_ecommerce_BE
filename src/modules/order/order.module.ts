@@ -6,11 +6,13 @@ import { UserModule } from '../user/user.module'
 import { CouponModule } from '../coupon/coupon.module';
 import { ProductModule } from '../product/product.module';
 import { OrderDetailRepository } from './order_detail.repository';
+import { PaymentMethodModule } from '../payment-method/payment-method.module';
 @Module({
   imports: [
     UserModule,
     CouponModule,
-    ProductModule
+    ProductModule,
+    PaymentMethodModule
   ],
   controllers: [OrderController],
   providers: [OrderService, OrderRepository, OrderDetailRepository]

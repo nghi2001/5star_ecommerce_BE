@@ -58,14 +58,9 @@ export class BlogController {
         @Body(new ValidationPipe()) createData: CreateBlogDTO,
         @Req() req
     ) {
-        let {
-            content,
-            title,
-            image
-        } = createData;
         let id = req.user.id;
 
-        let newBlog = await this.BlogService.create({ content, title, image }, id);
+        let newBlog = await this.BlogService.create(createData, id);
         let blog = await this.BlogService.findOne(newBlog.raw[0].id);
 
         return blog;

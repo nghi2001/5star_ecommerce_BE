@@ -13,6 +13,8 @@ export class CreateOrderDto {
     @IsString()
     coupon?: string;
 
+    @IsInt()
+    payment_method_id
     // delivery info
     @IsString()
     name: string;

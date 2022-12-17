@@ -18,4 +18,7 @@ export class CreateBlogDTO {
     @IsEnum(BLOG_STATUS)
     @IsOptional()
     status?: BLOG_STATUS
+
+    @IsString()
+    slug: string
 }
