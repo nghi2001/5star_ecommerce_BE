@@ -17,8 +17,8 @@ import { Coupon } from 'src/entity/coupon.entity';
 import { Order } from 'src/entity/order';
 import { OrderDetail } from 'src/entity/order _detail';
 import { Wishlish } from 'src/entity/wishlist.entity';
+import { StoreSystem } from 'src/entity/store-system.entity';
 
-console.log(process.env.DB);
 @Module({
     imports: [
         TypeOrmModule.forRootAsync({
@@ -46,7 +46,8 @@ console.log(process.env.DB);
                     Coupon,
                     Order,
                     OrderDetail,
-                    Wishlish
+                    Wishlish,
+                    StoreSystem
                 ],
                 synchronize: true
             }),

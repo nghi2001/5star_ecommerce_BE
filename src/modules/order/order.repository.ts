@@ -42,7 +42,6 @@ export class OrderRepository extends Repository<Order> {
                 "user"
             ])
             .getOne()
-        console.log(order);
 
         return order
     }

@@ -199,7 +199,6 @@ export class InternalaccountService {
         let result = await this.InternalAccountRepository.update({ id }, {
             status: ACCOUNT_STATUS.ACTIVE
         })
-        console.log(result);
 
         return result;
     }

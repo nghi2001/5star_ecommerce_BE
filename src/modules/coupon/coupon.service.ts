@@ -16,7 +16,6 @@ export class CouponService {
             status,
             type
         } = query;
-        console.log(query, "nghi");
 
         let condition: any = {};
         if (code) {

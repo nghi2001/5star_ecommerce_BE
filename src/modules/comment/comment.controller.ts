@@ -41,7 +41,6 @@ export class CommentController {
         if (newComment) {
             comment = await this.CommentService.getById(newComment.raw[0].id);
         }
-        console.log(comment);
 
         return comment;
     }

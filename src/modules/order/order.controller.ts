@@ -29,12 +29,9 @@ export class OrderController {
     @Get("/:id/order-payment-vnpay/")
     async paymentVNPAY(@Param("id") id: number) {
         let order = await this.OrderService.find(id);
-        console.log(order);
         let now: Date | string = new Date();
         let refCode = moment(now).format('ymdHms');
         now = moment(now).format("YYYYMMDDHHmmss")
-
-        console.log(refCode, now);
         let vnp_Params = {};
         vnp_Params['vnp_Amount'] = 100000 * 100;
         vnp_Params['vnp_Command'] = 'pay';
@@ -56,18 +53,16 @@ export class OrderController {
         signData = querystring.stringify(vnp_Params, {
             encode: false
         });
-        console.log(signData);
 
         var crypto = require("crypto");
         var hmac = crypto.createHmac("sha512", secretKey);
         var signed = hmac.update(Buffer.from(signData, 'utf-8')).digest("hex");
-        console.log(signed);
+
         vnp_Params['vnp_SecureHash'] = signed
         signData =
             signData = querystring.stringify(vnp_Params, {
                 encode: false
             });
-        console.log(vnp_Params);
         link += signData;
         return link;
     }

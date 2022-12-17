@@ -7,7 +7,6 @@ import * as origin from './config/origin/config.json';
 import * as Fingerprint from 'express-fingerprint';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  console.log(origin.origin);
 
   app.use(Fingerprint({
     parameters: [

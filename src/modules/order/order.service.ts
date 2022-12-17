@@ -36,7 +36,6 @@ export class OrderService {
             }
             coupon_id = checkCoupon.id
         }
-        console.log(user);
 
         data.user_id = user.id;
         let order = await this.OrderRepository.createOrder(data, coupon_id);

@@ -1,11 +1,11 @@
 import { Role } from 'src/common/enum';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne, JoinColumn, BaseEntity } from 'typeorm';
 import { Blog } from './blog.entity';
 import { Comment } from './comment.entity';
 import { MediaFile } from './media.entity';
 import { Order } from './order';
 @Entity()
-export class Profile {
+export class Profile extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -41,6 +41,7 @@ export class Profile {
 
     @Column({ nullable: true })
     birth_day: string;
+
     @Column({ nullable: true })
     @CreateDateColumn()
     create_at: Date;

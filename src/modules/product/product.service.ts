@@ -122,7 +122,6 @@ export class ProductService {
         return result;
     }
     async update(id: number, update: UpdateProductDto) {
-        console.log("Nghi", update);
 
         let [err, product] = await to(this.ProductRepository.findOneBy({ id }));
         if (err) throw new HttpException("Update Product", 500);

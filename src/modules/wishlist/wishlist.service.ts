@@ -42,8 +42,6 @@ export class WishlistService {
     }
 
     async destroy(id: number) {
-        console.log(id);
-
         let data = await this.WishListRepository.delete({ id });
         return data;
     }

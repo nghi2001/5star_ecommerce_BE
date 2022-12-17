@@ -44,8 +44,6 @@ export class CommentService {
         let check = await this.checkCommentExist(id);
         if (check) {
             let comment = await this.CommentRepository.getOneComment(id);
-            console.log(comment);
-
             return comment
         }
     }

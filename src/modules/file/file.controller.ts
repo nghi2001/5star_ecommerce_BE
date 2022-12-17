@@ -68,7 +68,6 @@ export class FileController {
     @Delete("/:id")
     async destroy(@Param("id") id: number) {
         let file = await this.FileService.getOne(id);
-        console.log(file);
         fs.unlink(file.path, async (err) => {
             if (err) throw new HttpException("DELETE FILE", 500);
             await this.FileService.delete(id);

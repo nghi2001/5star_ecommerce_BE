@@ -49,7 +49,6 @@ export class CartService {
         let productKeyImg = productKey + ":image"
         let checkProductExist = await this.ProductService.checkStockExist(cart.id_product);
         if (checkProductExist) {
-            console.log(cartId);
             let prodImage = await redisClient.hset(cartId, productKeyImg, cart.image || null)
             let prodQuantity = await redisClient.hincrby(cartId, productKey, cart.quantity);
             if (Number(prodQuantity) <= 0) {
