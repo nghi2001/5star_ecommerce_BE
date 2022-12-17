@@ -28,6 +28,9 @@ export class OrderService {
     }
 
     async renderCondition(query) {
+        let {
+
+        } = query;
         let condition: any = {};
         return condition
     }

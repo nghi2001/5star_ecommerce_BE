@@ -62,6 +62,13 @@ export class ProductService {
                 price: LessThanOrEqual(price_to)
             }
         }
+        if (price_from && price_to) {
+            condition.stocks =
+            {
+                price: Between(price_from, price_to)
+            }
+
+        }
         return condition
     }
     async createProdWithoutClassify(product: productWithoutClassify) {

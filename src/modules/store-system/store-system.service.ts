@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { to } from 'src/common/helper/catchError';
 import { StoreSystem } from 'src/entity/store-system.entity';
+import { Like } from 'typeorm';
 import { CreateStoreSystemDTO } from './dto/create-store-system.dto';
 import { UpdateStoreSystemDTO } from './dto/update-store-system.dto';
 import { StoreSystemRepository } from './store-system.repository';
@@ -20,10 +21,10 @@ export class StoreSystemService {
         } = query;
         let condition: any = {}
         if (address) {
-            condition.address = address;
+            condition.address = Like(`%${address}%`);;
         }
         if (name) {
-            condition.name = name;
+            condition.name = Like(`%${name}%`);
         }
         if (email) {
             condition.email = email;
