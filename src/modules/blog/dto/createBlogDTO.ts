@@ -10,10 +10,9 @@ export class CreateBlogDTO {
     @IsNotEmpty()
     content: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsInt()
     @IsOptional()
-    image?: string
+    image?: number
 
     @IsEnum(BLOG_STATUS)
     @IsOptional()

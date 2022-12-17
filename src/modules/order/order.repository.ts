@@ -48,4 +48,19 @@ export class OrderRepository extends Repository<Order> {
 
         return order
     }
+
+    async getList(filter = {}, pagination = {}) {
+        let data = await this.find({
+            where: filter,
+            order: {
+                id: 'ASC'
+            },
+            relations: {
+                details: true,
+                user: true
+            },
+            ...pagination
+        });
+        return data;
+    }
 }

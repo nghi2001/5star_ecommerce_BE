@@ -27,6 +27,15 @@ export class OrderService {
 
     }
 
+    async renderCondition(query) {
+        let condition: any = {};
+        return condition
+    }
+
+    async getList(filter = {}, pagination = {}) {
+        let data = await this.OrderRepository.getList(filter, pagination);
+        return data;
+    }
     async create(data: CreateOrderDto, user) {
         let coupon_id = null
         if (data.coupon) {
@@ -146,7 +155,7 @@ export class OrderService {
         vnp_Params['vnp_CurrCode'] = "VND";
         vnp_Params['vnp_IpAddr'] = req.ip || '127.0.0.1';
         vnp_Params['vnp_Locale'] = 'vn';
-        vnp_Params['vnp_OrderInfo'] = 'vnp_OrderInfo=Thanh+toan+don+hang';
+        vnp_Params['vnp_OrderInfo'] = order.name || "Đơn hàng 5starshion";
         vnp_Params['vnp_OrderType'] = "topup"
         vnp_Params['vnp_ReturnUrl'] = this.ConfigService.get<string>("RETURN_URL");
         vnp_Params['vnp_TmnCode'] = this.ConfigService.get<string>("VNP_TMNCODE")

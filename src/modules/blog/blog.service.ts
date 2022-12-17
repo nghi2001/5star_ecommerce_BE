@@ -41,6 +41,10 @@ export class BlogService {
     }
     async create(blog: CreateBlogDTO, user_id: number) {
         if (blog.image) {
+            let checkExist = await this.FileService.getOne(blog.image);
+            if (!checkExist) {
+                throw new HttpException("Image not found", 404)
+            }
             let checkData = await this.BlogRepository.findOne({
                 where: {
                     image: blog.image

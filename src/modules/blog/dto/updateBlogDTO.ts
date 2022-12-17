@@ -17,10 +17,9 @@ export class UpdateBlogDTO {
     @IsOptional()
     slug?: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsInt()
     @IsOptional()
-    image?: string
+    image?: number
 
 
     @IsEnum(BLOG_STATUS)

@@ -15,7 +15,7 @@ export class Blog extends BaseEntity {
     @Column({
         nullable: true
     })
-    image: string;
+    image: number;
 
     @Column()
     user_id: number;
