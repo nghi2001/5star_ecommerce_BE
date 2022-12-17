@@ -3,13 +3,15 @@ import {
     Req, Put, UseGuards, ValidationPipe, UseInterceptors, CacheInterceptor, Query
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
-import { Role } from 'src/common/enum';
+import { Role, TYPE_ORDER } from 'src/common/enum';
+import { orderBy } from 'src/common/helper/orderBy';
 import { pager } from 'src/common/helper/paging';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CommentService } from '../comment/comment.service';
 import { BlogService } from './blog.service';
 import { CreateBlogDTO } from './dto/createBlogDTO';
+import { GetListDTO } from './dto/get-list.dto';
 import { UpdateBlogDTO } from './dto/updateBlogDTO';
 
 @Controller('blog')
@@ -44,10 +46,12 @@ export class BlogController {
     }
 
     @Get("/")
-    async shows(@Query() query) {
+    async shows(@Query(new ValidationPipe()) query: GetListDTO) {
         let pagination = pager(query);
         let condition = await this.BlogService.renderCondition(query);
-        let blogs = await this.BlogService.findAll(condition, pagination);
+        let constraintColumn = this.BlogService.constraintColumn();
+        let order = orderBy(query, constraintColumn);
+        let blogs = await this.BlogService.findAll(condition, pagination, order);
         return blogs;
     }
 

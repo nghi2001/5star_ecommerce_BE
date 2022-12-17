@@ -14,6 +14,13 @@ export class BlogService {
         private FileService: FileService
     ) { }
 
+    constraintColumn() {
+        return {
+            id: true,
+            create_at: true,
+            update_at: true
+        }
+    }
     async renderCondition(query) {
         let {
             content,
@@ -60,8 +67,8 @@ export class BlogService {
         return newBlog;
     }
 
-    async findAll(filter = {}, pagination = {}) {
-        let blogs = await this.BlogRepository.getAll(filter, pagination);
+    async findAll(filter = {}, pagination = {}, order = {}) {
+        let blogs = await this.BlogRepository.getAll(filter, pagination, order);
         return blogs;
     }
     async findOne(id: number) {

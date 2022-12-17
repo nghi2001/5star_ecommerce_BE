@@ -7,6 +7,14 @@ export class BrandService {
         private BrandRepository: BrandRepository
     ) { }
 
+    constraintColumn() {
+        return {
+            id: true,
+            name: true,
+            create_at: true,
+            update_at: true
+        }
+    }
     async renderCondition(query) {
         let {
             status,
@@ -35,8 +43,8 @@ export class BrandService {
         return result
     }
 
-    async getAll(filter, query) {
-        let data = await this.BrandRepository.getList(filter, query);
+    async getAll(filter = {}, pagination = {}, sort = {}) {
+        let data = await this.BrandRepository.getList(filter, pagination, sort);
         return data;
     }
     async getOne(id) {

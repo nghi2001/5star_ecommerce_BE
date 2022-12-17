@@ -7,6 +7,8 @@ import { BrandService } from './brand.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 import { pager } from '../../common/helper/paging';
+import { orderBy } from 'src/common/helper/orderBy';
+import { GetListDTO } from './dto/get-list.dto';
 
 @Controller('brand')
 @UseInterceptors(CacheInterceptor)
@@ -46,10 +48,12 @@ export class BrandController {
     }
 
     @Get("")
-    async shows(@Query() query) {
+    async shows(@Query(new ValidationPipe()) query: GetListDTO) {
         let pagination = pager(query);
         let conditon = await this.BrandService.renderCondition(query);
-        let data = await this.BrandService.getAll(conditon, pagination);
+        let constraintColumn = this.BrandService.constraintColumn();
+        let order = orderBy(query, constraintColumn)
+        let data = await this.BrandService.getAll(conditon, pagination, order);
         return data
     }
 

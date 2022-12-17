@@ -111,7 +111,7 @@ export class ProductRepository extends Repository<Product> {
         return product
     }
 
-    async getList(filter = {}, paginaton = {}) {
+    async getList(filter = {}, paginaton = {}, sort = {}) {
         let data = await this.find({
             where: filter,
             relations: {
@@ -121,6 +121,7 @@ export class ProductRepository extends Repository<Product> {
                 },
                 images: true
             },
+            order: sort,
             ...paginaton
         })
         let total = await this.count({

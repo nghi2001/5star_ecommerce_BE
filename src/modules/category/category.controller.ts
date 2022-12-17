@@ -1,14 +1,17 @@
 import {
     Controller,
-    Post, Get, Delete, Put, UseGuards, Body, Param, UseInterceptors, CacheInterceptor
+    Post, Get, Delete, Put, UseGuards, Body, Param, UseInterceptors, CacheInterceptor, Query
 } from '@nestjs/common';
 import { Role } from 'src/common/enum';
+import { orderBy } from 'src/common/helper/orderBy';
+import { pager } from 'src/common/helper/paging';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from '../../common/decorator/roles.decorator';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CategoryService } from './category.service';
 import { createCategoryDTO } from './dto/create-category.dto';
+import { GetListDTO } from './dto/get-list.dto';
 
 @Controller('category')
 @UseInterceptors(CacheInterceptor)
@@ -28,8 +31,12 @@ export class CategoryController {
     }
 
     @Get()
-    async show() {
-        let categorys = await this.CategoryService.getAll();
+    async show(@Query(new ValidationPipe()) query: GetListDTO) {
+        let pagination = pager(query);
+        let condition = await this.CategoryService.renderCondition(query);
+        let constraintColumn = this.CategoryService.constraintColumn();
+        let sort = orderBy(query, constraintColumn);
+        let categorys = await this.CategoryService.getAll(condition, pagination, sort);
         return categorys
     }
 

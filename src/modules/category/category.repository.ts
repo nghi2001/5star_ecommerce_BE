@@ -33,4 +33,16 @@ export class CategoryRepository extends Repository<Category> {
             .getOne()
         return result
     }
+
+    async getList(filter: {}, pagination = {}, sort = {}) {
+        let data = await this.find({
+            where: filter,
+            order: sort,
+            ...pagination
+        });
+        let total = await this.count({
+            where: filter
+        })
+        return { total, data }
+    }
 }

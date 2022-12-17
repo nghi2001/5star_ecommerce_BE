@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { MediaFile } from './media.entity';
 import { BANNER_STATUS } from 'src/common/enum';
 @Entity()
@@ -24,4 +24,12 @@ export class Banner extends BaseEntity {
     @OneToOne(() => MediaFile)
     @JoinColumn({ name: 'image' })
     media
+
+    @Column()
+    @CreateDateColumn()
+    create_at: Date
+
+    @Column()
+    @UpdateDateColumn()
+    update_at: Date
 }

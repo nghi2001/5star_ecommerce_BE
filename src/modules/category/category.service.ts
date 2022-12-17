@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { updateCategoryDTO } from './dto/update-category.dto';
 import { CategoryRepository } from './category.repository';
 import { createCategoryDTO } from './dto/create-category.dto';
 
@@ -7,6 +8,47 @@ export class CategoryService {
     constructor(
         private CategoryRepository: CategoryRepository
     ) { }
+
+    constraintColumn() {
+        return {
+            priority: true,
+            id: true,
+            name: true,
+            slug: true,
+            parent_id: true,
+            status: true
+        }
+    }
+    async renderCondition(query) {
+        let condition: any = {};
+        let {
+            priority,
+            id,
+            name,
+            slug,
+            parent_id,
+            status
+        } = query;
+        if (priority) {
+            condition.priority = priority;
+        }
+        if (id) {
+            condition.id = id;
+        }
+        if (name) {
+            condition.name = name;
+        }
+        if (slug) {
+            condition.slug = slug;
+        }
+        if (parent_id) {
+            condition.parent_id = parent_id;
+        }
+        if (status) {
+            condition.status = status;
+        }
+        return condition;
+    }
     async checkId(id) {
         if (Number(id) && id > 0) {
             return true;
@@ -35,9 +77,9 @@ export class CategoryService {
         return newCategory;
     }
 
-    async getAll() {
-        let [categorys, count] = await this.CategoryRepository.getAllCategory();
-        return [categorys, count];
+    async getAll(filter = {}, pagination = {}, sort = {}) {
+        let data = await this.CategoryRepository.getList(filter, pagination, sort);
+        return data;
     }
 
     async getOne(id) {
@@ -54,8 +96,22 @@ export class CategoryService {
         }
     }
 
-    async updateCategory(id: number, category: createCategoryDTO) {
+    async updateCategory(id: number, category: updateCategoryDTO) {
         if (this.checkId(id)) {
+            let dataUpdate: updateCategoryDTO = {};
+            let data = await this.getOne(id);
+            if (category.name && category.name != data.name) {
+                dataUpdate.name = category.name;
+            }
+            if (category.priority && category.priority != data.priority) {
+                dataUpdate.priority = category.priority;
+            }
+            if (category.slug && category.slug != data.slug) {
+                dataUpdate.slug = category.slug;
+            }
+            if (category.status && category.status != data.status) {
+                dataUpdate.status = category.status;
+            }
             let result = await this.CategoryRepository.update({ id }, category)
             return result
         }

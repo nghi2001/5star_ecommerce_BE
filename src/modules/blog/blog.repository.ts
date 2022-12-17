@@ -21,12 +21,13 @@ export class BlogRepository extends Repository<Blog> {
         return newBlog;
     }
 
-    async getAll(filter = {}, pagination = {}) {
+    async getAll(filter = {}, pagination = {}, order = {}) {
         let data = await this.find({
             where: filter,
             relations: {
                 media: true
             },
+            order: order,
             ...pagination
         });
         let total = await this.count({

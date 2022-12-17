@@ -18,6 +18,9 @@ export class Category extends BaseEntity {
     @Column({ nullable: true })
     parent_id: number;
 
+    @Column({ default: 0 })
+    priority: number;
+
     @ManyToOne(() => Category, (category) => category.sub_category)
     @JoinColumn({ name: 'parent_id' })
     parent_category: Category;

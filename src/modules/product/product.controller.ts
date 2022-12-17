@@ -1,4 +1,4 @@
-import { Body, CacheInterceptor, Controller, Delete, Get, HttpException, Param, Post, Put, Query, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Delete, Get, HttpException, Param, Post, Put, Query, Req, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -11,6 +11,10 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Role } from 'src/common/enum';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { pager } from 'src/common/helper/paging';
+import { Request } from 'express';
+import redis from 'src/config/database/redis';
+import { orderBy } from 'src/common/helper/orderBy';
+import { GetListDTO } from './dto/get-list.dto';
 
 @Controller('product')
 @UseInterceptors(CacheInterceptor)
@@ -99,7 +103,12 @@ export class ProductController {
     }
 
     @Get(":idSlug")
-    async find(@Param("idSlug") idSlug: string) {
+    async find(
+        @Param("idSlug") idSlug: string,
+        @Req() req: Request
+    ) {
+        let fingerprint: any = req.fingerprint
+        let hash = fingerprint.hash;
         let id = Number(idSlug);
         let product = null;
         if (id) {
@@ -107,13 +116,21 @@ export class ProductController {
         } else {
             product = await this.ProductService.getBySlug(idSlug);
         }
+        if (!(await redis.get(hash) == product.id)) {
+            product.views += 1;
+            await product.save();
+            await redis.set(hash, product.id, 'EX', 60)
+        }
+
         return product
     }
     @Get("")
-    async shows(@Query() query) {
+    async shows(@Query(new ValidationPipe()) query: GetListDTO) {
         let paginaton = pager(query);
         let filter = await this.ProductService.renderCondition(query);
-        let products = await this.ProductService.getAll(filter, paginaton);
+        let contraintsColumn = this.ProductService.contraintsColumn();
+        let sort = orderBy(query, contraintsColumn);
+        let products = await this.ProductService.getAll(filter, paginaton, sort);
         return products
     }
 

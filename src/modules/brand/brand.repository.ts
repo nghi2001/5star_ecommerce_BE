@@ -18,13 +18,11 @@ export class BrandRepository extends Repository<Brand> {
         return result
     }
 
-    async getList(filter = {}, pagination) {
+    async getList(filter = {}, pagination = {}, sort) {
         let data = await this.find({
             where: filter,
             ...pagination,
-            order: {
-                id: 'ASC'
-            }
+            order: sort
         })
         let total = await this.count({
             where: filter

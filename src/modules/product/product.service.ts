@@ -26,6 +26,16 @@ export class ProductService {
         private CategoryService: CategoryService
     ) { }
 
+    contraintsColumn() {
+        return {
+            id: true,
+            name: true,
+            sold: true,
+            views: true,
+            create_at: true,
+            // price: true
+        }
+    }
     async renderCondition(query) {
         let {
             id,
@@ -105,8 +115,8 @@ export class ProductService {
         }
         return true
     }
-    async getAll(filter = {}, paginaton = {}) {
-        let data = await this.ProductRepository.getList(filter, paginaton);
+    async getAll(filter = {}, paginaton = {}, sort = {}) {
+        let data = await this.ProductRepository.getList(filter, paginaton, sort);
         return data;
     }
     async getOne(id: number) {

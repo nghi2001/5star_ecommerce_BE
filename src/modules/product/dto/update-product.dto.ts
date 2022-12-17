@@ -46,4 +46,5 @@ export class UpdateProductDto {
     @IsOptional()
     id_brand?: number;
 
+    views?: number
 }

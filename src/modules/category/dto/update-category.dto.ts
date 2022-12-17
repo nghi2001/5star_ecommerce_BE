@@ -1,23 +1,22 @@
 import { IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
 
-export class createCategoryDTO {
+export class updateCategoryDTO {
     @IsString()
     @IsNotEmpty()
-    name: string;
+    @IsOptional()
+    name?: string;
 
     @IsString()
     @IsNotEmpty()
-    slug: string;
-
-    @IsInt()
-    @IsPositive()
-    status: number;
-
-    @IsInt()
-    priority: number
+    @IsOptional()
+    slug?: string;
 
     @IsInt()
     @IsPositive()
     @IsOptional()
-    parent_id?: number;
+    status?: number;
+
+    @IsInt()
+    @IsOptional()
+    priority?: number
 }
