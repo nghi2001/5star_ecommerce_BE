@@ -7,7 +7,7 @@ export class InternalAccount {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: true })
     email: string;
 
     @Column()
