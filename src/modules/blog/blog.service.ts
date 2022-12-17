@@ -116,7 +116,11 @@ export class BlogService {
                 console.log("Err Update Blog:", err);
                 throw new HttpException("Can't update blog", 500);
             }
-            this.FileService.deleteFile(oldImage)
+            // let [errDeleteFile, deletefile] = await to(this.FileService.deleteFile(oldImage));
+            // if (errDeleteFile) {
+            //     console.log(errDeleteFile);
+
+            // }
             return result;
         }
     }
