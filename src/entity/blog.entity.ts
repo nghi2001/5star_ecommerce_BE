@@ -2,6 +2,7 @@ import { BaseEntity, Column, CreateDateColumn, OneToOne, Entity, JoinColumn, Man
 import { Profile } from "./profile.entity";
 import { Comment } from "./comment.entity";
 import { MediaFile } from './media.entity';
+import { BLOG_STATUS } from "src/common/enum";
 @Entity()
 export class Blog extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -21,6 +22,9 @@ export class Blog extends BaseEntity {
 
     @Column({ nullable: true })
     slug: string;
+
+    @Column({ default: BLOG_STATUS.ACTIVE })
+    status: BLOG_STATUS;
 
     @ManyToOne(() => Profile, (profile) => profile.blogs)
     @JoinColumn({ name: "user_id" })

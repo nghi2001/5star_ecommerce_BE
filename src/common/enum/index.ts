@@ -4,7 +4,7 @@ import { BRAND_STATUS } from './brand.enum';
 import { COUPON_STATUS, TypeCoupon } from './coupon.enum';
 import { ACCOUNT_STATUS } from './account.enum';
 import { ORDER_STATUS } from './order.enum';
-
+import { BLOG_STATUS } from './blog.enum';
 
 export {
     BANNER_STATUS,
@@ -13,5 +13,6 @@ export {
     COUPON_STATUS,
     TypeCoupon,
     ACCOUNT_STATUS,
-    ORDER_STATUS
+    ORDER_STATUS,
+    BLOG_STATUS
 }

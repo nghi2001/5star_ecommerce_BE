@@ -1,4 +1,5 @@
-import { IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsString, IsEnum } from "class-validator";
+import { BLOG_STATUS } from "src/common/enum";
 
 export class UpdateBlogDTO {
     @IsString()
@@ -20,4 +21,9 @@ export class UpdateBlogDTO {
     @IsNotEmpty()
     @IsOptional()
     image?: string
+
+
+    @IsEnum(BLOG_STATUS)
+    @IsOptional()
+    status?: BLOG_STATUS
 }

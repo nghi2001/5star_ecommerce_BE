@@ -1,9 +1,10 @@
 import {
     Body, Controller, Delete, Get, Param, Post,
-    Req, Put, UseGuards, ValidationPipe, UseInterceptors, CacheInterceptor
+    Req, Put, UseGuards, ValidationPipe, UseInterceptors, CacheInterceptor, Query
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { Role } from 'src/common/enum';
+import { pager } from 'src/common/helper/paging';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { CommentService } from '../comment/comment.service';
@@ -43,8 +44,10 @@ export class BlogController {
     }
 
     @Get("/")
-    async shows() {
-        let blogs = await this.BlogService.findAll();
+    async shows(@Query() query) {
+        let pagination = pager(query);
+        let condition = await this.BlogService.renderCondition(query);
+        let blogs = await this.BlogService.findAll(condition, pagination);
         return blogs;
     }
 

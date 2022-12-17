@@ -11,14 +11,40 @@ export class BlogService {
         private BlogRepository: BlogRepository
     ) { }
 
+    async renderCondition(query) {
+        let {
+            content,
+            title,
+            slug,
+            user_id,
+            status
+        } = query;
+        let condition: any = {}
+        if (content) {
+            condition.content = content;
+        }
+        if (title) {
+            condition.title = title;
+        }
+        if (slug) {
+            condition.slug = slug;
+        }
+        if (user_id) {
+            condition.user_id = user_id;
+        }
+        if (status) {
+            condition.status = status;
+        }
+        return condition
+    }
     async create(blog: CreateBlogDTO, user_id: number) {
         let newBlog = await this.BlogRepository.createBlog(blog, user_id);
 
         return newBlog;
     }
 
-    async findAll(pagination = {}) {
-        let blogs = await this.BlogRepository.getAll({}, pagination);
+    async findAll(filter = {}, pagination = {}) {
+        let blogs = await this.BlogRepository.getAll(filter, pagination);
         return blogs;
     }
     async findOne(id: number) {
@@ -52,6 +78,9 @@ export class BlogService {
             }
             if (data.slug && data.slug != blog.slug) {
                 updateData.slug = data.slug
+            }
+            if (data.status && data.status != blog.status) {
+                updateData.status = data.status;
             }
             let result = await this.BlogRepository.update({
                 id: id
