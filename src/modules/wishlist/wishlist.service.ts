@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Wishlish } from 'src/entity/wishlist.entity';
+import { ProductService } from '../product/product.service';
 import { WishlistRepository } from './wishlist.repository';
 
 @Injectable()
 export class WishlistService {
     constructor(
-        private WishListRepository: WishlistRepository
+        private WishListRepository: WishlistRepository,
+        private ProductService: ProductService
     ) { }
 
     async renderCondition(query) {
@@ -24,6 +26,7 @@ export class WishlistService {
 
     }
     async create(data, idUser) {
+        let checkProduct = await this.ProductService.getOne(data.id_product);
         let wishlist = new Wishlish();
         wishlist.id_product = data.id_product;
         wishlist.id_user = idUser;

@@ -1,13 +1,13 @@
-import { IsEnum, IsInt, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsInt, IsNumberString, IsOptional, IsString } from "class-validator";
 import { TYPE_ORDER } from "src/common/enum";
 
 export class GetListDTO {
 
-    @IsInt()
+    @IsNumberString()
     @IsOptional()
     perPage?: number
 
-    @IsInt()
+    @IsNumberString()
     @IsOptional()
     page?: number
     @IsOptional()

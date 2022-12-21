@@ -130,6 +130,14 @@ export class ProductController {
         let filter = await this.ProductService.renderCondition(query);
         let contraintsColumn = this.ProductService.contraintsColumn();
         let sort = orderBy(query, contraintsColumn);
+        if (query.orderBy == 'price') {
+            sort = {
+                stocks: {
+                    price: query.orderType || 'ASC'
+                }
+            }
+        }
+
         let products = await this.ProductService.getAll(filter, paginaton, sort);
         return products
     }

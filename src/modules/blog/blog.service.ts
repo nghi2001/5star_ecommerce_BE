@@ -1,5 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { to } from 'src/common/helper/catchError';
+import { ILike } from 'typeorm';
 import { FileService } from '../file/file.service';
 import { BlogRepository } from './blog.repository';
 import { CreateBlogDTO } from './dto/createBlogDTO';
@@ -30,11 +31,11 @@ export class BlogService {
             status
         } = query;
         let condition: any = {}
-        if (content) {
-            condition.content = content;
-        }
+        // if (content) {
+        //     condition.content = content;
+        // }
         if (title) {
-            condition.title = title;
+            condition.title = ILike(`%${title}%`)
         }
         if (slug) {
             condition.slug = slug;
@@ -45,6 +46,8 @@ export class BlogService {
         if (status) {
             condition.status = status;
         }
+        console.log(condition);
+
         return condition
     }
     async create(blog: CreateBlogDTO, user_id: number) {

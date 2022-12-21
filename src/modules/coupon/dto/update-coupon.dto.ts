@@ -35,5 +35,5 @@ export class UpdateCouponDTO {
     @IsInt()
     @IsPositive()
     @IsOptional()
-    max_order: number;
+    max_price: number;
 }

@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Query, Req, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Delete, Get, HttpException, Param, Post, Query, Req, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { pager } from 'src/common/helper/paging';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { WishlistService } from './wishlist.service';
 
 @Controller('wishlist')
+@UseInterceptors(CacheInterceptor)
 export class WishlistController {
     constructor(
         private WishLishService: WishlistService
@@ -17,7 +18,6 @@ export class WishlistController {
     ) {
         let idUser = req.user.id;
         let result = await this.WishLishService.create(body, idUser);
-
         let data = await this.WishLishService.getOne(result.id);
         return data
     }

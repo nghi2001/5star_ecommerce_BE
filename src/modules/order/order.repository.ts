@@ -61,6 +61,12 @@ export class OrderRepository extends Repository<Order> {
             },
             ...pagination
         });
-        return data;
+        let total = await this.count({
+            where: filter
+        });
+        return {
+            total,
+            data
+        };
     }
 }

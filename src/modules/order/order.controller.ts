@@ -8,13 +8,15 @@ import { PaymentResultDTO } from './dto/payment-update.dto';
 import { ORDER_STATUS } from 'src/common/enum';
 import { to } from 'src/common/helper/catchError';
 import { pager } from 'src/common/helper/paging';
+import { ProductService } from '../product/product.service';
 
 @Controller('order')
 @UseInterceptors(CacheInterceptor)
 export class OrderController {
     constructor(
         private OrderService: OrderService,
-        private UserService: UserService
+        private UserService: UserService,
+        private ProductService: ProductService
     ) { }
 
     @Get()
@@ -24,6 +26,7 @@ export class OrderController {
         let data = await this.OrderService.getList(condition, pagination);
         return data;
     }
+
     @Get("/return")
     async Test(
         @Query() query
@@ -33,20 +36,30 @@ export class OrderController {
 
     @Put("/payment-success")
     async paymentSuccess(@Body(new ValidationPipe()) body: PaymentResultDTO) {
+        if (!body.payment_code || body.payment_code == 'null') {
+            throw new HttpException("payment code not valid", 400);
+        }
         let orders = await this.OrderService.getList({ payment_code: body.payment_code });
-        if (orders.length <= 0) {
+        if (orders.data.length <= 0) {
             throw new HttpException("Order not found", 404);
         }
-        let [err, updateResult] = await to(this.OrderService.update(orders[0].id, {
+
+        let [err, updateResult] = await to(this.OrderService.update(orders.data[0].id, {
             status: ORDER_STATUS.PAID,
             payment_code: 'null'
         }))
-        console.log(updateResult);
 
         if (err) {
             throw new HttpException("Error update order status", 500);
         }
-        let order = await this.OrderService.find(orders[0].id);
+        let order = await this.OrderService.find(orders.data[0].id);
+        for (let i of order.details) {
+            let productStock = await this.ProductService.getStockById(i.product_id);
+            let product = await this.ProductService.getOneProduct(productStock.product.id);
+            product.sold += i.quantity;
+            await product.save();
+        }
+
         return order
     }
 

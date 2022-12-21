@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import * as moment from 'moment';
-import { COUPON_STATUS } from 'src/common/enum';
+import { COUPON_STATUS, TypeCoupon } from 'src/common/enum';
 import { CouponRepository } from './coupon.repository';
 import { CreateCouponDTO } from './dto/create-coupon.dto';
 import { UpdateCouponDTO } from './dto/update-coupon.dto';
@@ -55,7 +55,7 @@ export class CouponService {
         let now = new Date();
         if (checkData) throw new HttpException("code already exits", 409);
 
-        let checkStartDate = moment.isDate(start_date) && moment(start_date).isAfter(now);
+        let checkStartDate = moment.isDate(start_date);
         let checkExpirateDate = moment.isDate(expirate_date) && moment(expirate_date).isAfter(start_date);
 
         if (!checkStartDate || !checkExpirateDate) {
@@ -111,7 +111,7 @@ export class CouponService {
             type,
             discount,
             min_order,
-            max_order,
+            max_price,
             status
         } = coupon;
         let dataUpdate: any = {};
@@ -151,8 +151,8 @@ export class CouponService {
         if (min_order && min_order != data.min_order) {
             dataUpdate.min_order = min_order;
         }
-        if (max_order && max_order != data.max_order) {
-            dataUpdate.max_order = max_order;
+        if (max_price && max_price != data.max_price) {
+            dataUpdate.max_price = max_price;
         }
         if (Object.keys(dataUpdate).length > 0) {
             await this.CouponRepository.update({ id }, dataUpdate);
@@ -166,8 +166,12 @@ export class CouponService {
         if (!coupon) {
             return new Error("coupon not correct");
         }
-        if (totalAmount > coupon.max_order || totalAmount < coupon.min_order) {
+        if (totalAmount < coupon.min_order) {
             return new Error("totalAmount can't use this coupon");
+        }
+        if (totalAmount > coupon.max_price) {
+            coupon.type = TypeCoupon.CASH;
+            coupon.discount = coupon.max_price;
         }
         let now = new Date();
         let expirateDate = new Date(coupon.expirate_date);

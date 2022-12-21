@@ -37,6 +37,9 @@ export class CategoryRepository extends Repository<Category> {
     async getList(filter: {}, pagination = {}, sort = {}) {
         let data = await this.find({
             where: filter,
+            relations: {
+                sub_category: true
+            },
             order: sort,
             ...pagination
         });

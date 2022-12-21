@@ -6,6 +6,7 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { CouponService } from './coupon.service';
 import { CreateCouponDTO } from './dto/create-coupon.dto';
+import { UpdateCouponDTO } from './dto/update-coupon.dto';
 
 @Controller('coupon')
 @UseInterceptors(CacheInterceptor)
@@ -48,7 +49,7 @@ export class CouponController {
     @Put(":id")
     async update(
         @Param('id') id: number,
-        @Body(new ValidationPipe()) body: CreateCouponDTO
+        @Body(new ValidationPipe()) body: UpdateCouponDTO
     ) {
         let data = await this.CouponService.update(id, body);
         return data;

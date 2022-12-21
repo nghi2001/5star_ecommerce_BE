@@ -18,10 +18,8 @@ export class WishlistRepository extends Repository<Wishlish> {
                 id: id
             },
             relations: {
-                stocks: {
-                    product: {
-                        images: true
-                    }
+                products: {
+                    images: true
                 }
             },
             select: [
@@ -34,10 +32,8 @@ export class WishlistRepository extends Repository<Wishlish> {
         let data = await this.find({
             where: filter,
             relations: {
-                stocks: {
-                    product: {
-                        images: true
-                    }
+                products: {
+                    images: true
                 }
             },
             order: {
