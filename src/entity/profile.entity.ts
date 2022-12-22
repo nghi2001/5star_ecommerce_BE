@@ -4,6 +4,7 @@ import { Blog } from './blog.entity';
 import { Comment } from './comment.entity';
 import { MediaFile } from './media.entity';
 import { Order } from './order';
+import { Rating } from './rating.entity';
 @Entity()
 export class Profile extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -60,5 +61,8 @@ export class Profile extends BaseEntity {
 
     @OneToOne(type => MediaFile)
     @JoinColumn({ name: "avatar_id" })
-    avatar: MediaFile
+    avatar: MediaFile;
+
+    @OneToMany(() => Rating, (rating) => rating.user)
+    ratings: Rating[]
 }

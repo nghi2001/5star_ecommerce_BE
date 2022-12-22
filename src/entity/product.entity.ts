@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, U
 import { Brand } from './brand.entity';
 import { Category } from './category.entity';
 import { MediaFile } from './media.entity';
+import { Rating } from './rating.entity';
 import { Stock } from './stock.entity';
 
 @Entity()
@@ -60,4 +61,7 @@ export class Product extends BaseEntity {
     @ManyToMany(() => MediaFile)
     @JoinTable()
     images: MediaFile[];
+
+    @OneToMany(() => Rating, (rating) => rating.product)
+    ratings: Rating[]
 }

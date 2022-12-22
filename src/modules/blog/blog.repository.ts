@@ -22,14 +22,7 @@ export class BlogRepository extends Repository<Blog> {
     }
 
     async getAll(filter: any = {}, pagination: any = {}, order = {}) {
-        let query = this.createQueryBuilder("blog")
-            .leftJoin("blog.media", "media")
-            .select([
-                "blog",
-                "media"
-            ])
-            .take(pagination.take)
-            .skip(pagination.skip)
+        let query = this.createQueryBuilder("blog");
         Object.keys(filter).forEach((key) => {
             if (filter[key]) {
                 let value: any = {};
@@ -45,8 +38,16 @@ export class BlogRepository extends Repository<Blog> {
         Object.keys(order).forEach(key => {
             query.addOrderBy(`blog.${key}`, order[key])
         })
-        let data = await query.getMany()
         let total = await query.getCount();
+        query
+            .leftJoin("blog.media", "media")
+            .select([
+                "blog",
+                "media"
+            ])
+            .take(pagination.take)
+            .skip(pagination.skip)
+        let data = await query.getMany()
         return {
             total: total,
             data: data

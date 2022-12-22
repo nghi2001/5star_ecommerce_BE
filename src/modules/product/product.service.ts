@@ -48,35 +48,38 @@ export class ProductService {
         } = query;
         let condition: any = {};
         if (id) {
-            condition.id = id;
+            condition['product.id'] = id;
         }
         if (id_brand) {
-            condition.id_brand = id_brand;
+            condition['product.id_brand'] = id_brand;
         }
         if (id_category) {
-            condition.id_category = id_category;
+            condition['product.id_category'] = id_category;
         }
         if (slug) {
-            condition.slug = Like(`%${slug}%`);
+            condition['product.slug'] = slug;
         }
         if (name) {
-            condition.name = Like(`%${name}%`);
+            condition['product.name'] = name;
         }
         if (price_from) {
-            condition.stocks = {
-                price: MoreThanOrEqual(price_from)
-            }
+            condition['stock.price'] = {};
+            condition['stock.price']['operator'] = '>=';
+            condition['stock.price']['value'] = price_from
         }
         if (price_to) {
-            condition.stocks = {
-                price: LessThanOrEqual(price_to)
-            }
+            condition['stock.price'] = {};
+            condition['stock.price']['operator'] = '<=';
+            condition['stock.price']['value'] = price_to
         }
         if (price_from && price_to) {
-            condition.stocks =
-            {
-                price: Between(price_from, price_to)
-            }
+            condition['stock.price'] = {}
+            condition['stock.price']['raw'] = `stock.price BETWEEN :from AND :to`;
+            condition['stock.price']['value'] = {
+                from: price_from,
+                to: price_to
+            };
+
 
         }
         return condition

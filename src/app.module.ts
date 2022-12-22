@@ -29,6 +29,7 @@ import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { StoreSystemModule } from './modules/store-system/store-system.module';
 import { PaymentMethodModule } from './modules/payment-method/payment-method.module';
 import { EventsModule } from './events/events.module';
+import { RatingModule } from './modules/rating/rating.module';
 @Module({
   imports: [
     CacheModule.register({
@@ -83,7 +84,8 @@ import { EventsModule } from './events/events.module';
     WishlistModule,
     StoreSystemModule,
     PaymentMethodModule,
-    EventsModule
+    EventsModule,
+    RatingModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [

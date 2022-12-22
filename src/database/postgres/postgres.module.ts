@@ -19,6 +19,7 @@ import { OrderDetail } from 'src/entity/order _detail';
 import { Wishlish } from 'src/entity/wishlist.entity';
 import { StoreSystem } from 'src/entity/store-system.entity';
 import { PaymentMethod } from 'src/entity/payment-method.entity';
+import { Rating } from 'src/entity/rating.entity';
 
 @Module({
     imports: [
@@ -49,9 +50,11 @@ import { PaymentMethod } from 'src/entity/payment-method.entity';
                     OrderDetail,
                     Wishlish,
                     StoreSystem,
-                    PaymentMethod
+                    PaymentMethod,
+                    Rating
                 ],
-                synchronize: true
+                synchronize: true,
+                // logging: true
             }),
             inject: [ConfigService]
         })

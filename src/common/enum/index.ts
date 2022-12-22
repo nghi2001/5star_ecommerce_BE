@@ -7,6 +7,7 @@ import { ORDER_STATUS } from './order.enum';
 import { BLOG_STATUS } from './blog.enum';
 import { PAYMENT_METHOD_STATUS } from './payment-methos.enum';
 import { TYPE_ORDER } from './type-order.enum';
+import { RATING_STATUS } from './rating.enum';
 
 export {
     BANNER_STATUS,
@@ -18,5 +19,6 @@ export {
     ORDER_STATUS,
     BLOG_STATUS,
     PAYMENT_METHOD_STATUS,
-    TYPE_ORDER
+    TYPE_ORDER,
+    RATING_STATUS
 }

@@ -112,21 +112,70 @@ export class ProductRepository extends Repository<Product> {
     }
 
     async getList(filter = {}, paginaton = {}, sort = {}) {
-        let data = await this.find({
-            where: filter,
-            relations: {
-                stocks: {
-                    classify_1: true,
-                    classify_2: true
-                },
-                images: true
-            },
-            order: sort,
-            ...paginaton
+        let query = await this.createQueryBuilder("product")
+            .leftJoin("product.stocks", 'stock')
+            .leftJoin("stock.classify_1", "classify_1")
+            .leftJoin("stock.classify_2", "classify_2")
+            .leftJoin("product.images", "images")
+            .select([
+                'product.id',
+                'product.name',
+                'product.description',
+                'product.slug',
+                'product.sold',
+                'product.status',
+                'product.views',
+                'product.id_category',
+                'product.id_brand',
+                'product.create_at',
+                'product.info_detail',
+                'stock.id',
+                'stock.price',
+                'stock.quantity',
+                'stock.id_classify_1',
+                'stock.id_classify_2',
+                "classify_1.attribute",
+                "classify_2.attribute",
+                "images"
+            ])
+        Object.keys(filter).forEach((key) => {
+            if (filter[key]) {
+                let value: any = {};
+                value[`${key}`] = filter[key]
+
+                if (key == 'product.name') {
+                    query.andWhere(`similarity(unaccent(${key}), unaccent(:${key})) > 0.1`, value)
+                }
+                else if (key == 'stock.price') {
+                    if (filter[key]['raw']) {
+                        query.andWhere(filter[key]['raw'], filter[key]['value'])
+                    } else {
+                        value[key] = filter[key].value;
+                        query.andWhere(`${key} ${filter[key].operator} :${key}`, value)
+                    }
+                }
+                else {
+                    query.andWhere(`${key} = :${key}`, value)
+                }
+            }
         })
-        let total = await this.count({
-            where: filter
-        })
+        let total = await query.getCount();
+        let data = await query.getMany();
+        // let data = await this.find({
+        //     where: filter,
+        //     relations: {
+        //         stocks: {
+        //             classify_1: true,
+        //             classify_2: true
+        //         },
+        //         images: true
+        //     },
+        //     order: sort,
+        //     ...paginaton
+        // })
+        // let total = await this.count({
+        //     where: filter
+        // })
         return {
             total,
             data
