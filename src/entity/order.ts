@@ -39,7 +39,8 @@ export class Order extends BaseEntity {
         nullable: true
     })
     total: number
-
+    @Column({ nullable: true })
+    product_id: number
     @Column()
     payment_method_id: number;
 

@@ -14,6 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import * as crypto from 'crypto';
 import * as querystring from 'qs';
 import { v4 } from 'uuid';
+import { In } from 'typeorm';
 @Injectable()
 export class OrderService {
     constructor(
@@ -191,5 +192,20 @@ export class OrderService {
             this.update(order_id, { payment_code: paymentCode })
         }
         return link
+    }
+
+    async checkUserIsOrder(id_user, id_products: number[]) {
+        let data = await this.OrderRepository.findOne({
+            where: {
+                user_id: id_user,
+                details: {
+                    product_id: In(id_products)
+                }
+            },
+            select: [
+                'id'
+            ]
+        })
+        return data
     }
 }

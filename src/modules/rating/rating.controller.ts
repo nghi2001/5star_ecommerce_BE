@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, Query, Req, UseGuards, ValidationPipe } from '@nestjs/common';
 import { Request } from 'express';
 import { get } from 'http';
 import { pager } from 'src/common/helper/paging';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { OrderService } from '../order/order.service';
 import { ProductService } from '../product/product.service';
 import { CreateRatingDTO } from './dto/create-rating.dto';
 import { UpdateRatingDTO } from './dto/update-rating.dto';
@@ -12,7 +13,8 @@ import { RatingService } from './rating.service';
 export class RatingController {
     constructor(
         private ProductService: ProductService,
-        private RatingService: RatingService
+        private RatingService: RatingService,
+        private OrderService: OrderService
     ) {
 
     }
@@ -25,6 +27,13 @@ export class RatingController {
         let userId = req.user.id;
         if (body.id_product) {
             let checkData = await this.ProductService.checkProdExist(body.id_product);
+            let ids = checkData.stocks.map(value => {
+                return value.id
+            })
+            let checkUserIsOrder = await this.OrderService.checkUserIsOrder(userId, ids);
+            if (!checkUserIsOrder) {
+                throw new HttpException("User is not allowed to rate", HttpStatus.FORBIDDEN)
+            }
         }
         let data = await this.RatingService.create(body, userId);
         return data;

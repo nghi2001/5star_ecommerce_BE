@@ -15,6 +15,9 @@ import { PaymentMethodModule } from '../payment-method/payment-method.module';
     PaymentMethodModule
   ],
   controllers: [OrderController],
-  providers: [OrderService, OrderRepository, OrderDetailRepository]
+  providers: [OrderService, OrderRepository, OrderDetailRepository],
+  exports: [
+    OrderService
+  ]
 })
 export class OrderModule { }

@@ -181,4 +181,21 @@ export class ProductRepository extends Repository<Product> {
             data
         }
     }
+
+    async checkproductExist(idProduct: number) {
+        let data = await this.findOne({
+            where: {
+                id: idProduct
+            },
+            relations: {
+                stocks: true
+            },
+            select: {
+                stocks: {
+                    id: true
+                }
+            }
+        })
+        return data;
+    }
 }

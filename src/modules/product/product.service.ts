@@ -256,7 +256,7 @@ export class ProductService {
         if (err) {
             throw new HttpException("id invalid", 400);
         }
-        let product = await this.ProductRepository.findOneBy({ id });
+        let product = await this.ProductRepository.checkproductExist(id);
         if (!product) {
             throw new HttpException("product not found", 404);
         }
