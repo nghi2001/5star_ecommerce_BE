@@ -49,15 +49,7 @@ export class CategoryService {
         }
         return condition;
     }
-    async checkId(id) {
-        if (Number(id) && id > 0) {
-            return true;
-        }
-        throw new HttpException("not found", 404)
-    }
     async checkExist(id: number) {
-        let [err] = await this.checkId(id).then(result => [null, result]).catch(err => [err, null]);
-        if (err) throw new HttpException("id invalid", 400);
         let category = await this.getOne(id);
         if (category) {
             return true;
@@ -83,37 +75,35 @@ export class CategoryService {
     }
 
     async getOne(id) {
-        if (this.checkId(id)) {
-            let category = await this.CategoryRepository.getOneCategory(id);
-            return category;
-        }
+        let category = await this.CategoryRepository.getOneCategory(id);
+        return category;
+
     }
 
     async deleteOne(id) {
-        if (this.checkId(id)) {
-            let result = await this.CategoryRepository.delete(id);
-            return result;
-        }
+        let result = await this.CategoryRepository.delete(id);
+        return result;
+
     }
 
     async updateCategory(id: number, category: updateCategoryDTO) {
-        if (this.checkId(id)) {
-            let dataUpdate: updateCategoryDTO = {};
-            let data = await this.getOne(id);
-            if (category.name && category.name != data.name) {
-                dataUpdate.name = category.name;
-            }
-            if (category.priority && category.priority != data.priority) {
-                dataUpdate.priority = category.priority;
-            }
-            if (category.slug && category.slug != data.slug) {
-                dataUpdate.slug = category.slug;
-            }
-            if (category.status && category.status != data.status) {
-                dataUpdate.status = category.status;
-            }
-            let result = await this.CategoryRepository.update({ id }, category)
-            return result
+
+        let dataUpdate: updateCategoryDTO = {};
+        let data = await this.getOne(id);
+        if (category.name && category.name != data.name) {
+            dataUpdate.name = category.name;
         }
+        if (category.priority && category.priority != data.priority) {
+            dataUpdate.priority = category.priority;
+        }
+        if (category.slug && category.slug != data.slug) {
+            dataUpdate.slug = category.slug;
+        }
+        if (category.status && category.status != data.status) {
+            dataUpdate.status = category.status;
+        }
+        let result = await this.CategoryRepository.update({ id }, category)
+        return result
+
     }
 }

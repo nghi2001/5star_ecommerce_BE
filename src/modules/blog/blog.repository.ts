@@ -21,21 +21,35 @@ export class BlogRepository extends Repository<Blog> {
         return newBlog;
     }
 
-    async getAll(filter = {}, pagination = {}, order = {}) {
-        let data = await this.find({
-            where: filter,
-            relations: {
-                media: true
-            },
-            order: order,
-            ...pagination
-        });
-        let total = await this.count({
-            where: filter
+    async getAll(filter: any = {}, pagination: any = {}, order = {}) {
+        let query = this.createQueryBuilder("blog")
+            .leftJoin("blog.media", "media")
+            .select([
+                "blog",
+                "media"
+            ])
+            .take(pagination.take)
+            .skip(pagination.skip)
+        Object.keys(filter).forEach((key) => {
+            if (filter[key]) {
+                let value: any = {};
+                value[`${key}`] = filter[key]
+                console.log(value);
+                if (key == 'title') {
+                    query.andWhere(`similarity(unaccent(blog.${key}),unaccent(:${key})) > 0.2`, value)
+                } else {
+                    query.andWhere(`blog.${key} = :${key}`, value)
+                }
+            }
         })
+        Object.keys(order).forEach(key => {
+            query.addOrderBy(`blog.${key}`, order[key])
+        })
+        let data = await query.getMany()
+        let total = await query.getCount();
         return {
-            data: data,
-            total: total
+            total: total,
+            data: data
         }
     }
 

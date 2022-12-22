@@ -35,7 +35,7 @@ export class BlogService {
         //     condition.content = content;
         // }
         if (title) {
-            condition.title = ILike(`%${title}%`)
+            condition.title = title
         }
         if (slug) {
             condition.slug = slug;
