@@ -41,7 +41,7 @@ services:
       - 5star_be
     command: redis-server --save 20 1 --loglevel warning
     volumes:
-      - cache:/data
+      - ./cache:/data
   worker:
     image: nguyenduynghi2001/5star_worker
     container_name: 5star_worker
