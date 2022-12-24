@@ -13,6 +13,9 @@ let transporter = nodemailer.createTransport({
     },
 })
 export default async function (job: Job, cb: DoneCallback) {
+    // for (let i = 0; i < 100000000; i++) {
+    //     console.log(i);
+    // }
     transporter.sendMail({
         from: `${process.env.MAIL}`, // sender address
         to: job.data.to, // list of receivers

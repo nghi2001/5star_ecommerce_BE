@@ -14,7 +14,7 @@ import { join } from 'path';
 })
 export class MailModule implements OnModuleInit {
     onModuleInit() {
-        console.log(process.pid);
+        console.log(process.pid, '------------NGHI');
 
     }
 }

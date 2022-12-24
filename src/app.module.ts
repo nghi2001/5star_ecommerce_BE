@@ -30,6 +30,7 @@ import { StoreSystemModule } from './modules/store-system/store-system.module';
 import { PaymentMethodModule } from './modules/payment-method/payment-method.module';
 import { EventsModule } from './events/events.module';
 import { RatingModule } from './modules/rating/rating.module';
+import { ContactModule } from './modules/contact/contact.module';
 @Module({
   imports: [
     CacheModule.register({
@@ -79,13 +80,13 @@ import { RatingModule } from './modules/rating/rating.module';
     CommentModule,
     CardModule,
     CouponModule,
-    WorkerModule,
     OrderModule,
     WishlistModule,
     StoreSystemModule,
     PaymentMethodModule,
     EventsModule,
-    RatingModule
+    RatingModule,
+    ContactModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [

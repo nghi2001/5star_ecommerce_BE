@@ -20,6 +20,7 @@ import { Wishlish } from 'src/entity/wishlist.entity';
 import { StoreSystem } from 'src/entity/store-system.entity';
 import { PaymentMethod } from 'src/entity/payment-method.entity';
 import { Rating } from 'src/entity/rating.entity';
+import { Contact } from 'src/entity/contact.entity';
 
 @Module({
     imports: [
@@ -51,7 +52,8 @@ import { Rating } from 'src/entity/rating.entity';
                     Wishlish,
                     StoreSystem,
                     PaymentMethod,
-                    Rating
+                    Rating,
+                    Contact
                 ],
                 synchronize: true,
                 // logging: true
