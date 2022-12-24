@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { to } from 'src/common/helper/catchError';
 import { CommentRepository } from './comment.repository';
 import { CreateCommentDto } from './dto/create_comment.dto';
 import { UpdateCommentDto } from './dto/update_comment.dto';
@@ -9,6 +10,28 @@ export class CommentService {
         private CommentRepository: CommentRepository
     ) {
 
+    }
+    async renderCondition(query) {
+        let {
+            blog_id,
+            user_id,
+            parent_id,
+            id
+        } = query;
+        let condition: any = {};
+        if (id) {
+            condition.id = id;
+        }
+        if (blog_id) {
+            condition.blog_id = blog_id;
+        }
+        if (user_id) {
+            condition.user_id = user_id;
+        }
+        if (parent_id) {
+            condition.parent_id = parent_id;
+        }
+        return condition;
     }
     paging(filters) {
         let options
@@ -36,6 +59,14 @@ export class CommentService {
         return newComment;
     }
 
+    async getList(filter = {}, pagination = {}) {
+        let [err, data] = await to(this.CommentRepository.getList(filter, pagination));
+        if (err) {
+            console.log(err);
+            throw new HttpException("Can't get list comment", 500);
+        }
+        return data;
+    }
     async findAll(query?: Object) {
         let comments = await this.CommentRepository.findAndCountChild();
         return comments;

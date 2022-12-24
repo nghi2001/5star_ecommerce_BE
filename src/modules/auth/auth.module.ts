@@ -18,7 +18,8 @@ import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
     UserModule,
     InternalaccountModule],
   controllers: [AuthController],
-  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy]
+  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
+  exports: [AuthService]
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

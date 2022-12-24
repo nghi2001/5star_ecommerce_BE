@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { InternalaccountService } from '../internalaccount/internalaccount.service';
 import { InjectQueue } from "@nestjs/bull";
 import { Queue } from 'bull';
+import { to } from 'src/common/helper/catchError';
 @Injectable()
 export class AuthService {
     constructor(
@@ -18,6 +19,15 @@ export class AuthService {
     ) {
     }
 
+    async verifyAccessToken(token: string) {
+        let [err, result] = await to(this.JwtService.verifyAsync(token, {
+            secret: this.ConfigService.get<string>("JWT_ACCESS_SECRET")
+        }))
+        if (err) {
+            false;
+        }
+        return result;
+    }
     async verifyPassword(password, hash) {
         let compare = await bcrypt.compare(password, hash);
         if (compare) {

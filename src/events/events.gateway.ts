@@ -1,23 +1,38 @@
+import { UseGuards } from "@nestjs/common";
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server, Socket } from 'socket.io';
-
+import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
+import { AuthService } from "src/modules/auth/auth.service";
+import redisClient from '../config/database/redis';
 @WebSocketGateway({
     cors: {
         origin: '*'
     }
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+
+    constructor(
+        private authService: AuthService
+    ) { }
     @WebSocketServer()
     server: Server;
 
-    handleConnection(client: Socket) {
-        console.log(client.id, '--------Connected');
-        client.join("chat1")
-        this.server.to('chat1').emit("newMess", { id: client.id })
+    redisPrefix = 'socket:'
+
+    @UseGuards(JwtAuthGuard)
+    async handleConnection(client: Socket) {
+        let token = (client.handshake.query.token);
+        let user = await this.authService.verifyAccessToken((token as string));
+        if (!user) {
+            return client.disconnect()
+        }
+        client.handshake.query.userId = user.id
+        await redisClient.sadd(`${this.redisPrefix}${user.id}`, [client.id]);
+        client.join(`room:${user.id}`)
     }
 
-    handleDisconnect(client: Socket) {
-        console.log(client.id, '------Disconnect');
+    async handleDisconnect(client: Socket) {
+        await redisClient.srem(this.redisPrefix + client.handshake.query.userId as string, client.id);
         client.disconnect(true);
     }
 
@@ -27,6 +42,10 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @SubscribeMessage('events')
     sendMess(client: Socket) {
 
+    }
+
+    async sendNotificationToUser(idUser, nofti) {
+        this.server.to('room:' + idUser).emit("new-notification", { data: nofti })
     }
 
     @SubscribeMessage("join-room")

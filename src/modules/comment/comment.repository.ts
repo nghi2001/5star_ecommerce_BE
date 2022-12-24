@@ -32,6 +32,24 @@ export class CommentRepository extends Repository<Comment>{
         return comment;
     }
 
+    async getList(filter = {}, pagination = {}) {
+        let data = await this.find({
+            where: filter,
+            relations: {
+                blog: true,
+                profile: true,
+                childComment: true
+            },
+            ...pagination
+        });
+        let total = await this.count({
+            where: filter
+        });
+        return {
+            total,
+            data
+        }
+    }
     async findAndCountChild() {
         let comments = await this.createQueryBuilder('comment')
             .loadRelationCountAndMap('comment.childComment', 'comment.childComment')
