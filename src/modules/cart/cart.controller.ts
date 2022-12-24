@@ -30,7 +30,13 @@ export class CartController {
         let newCart = await this.CartService.create(userId, cart);
         return newCart;
     }
-
+    @UseGuards(JwtAuthGuard)
+    @Delete("/clear-cart")
+    async clearCart(@Req() req) {
+        let userId = req.user.id;
+        let result = await this.CartService.clearCart(userId);
+        return result;
+    }
     @UseGuards(JwtAuthGuard)
     @Delete(":id")
     async destroy(

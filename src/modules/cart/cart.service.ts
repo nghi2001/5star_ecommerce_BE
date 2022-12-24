@@ -75,4 +75,11 @@ export class CartService {
         }
         return result
     }
+
+    async clearCart(idUser: number) {
+        let cartId = `${this.prefixCart}${idUser}`;
+        let [err, result] = await to(redisClient.del([cartId]));
+        if (err) console.log(err);
+        return result;
+    }
 }
