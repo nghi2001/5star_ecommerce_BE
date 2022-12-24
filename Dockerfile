@@ -6,5 +6,5 @@ COPY . .
 EXPOSE 3001
 RUN npm install -g @nestjs/cli@8.0.0
 RUN npm run build
-RUN npm install --force --omit=dev
+RUN npm install --force --omit=production
 CMD ["npm","run","start:prod"]

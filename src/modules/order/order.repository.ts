@@ -1,15 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { Repository, DataSource } from "typeorm";
+import { Repository, DataSource, In } from "typeorm";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { Order } from "src/entity/order";
 
 @Injectable()
 export class OrderRepository extends Repository<Order> {
-
+    dataSource: DataSource
     constructor(
         dataSource: DataSource
     ) {
         super(Order, dataSource.createEntityManager())
+        this.dataSource = dataSource;
     }
 
     async createOrder(order: CreateOrderDto, coupon_id = null) {
@@ -32,6 +33,19 @@ export class OrderRepository extends Repository<Order> {
         console.log(order);
 
         return data
+    }
+
+    createOrderObject(data: CreateOrderDto, coupon_id = null) {
+        let order = new Order();
+        order.address = data.address;
+        order.coupon_id = coupon_id;
+        order.name = data.name;
+        order.note = data.note;
+        order.phone = data.phone;
+        order.total = data.total;
+        order.user_id = data.user_id;
+        order.payment_method_id = data.payment_method_id;
+        return order;
     }
 
     async getOne(id: number) {
@@ -68,5 +82,20 @@ export class OrderRepository extends Repository<Order> {
             total,
             data
         };
+    }
+
+    async checkUserIsOrder(id_user, id_products) {
+        let data = await this.findOne({
+            where: {
+                user_id: id_user,
+                details: {
+                    product_id: In(id_products)
+                }
+            },
+            select: [
+                'id'
+            ]
+        })
+        return data
     }
 }

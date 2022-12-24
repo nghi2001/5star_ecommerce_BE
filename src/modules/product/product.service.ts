@@ -193,7 +193,7 @@ export class ProductService {
             if (price && price != checkStock.price) {
                 dataInsert.price = price;
             }
-            if (quantity && quantity != checkStock.quantity) {
+            if (quantity != checkStock.quantity) {
                 dataInsert.quantity = quantity;
             }
             let [err, updateResult] = await to(this.StockRepository.update({ id }, dataInsert));

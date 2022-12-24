@@ -14,7 +14,10 @@ import { ConfigService } from '@nestjs/config';
 import * as crypto from 'crypto';
 import * as querystring from 'qs';
 import { v4 } from 'uuid';
-import { In } from 'typeorm';
+import { In, DataSource } from 'typeorm';
+import { Order } from 'src/entity/order';
+import { OrderDetail } from 'src/entity/order _detail';
+import { to } from 'src/common/helper/catchError';
 @Injectable()
 export class OrderService {
     constructor(
@@ -48,10 +51,14 @@ export class OrderService {
         return data;
     }
     async create(data: CreateOrderDto, user) {
+        const queryRunner = this.OrderRepository.dataSource.createQueryRunner();
+        await queryRunner.startTransaction()
         let coupon_id = null
         if (data.coupon) {
             let checkCoupon = await this.CouponService.checkCoupon(data.coupon, data.total)
             if (checkCoupon instanceof Error) {
+                await queryRunner.rollbackTransaction()
+                await queryRunner.release();
                 throw new HttpException(checkCoupon.message, 400);
             }
             if (checkCoupon.type == TypeCoupon.CASH) {
@@ -65,22 +72,30 @@ export class OrderService {
         }
         let checkPaymetMethod = await this.PaymentMethodService.getOne(data.payment_method_id);
         if (!checkPaymetMethod) {
+            await queryRunner.rollbackTransaction();
+            await queryRunner.release();
             throw new HttpException("payment_method_id not found", 404);
         }
         data.user_id = user.id;
-        let order = await this.OrderRepository.createOrder(data, coupon_id);
+        let orderObj = this.OrderRepository.createOrderObject(data, coupon_id);
+        let [errCreateOrder, order] = await to(queryRunner.manager.save(orderObj));
+        if (errCreateOrder) {
+            await queryRunner.rollbackTransaction();
+            await queryRunner.release();
+            throw new HttpException("Can't create order", 500);
+        }
         let listOrderDetail = [];
         let productInserted = []
         for (let item of data.products) {
             let product = await this.productService.getStockById(item.id_product);
-
             if (product) {
                 if (item.quantity > product.quantity) {
-                    this.OrderRepository.delete({ id: order.raw[0].id });
+                    await queryRunner.rollbackTransaction();
+                    await queryRunner.release();
                     throw new HttpException(`Product ${product.id} out of stock`, 400);
                 }
                 listOrderDetail.push({
-                    order_id: order.raw[0].id,
+                    order_id: order.id,
                     product_id: product.id,
                     quantity: item.quantity,
                     product_info: product,
@@ -93,14 +108,32 @@ export class OrderService {
             }
         }
         if (listOrderDetail.length == 0) {
-            this.OrderRepository.delete({ id: order.raw[0].id });
+            await queryRunner.rollbackTransaction();
+            await queryRunner.release();
             throw new HttpException("can't create order", 400)
         }
-        let orderDetail = await this.OrderDetailRepository.createOrderDetail(listOrderDetail);
+        try {
+            await queryRunner.manager.createQueryBuilder()
+                .insert()
+                .into(OrderDetail)
+                .values(listOrderDetail)
+                .execute()
+        } catch (error) {
+            await queryRunner.rollbackTransaction();
+            await queryRunner.release();
+            throw new HttpException("Can't create order", 500);
+        };
         for (let e of productInserted) {
-            await this.productService.updateStock(e.id, { quantity: e.quantity })
+            let [err, data] = await to(this.productService.updateStock(e.id, { quantity: e.quantity }));
+            if (err) {
+                await queryRunner.rollbackTransaction();
+                await queryRunner.release();
+                throw new HttpException("Can't create order", 500)
+            }
         }
-        let dataResponse = await this.OrderRepository.getOne(order.raw[0].id);
+        await queryRunner.commitTransaction();
+        await queryRunner.release();
+        let dataResponse = await this.OrderRepository.getOne(order.id);
         return dataResponse
     }
 
@@ -157,7 +190,7 @@ export class OrderService {
         }
         let now: Date | string = new Date();
         let paymentCode = v4();
-        let refCode = moment(now).format('ymdHms');
+        // let refCode = moment(now).format('ymdHms');
         now = moment(now).format("YYYYMMDDHHmmss")
         let vnp_Params = {};
         vnp_Params['vnp_Amount'] = order.total * 100;
@@ -195,17 +228,7 @@ export class OrderService {
     }
 
     async checkUserIsOrder(id_user, id_products: number[]) {
-        let data = await this.OrderRepository.findOne({
-            where: {
-                user_id: id_user,
-                details: {
-                    product_id: In(id_products)
-                }
-            },
-            select: [
-                'id'
-            ]
-        })
+        let data = await this.OrderRepository.checkUserIsOrder(id_user, id_products);
         return data
     }
 }
