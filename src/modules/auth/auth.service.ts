@@ -37,6 +37,7 @@ export class AuthService {
     }
     async SigIn(data: AuthDTO, deviceInfo, hashAndIp) {
         let user = await this.InternalAccountService.checkAccountExist(data.username);
+        // console.log(user);
         let verifyPass = await this.verifyPassword(data.password, user.password);
 
         if (verifyPass) {

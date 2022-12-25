@@ -23,6 +23,8 @@ import { Rating } from 'src/entity/rating.entity';
 import { Contact } from 'src/entity/contact.entity';
 import { Notify } from 'src/entity/notify.entity';
 import { Notify_User } from 'src/entity/notify_user.entity';
+import { FBAccount } from 'src/entity/fbaccount.entity';
+import { GGAccount } from 'src/entity/ggaccount.entity';
 
 @Module({
     imports: [
@@ -57,7 +59,9 @@ import { Notify_User } from 'src/entity/notify_user.entity';
                     Rating,
                     Contact,
                     Notify,
-                    Notify_User
+                    Notify_User,
+                    FBAccount,
+                    GGAccount
                 ],
                 synchronize: true,
                 // logging: true

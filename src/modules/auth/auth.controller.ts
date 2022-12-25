@@ -29,7 +29,7 @@ export class AuthController {
         let tokens = await this.AuthService.SigIn(AuthDTO, device_info, hashAndIp);
         res.cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
-            maxAge: 60 * 60 * 24 * 10,
+            maxAge: 1000 * 60 * 60 * 24 * 10,
             domain: this.ConfigService.get<string>("FRONTEND_DOMAIN")
         });
         let user = await this.InternalAccountService.getUserInfo(AuthDTO.username);
@@ -54,7 +54,7 @@ export class AuthController {
         if (!user.refresh_token[hashAndIp]) {
             throw new HttpException("Forbiden", HttpStatus.FORBIDDEN);
         }
-        if (user.refresh_token[hashAndIp].refreshToken !== req.user.refreshToken) {
+        if (user.refresh_token[hashAndIp].refreshToken != req.user.refreshToken) {
             throw new HttpException("token not valid", HttpStatus.NOT_FOUND);
         }
 
@@ -64,6 +64,7 @@ export class AuthController {
 
         res.cookie("refreshToken", token.refreshToken, {
             httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24 * 10,
             domain: this.ConfigService.get<string>('FRONTEND_DOMAIN')
         })
         res.json({

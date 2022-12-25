@@ -32,6 +32,8 @@ import { EventsModule } from './events/events.module';
 import { RatingModule } from './modules/rating/rating.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { NotifyModule } from './modules/notify/notify.module';
+import { FbAccountModule } from './modules/fb-account/fb-account.module';
+import { GgAccountModule } from './modules/gg-account/gg-account.module';
 @Module({
   imports: [
     CacheModule.register({
@@ -88,7 +90,9 @@ import { NotifyModule } from './modules/notify/notify.module';
     EventsModule,
     RatingModule,
     ContactModule,
-    NotifyModule
+    NotifyModule,
+    FbAccountModule,
+    GgAccountModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [
