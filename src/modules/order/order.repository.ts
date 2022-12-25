@@ -117,4 +117,13 @@ export class OrderRepository extends Repository<Order> {
         let sum = await query.getRawOne();
         return sum
     }
+
+    async countStatistic(filter = {}) {
+        let data = await this.count({
+            where: filter,
+        })
+        // console.log(filter);
+
+        return data;
+    }
 }

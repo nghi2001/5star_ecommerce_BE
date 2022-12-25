@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { TypeCoupon } from 'src/common/enum';
+import { TypeCoupon, TYPE_ORDER } from 'src/common/enum';
 import { CouponService } from '../coupon/coupon.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderRepository } from './order.repository';
@@ -18,6 +18,7 @@ import { In, DataSource } from 'typeorm';
 import { Order } from 'src/entity/order';
 import { OrderDetail } from 'src/entity/order _detail';
 import { to } from 'src/common/helper/catchError';
+import { FilterFromToCreate } from 'src/common/helper/filter-from-to';
 @Injectable()
 export class OrderService {
     constructor(
@@ -34,7 +35,9 @@ export class OrderService {
     async renderCondition(query) {
         let {
             user_id,
-            status
+            status,
+            created_from,
+            created_to
         } = query;
         let condition: any = {};
         if (user_id) {
@@ -43,6 +46,9 @@ export class OrderService {
         if (status) {
             condition.status = status;
         }
+        if (created_from || created_to) {
+            condition = FilterFromToCreate(created_from, created_to, condition);
+        };
         return condition;
     }
 
@@ -244,5 +250,22 @@ export class OrderService {
     async count() {
         let count = await this.OrderRepository.count({});
         return count
+    }
+
+    async countStatistic(filter: any = {}) {
+        let result = [];
+        let keys = Object.keys(ORDER_STATUS).filter(v => isNaN(Number(v)));
+        let values = Object.keys(ORDER_STATUS).filter(v => !isNaN(Number(v)));
+        for (let [ind, key] of keys.entries()) {
+            filter.status = values[ind];
+            let count = await this.OrderRepository.countStatistic(filter)
+            result.push({
+                type: values[ind],
+                key: key,
+                total: count
+            })
+        }
+        return result;
+
     }
 }

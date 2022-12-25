@@ -20,6 +20,16 @@ export class OrderController {
         private UserService: UserService,
         private ProductService: ProductService
     ) { }
+
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+    @Get("/count-statistic")
+    async countStatistic(@Query() query) {
+        let condition = await this.OrderService.renderCondition(query);
+        let data = await this.OrderService.countStatistic(condition);
+        return data
+    }
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN, Role.SUPER_ADMIN)
     @Get("/count")
