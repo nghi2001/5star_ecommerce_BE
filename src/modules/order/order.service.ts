@@ -19,6 +19,7 @@ import { Order } from 'src/entity/order';
 import { OrderDetail } from 'src/entity/order _detail';
 import { to } from 'src/common/helper/catchError';
 import { FilterFromToCreate } from 'src/common/helper/filter-from-to';
+import { StatisticFromTo } from './dto/statisticfromto.dto';
 @Injectable()
 export class OrderService {
     constructor(
@@ -51,7 +52,6 @@ export class OrderService {
             if (created_to && !moment.isDate(new Date(created_to))) throw new Error("Date Invalid b")
             condition = FilterFromToCreate(created_from, created_to, condition);
         };
-
         return condition;
     }
 
@@ -269,6 +269,32 @@ export class OrderService {
             })
         }
         return result;
+
+    }
+    async statisticFromTo(data: StatisticFromTo) {
+        let dateFrom = new Date(data.date_from);
+        let dateTo = new Date(data.date_to);
+        if (!moment.isDate(dateFrom)) {
+            throw new HttpException("Date from invalid", 400)
+        }
+        if (!moment.isDate(dateTo)) {
+            throw new HttpException("Date to invalid", 400)
+        }
+        let result = [];
+        let date = data.date_from
+        while (true) {
+            let filter = FilterFromToCreate(date, date, {});
+            let sum = await this.OrderRepository.sumByDateBetween(filter.create_at._value);
+            result.push({
+                date: date,
+                total: sum.sum || 0
+            })
+            date = moment(new Date(date)).add(1, "days").format("MM/DD/YYYY")
+            if (moment(new Date(date)).isAfter(new Date(data.date_to))) {
+                break;
+            }
+        }
+        return result
 
     }
 }

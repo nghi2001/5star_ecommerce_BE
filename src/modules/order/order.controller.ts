@@ -11,6 +11,7 @@ import { pager } from 'src/common/helper/paging';
 import { ProductService } from '../product/product.service';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/common/decorator/roles.decorator';
+import { StatisticFromTo } from './dto/statisticfromto.dto';
 
 @Controller('order')
 @UseInterceptors(CacheInterceptor)
@@ -21,6 +22,17 @@ export class OrderController {
         private ProductService: ProductService
     ) { }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+    @Get("/statistic-from-to")
+    async countStatisticFromTo(@Query(new ValidationPipe()) query: StatisticFromTo) {
+        let [err, data] = await to(this.OrderService.statisticFromTo(query));
+        if (err) {
+            console.log(err);
+            return []
+        }
+        return data
+    }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN, Role.SUPER_ADMIN)

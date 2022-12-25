@@ -121,9 +121,17 @@ export class OrderRepository extends Repository<Order> {
     async countStatistic(filter = {}) {
         let data = await this.count({
             where: filter,
-        })
-        // console.log(filter);
+        });
 
         return data;
+    }
+
+    async sumByDateBetween(date) {
+        let sum = await this.createQueryBuilder("order")
+            .where("order.create_at BETWEEN :date AND :dateTo", { date: date[0], dateTo: date[1] })
+            .select("SUM(order.total)", "sum")
+            .getRawOne()
+
+        return sum
     }
 }
