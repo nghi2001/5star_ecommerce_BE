@@ -1,8 +1,12 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, Query, Req, UseGuards, ValidationPipe } from '@nestjs/common';
 import { Request } from 'express';
 import { get } from 'http';
+import { Roles } from 'src/common/decorator/roles.decorator';
+import { Role } from 'src/common/enum';
+import { to } from 'src/common/helper/catchError';
 import { pager } from 'src/common/helper/paging';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { OrderService } from '../order/order.service';
 import { ProductService } from '../product/product.service';
 import { CreateRatingDTO } from './dto/create-rating.dto';
@@ -18,7 +22,19 @@ export class RatingController {
     ) {
 
     }
-
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+    @Get("/count")
+    async countRate() {
+        let [err, count] = await to(this.RatingService.countRate());
+        if (err) {
+            console.log("Err Count Rate", err);
+            return null
+        }
+        return {
+            total: count
+        }
+    }
     @UseGuards(JwtAuthGuard)
     @Post()
     async create(

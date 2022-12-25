@@ -5,10 +5,12 @@ import { OrderService } from './order.service';
 import { UserService } from '../user/user.service';
 import { UpdateStatusDTO } from './dto/update-status.dto';
 import { PaymentResultDTO } from './dto/payment-update.dto';
-import { ORDER_STATUS } from 'src/common/enum';
+import { ORDER_STATUS, Role } from 'src/common/enum';
 import { to } from 'src/common/helper/catchError';
 import { pager } from 'src/common/helper/paging';
 import { ProductService } from '../product/product.service';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/common/decorator/roles.decorator';
 
 @Controller('order')
 @UseInterceptors(CacheInterceptor)
@@ -19,6 +21,15 @@ export class OrderController {
         private ProductService: ProductService
     ) { }
 
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+    @Get("/sum")
+    async sumOrder(@Query() query) {
+        let condition = await this.OrderService.renderCondition(query);
+        let sum = await this.OrderService.sumOrder(condition);
+        if (!sum.sum) sum.sum = 0
+        return sum
+    }
     @Get()
     async shows(@Query() query) {
         let pagination = pager(query);

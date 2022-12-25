@@ -77,4 +77,9 @@ export class RatingService {
             data
         }
     }
+
+    async countRate() {
+        let count = await this.RatingRepository.count({});
+        return count;
+    }
 }

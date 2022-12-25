@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Repository, DataSource, In } from "typeorm";
+import { Repository, DataSource, In, SubjectRemovedAndUpdatedError } from "typeorm";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { Order } from "src/entity/order";
 
@@ -97,5 +97,20 @@ export class OrderRepository extends Repository<Order> {
             ]
         })
         return data
+    }
+
+    async sumOrder(filter = {}) {
+        let query = await this.createQueryBuilder("order");
+        Object.keys(filter).forEach(key => {
+            if (filter[key]) {
+                let value: any = {};
+                value[`${key}`] = filter[key];
+                query.andWhere(`${key} = :${key}`, value)
+            }
+            console.log(key);
+        });
+        query.select("SUM(order.total)", "sum")
+        let sum = await query.getRawOne();
+        return sum
     }
 }

@@ -15,6 +15,7 @@ import { Request } from 'express';
 import redis from 'src/config/database/redis';
 import { orderBy } from 'src/common/helper/orderBy';
 import { GetListDTO } from './dto/get-list.dto';
+import { to } from 'src/common/helper/catchError';
 
 @Controller('product')
 @UseInterceptors(CacheInterceptor)
@@ -23,6 +24,18 @@ export class ProductController {
         private ProductService: ProductService,
         private MediaService: FileService
     ) { }
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+    @Get("/count")
+    async countProduct() {
+        let [err, count] = await to(this.ProductService.countProduct());
+        if (err) {
+            console.log("Err Count Product", err);
+            return null;
+        }
+        return { total: count };
+    }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN)

@@ -231,4 +231,9 @@ export class OrderService {
         let data = await this.OrderRepository.checkUserIsOrder(id_user, id_products);
         return data
     }
+
+    async sumOrder(condition = {}) {
+        let sum = await this.OrderRepository.sumOrder(condition);
+        return sum;
+    }
 }

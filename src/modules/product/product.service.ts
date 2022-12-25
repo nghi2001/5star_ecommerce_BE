@@ -298,4 +298,9 @@ export class ProductService {
         }
         return data;
     }
+
+    async countProduct() {
+        let count = await this.ProductRepository.count({});
+        return count;
+    }
 }
