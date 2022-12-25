@@ -1,3 +1,4 @@
+import { STATUS_COMMENT } from "src/common/enum";
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Blog } from "./blog.entity";
 import { Profile } from "./profile.entity";
@@ -18,6 +19,9 @@ export class Comment extends BaseEntity {
 
     @Column()
     blog_id: number;
+
+    @Column({ default: STATUS_COMMENT.ACTIVE })
+    status: STATUS_COMMENT
 
     @ManyToOne((type) => Comment, (comment) => comment.childComment)
     @JoinColumn({ name: "parent_id" })

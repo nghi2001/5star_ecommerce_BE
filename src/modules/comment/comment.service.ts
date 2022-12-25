@@ -101,6 +101,9 @@ export class CommentService {
             if (data.body && data.body != comment.body) {
                 updateData.body = data.body
             }
+            if (data.status && data.status != comment.status) {
+                updateData.status = data.status
+            }
             if (Object.keys(updateData).length == 0) {
                 return false
             }

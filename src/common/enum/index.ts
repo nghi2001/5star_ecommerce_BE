@@ -9,6 +9,7 @@ import { PAYMENT_METHOD_STATUS } from './payment-methos.enum';
 import { TYPE_ORDER } from './type-order.enum';
 import { RATING_STATUS } from './rating.enum';
 import { TYPE_NOTIFY } from './notify.enum';
+import { STATUS_COMMENT } from './comment.enum';
 export {
     BANNER_STATUS,
     Role,
@@ -21,5 +22,6 @@ export {
     PAYMENT_METHOD_STATUS,
     TYPE_ORDER,
     RATING_STATUS,
-    TYPE_NOTIFY
+    TYPE_NOTIFY,
+    STATUS_COMMENT
 }

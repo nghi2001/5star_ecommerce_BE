@@ -1,4 +1,5 @@
-import { IsIn, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsEnum, IsIn, IsInt, IsNotEmpty, IsOptional, IsPositive, IsString } from "class-validator";
+import { STATUS_COMMENT } from "src/common/enum";
 
 export class UpdateCommentDto {
     @IsString()
@@ -20,4 +21,8 @@ export class UpdateCommentDto {
     @IsPositive()
     @IsOptional()
     blog_id?: number;
+
+    @IsEnum(STATUS_COMMENT)
+    @IsOptional()
+    status?: STATUS_COMMENT
 }
