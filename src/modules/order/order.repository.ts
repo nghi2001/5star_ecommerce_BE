@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Repository, DataSource, In, SubjectRemovedAndUpdatedError } from "typeorm";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { Order } from "src/entity/order";
+import { ORDER_STATUS } from "src/common/enum";
 
 @Injectable()
 export class OrderRepository extends Repository<Order> {
@@ -35,8 +36,11 @@ export class OrderRepository extends Repository<Order> {
         return data
     }
 
-    createOrderObject(data: CreateOrderDto, coupon_id = null) {
+    createOrderObject(data: CreateOrderDto, coupon_id = null, status: ORDER_STATUS) {
         let order = new Order();
+        if (status) {
+            order.status = status;
+        }
         order.address = data.address;
         order.coupon_id = coupon_id;
         order.name = data.name;

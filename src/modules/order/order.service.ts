@@ -77,7 +77,11 @@ export class OrderService {
             throw new HttpException("payment_method_id not found", 404);
         }
         data.user_id = user.id;
-        let orderObj = this.OrderRepository.createOrderObject(data, coupon_id);
+        let status = null
+        if (data.payment_method_id == 1) {
+            status = ORDER_STATUS.NO_PROCESS;
+        }
+        let orderObj = this.OrderRepository.createOrderObject(data, coupon_id, status);
         let [errCreateOrder, order] = await to(queryRunner.manager.save(orderObj));
         if (errCreateOrder) {
             await queryRunner.rollbackTransaction();
@@ -235,5 +239,10 @@ export class OrderService {
     async sumOrder(condition = {}) {
         let sum = await this.OrderRepository.sumOrder(condition);
         return sum;
+    }
+
+    async count() {
+        let count = await this.OrderRepository.count({});
+        return count
     }
 }

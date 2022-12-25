@@ -20,7 +20,21 @@ export class OrderController {
         private UserService: UserService,
         private ProductService: ProductService
     ) { }
-
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+    @Get("/count")
+    async count() {
+        let [err, count] = await to(this.OrderService.count());
+        if (err) {
+            console.log("err count order", err);
+            return {
+                total: 0
+            }
+        }
+        return {
+            total: count
+        }
+    }
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.ADMIN, Role.SUPER_ADMIN)
     @Get("/sum")
@@ -56,7 +70,7 @@ export class OrderController {
         }
 
         let [err, updateResult] = await to(this.OrderService.update(orders.data[0].id, {
-            status: ORDER_STATUS.PAID,
+            status: ORDER_STATUS.NO_PROCESS,
             payment_code: 'null'
         }))
 

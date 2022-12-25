@@ -13,7 +13,7 @@ export class Order extends BaseEntity {
     @Column()
     user_id: number;
 
-    @Column({ type: 'int', default: ORDER_STATUS.UNPAID })
+    @Column({ type: 'int', default: ORDER_STATUS.UN_PAID })
     status: ORDER_STATUS
     @Column({
         nullable: true
