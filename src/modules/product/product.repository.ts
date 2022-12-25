@@ -111,7 +111,7 @@ export class ProductRepository extends Repository<Product> {
         return product
     }
 
-    async getList(filter = {}, paginaton = {}, sort = {}) {
+    async getList(filter = {}, paginaton: any = {}, sort = {}) {
         let query = await this.createQueryBuilder("product")
             .leftJoin("product.stocks", 'stock')
             .leftJoin("stock.classify_1", "classify_1")
@@ -160,6 +160,10 @@ export class ProductRepository extends Repository<Product> {
             }
         })
         let total = await query.getCount();
+        query
+            .take(paginaton.take)
+            .skip(paginaton.skip)
+        // .orderBy()
         let data = await query.getMany();
         // let data = await this.find({
         //     where: filter,

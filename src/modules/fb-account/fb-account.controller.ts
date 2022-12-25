@@ -28,7 +28,7 @@ export class FbAccountController {
         if (!checkData) {
             let account = await this.fbAccountService.createAccount(userInfo.id, userInfo.name)
             let profile = await this.UserService.findOne(account.id_profile);
-            let tokens = await this.AuthService.getTokens({ id: profile.id, roles: profile.roles, name: profile.first_name })
+            let tokens = await this.AuthService.getTokens({ id: profile.id, roles: profile.roles, name: profile.first_name }, 1)
             res.cookie("refreshToken", tokens.refreshToken, {
                 httpOnly: true,
                 maxAge: 1000 * 60 * 60 * 24 * 10,
