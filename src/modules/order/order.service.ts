@@ -48,8 +48,8 @@ export class OrderService {
             condition.status = status;
         }
         if (created_from || created_to) {
-            if (created_from && !moment.isDate(new Date(created_from))) throw new Error("Date Invalid a")
-            if (created_to && !moment.isDate(new Date(created_to))) throw new Error("Date Invalid b")
+            if (created_from && !moment(new Date(created_from)).isValid()) throw new Error("Date Invalid a")
+            if (created_to && !moment(new Date(created_to)).isValid()) throw new Error("Date Invalid b")
             condition = FilterFromToCreate(created_from, created_to, condition);
         };
         return condition;
@@ -274,10 +274,10 @@ export class OrderService {
     async statisticFromTo(data: StatisticFromTo) {
         let dateFrom = new Date(data.date_from);
         let dateTo = new Date(data.date_to);
-        if (!moment.isDate(dateFrom)) {
+        if (!moment(dateFrom).isValid()) {
             throw new HttpException("Date from invalid", 400)
         }
-        if (!moment.isDate(dateTo)) {
+        if (!moment(dateTo).isValid()) {
             throw new HttpException("Date to invalid", 400)
         }
         let result = [];
