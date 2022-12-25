@@ -20,6 +20,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     redisPrefix = 'socket:'
 
+    users = new Map();
+
     @UseGuards(JwtAuthGuard)
     async handleConnection(client: Socket) {
         let token = (client.handshake.query.token);
@@ -28,12 +30,27 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
             return client.disconnect()
         }
         client.handshake.query.userId = user.id;
-        await redisClient.sadd(`${this.redisPrefix}${user.id}`, [client.id]);
+        // await redisClient.sadd(`${this.redisPrefix}${user.id}`, [client.id]);
+        if (!this.users.get(`room:${user.id}`)) {
+            let setUser = new Set();
+            setUser.add(client.id);
+            this.users.set('room:' + user.id, setUser)
+        } else {
+            let setUser = this.users.get('room:' + user.id);
+            setUser.add(client.id);
+            this.users.set('room:' + user.id, setUser);
+        }
+        console.log(this.users);
+
         client.join(`room:${user.id}`)
     }
 
     async handleDisconnect(client: Socket) {
-        await redisClient.srem(this.redisPrefix + client.handshake.query.userId as string, client.id);
+        let setUser = this.users.get('room:' + client.handshake.query.userId);
+        setUser.delete(client.id)
+        if (this.users.get('room:' + client.handshake.query.userId).size <= 0) {
+            this.users.delete('room:' + client.handshake.query.userId)
+        }
         client.disconnect(true);
     }
 

@@ -13,7 +13,7 @@
       let input = document.querySelector("#a");
       const socket = io('http://localhost:3001', {
         query: {
-          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZXMiOlsidXNlciIsImFkbWluIl0sImlhdCI6MTY3MTg0NTkzOSwiZXhwIjoxNjcyNDUwNzM5fQ.KwXBIICWMpeUm2oWXGZAhsUqB2prKpFqPuO2Pr6L0Uc'
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZXMiOlsidXNlciIsImFkbWluIiwic3VwZXJfYWRtaW4iXSwibmFtZSI6Im5ndXllbmR1eW5naGkyMDAxQGdtYWlsLmNvbSIsImlhdCI6MTY3MTk3MTE4NiwiZXhwIjoxNjcyNTc1OTg2fQ.xa0Qn_LNK9Wgp8QbKEKhYQA6kbc-jkugc5ZpCNHaUCs'
         }
       });
       socket.on('connect', function() {
