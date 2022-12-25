@@ -47,8 +47,11 @@ export class OrderService {
             condition.status = status;
         }
         if (created_from || created_to) {
+            if (created_from && !moment.isDate(new Date(created_from))) throw new Error("Date Invalid a")
+            if (created_to && !moment.isDate(new Date(created_to))) throw new Error("Date Invalid b")
             condition = FilterFromToCreate(created_from, created_to, condition);
         };
+
         return condition;
     }
 

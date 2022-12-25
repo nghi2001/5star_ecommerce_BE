@@ -26,7 +26,10 @@ export class OrderController {
     @Roles(Role.ADMIN, Role.SUPER_ADMIN)
     @Get("/count-statistic")
     async countStatistic(@Query() query) {
-        let condition = await this.OrderService.renderCondition(query);
+        let [err, condition] = await to(this.OrderService.renderCondition(query));
+        if (err) {
+            throw new HttpException(err.message, 400)
+        }
         let data = await this.OrderService.countStatistic(condition);
         return data
     }
@@ -57,7 +60,10 @@ export class OrderController {
     @Get()
     async shows(@Query() query) {
         let pagination = pager(query);
-        let condition = await this.OrderService.renderCondition(query);
+        let [err, condition] = await to(this.OrderService.renderCondition(query));
+        if (err) {
+            throw new HttpException(err.message, 400)
+        }
         let data = await this.OrderService.getList(condition, pagination);
         return data;
     }
