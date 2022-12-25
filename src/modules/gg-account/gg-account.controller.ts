@@ -20,15 +20,16 @@ export class GgAccountController {
         @Res() res,
         @Body(new ValidationPipe()) body: LoginGGDTO
     ) {
+
         let [err, userInfo] = await to(this.GgAccountService.verifyGbIdToken(body.token));
         if (err) {
-            console.log("Err Create Google Account", err.message);
+            console.log("Err Create Google Account", err);
             throw new HttpException("Can't create google account", 500)
         }
         let checkData = await this.GgAccountService.getByUid(userInfo.sub);
         if (!checkData) {
 
-            let account = await this.GgAccountService.createAccount(userInfo.id, userInfo.name, userInfo.email)
+            let account = await this.GgAccountService.createAccount(userInfo.sub, userInfo.name, userInfo.email)
             let profile = await this.UserService.findOne(account.id_profile);
             let tokens = await this.AuthService.getTokens({ id: profile.id, roles: profile.roles, name: profile.first_name })
             res.cookie("refreshToken", tokens.refreshToken, {

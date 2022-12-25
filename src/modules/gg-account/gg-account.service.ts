@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { GgAccountRepository } from './gg-account.repository';
 import axios from 'axios';
-
+import * as zlib from 'zlib';
+import { to } from 'src/common/helper/catchError';
 @Injectable()
 export class GgAccountService {
     constructor(
@@ -11,14 +12,26 @@ export class GgAccountService {
     ) { }
 
     async verifyGbIdToken(token: string) {
-        let data = await axios.get('https://www.googleapis.com/oauth2/v2/tokeninfo', {
+        let data = await axios.get('https://www.googleapis.com/oauth2/v3/tokeninfo', {
             params: {
                 id_token: token
-            }
+            },
+            responseType: 'arraybuffer',
+            'decompress': true
         })
-        console.log(data.data);
-
-        return data.data;
+        let [err, userInfo] = await to(new Promise((resolve, reject) => {
+            zlib.gunzip(data.data, function (err, output) {
+                if (err) {
+                    reject(err)
+                }
+                resolve(JSON.parse(output.toString()))
+            })
+        }))
+        if (err) {
+            console.log("Err GG Get User Info", err.message);
+            throw new HttpException("Get User Info", 500);
+        }
+        return userInfo;
     }
 
     async createAccount(uid: string, name = "default", email) {
