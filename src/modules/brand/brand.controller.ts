@@ -19,7 +19,7 @@ export class BrandController {
 
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Post()
     async create(
         @Body(new ValidationPipe()) body: CreateBrandDto
@@ -29,7 +29,7 @@ export class BrandController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Delete(":id")
     async destroy(@Param('id') id) {
         let result = await this.BrandService.delete(id);
@@ -37,7 +37,7 @@ export class BrandController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Put(":id")
     async update(
         @Param("id") id: number,

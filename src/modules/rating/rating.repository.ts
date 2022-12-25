@@ -53,4 +53,18 @@ export class RatingRepository extends Repository<Rating> {
             data
         }
     }
+    async getOne(id: number) {
+        let data = this.findOne({
+            where: {
+                id: id
+            },
+            relations: {
+                product: true,
+                user: {
+                    avatar: true
+                }
+            }
+        })
+        return data
+    }
 }

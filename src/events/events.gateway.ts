@@ -1,6 +1,7 @@
 import { UseGuards } from "@nestjs/common";
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server, Socket } from 'socket.io';
+import { TYPE_NOTIFY } from "src/common/enum";
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 import { AuthService } from "src/modules/auth/auth.service";
 import redisClient from '../config/database/redis';
@@ -26,7 +27,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         if (!user) {
             return client.disconnect()
         }
-        client.handshake.query.userId = user.id
+        client.handshake.query.userId = user.id;
         await redisClient.sadd(`${this.redisPrefix}${user.id}`, [client.id]);
         client.join(`room:${user.id}`)
     }
@@ -44,8 +45,13 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     }
 
-    async sendNotificationToUser(idUser, nofti) {
-        this.server.to('room:' + idUser).emit("new-notification", { data: nofti })
+    async sendNotificationToUser(idUsers: number[], nofti, type?: TYPE_NOTIFY) {
+        if (type == TYPE_NOTIFY.SYSTEM) {
+            return this.server.emit("new-notification", { data: nofti })
+        }
+        for (let i of idUsers) {
+            this.server.to('room:' + i['id']).emit("new-notification", { data: nofti })
+        }
     }
 
     @SubscribeMessage("join-room")

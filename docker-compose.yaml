@@ -14,6 +14,8 @@ services:
       DB_PORT: 5432
       THROTTLE_LIMIT: 60
       THROTTLE_TTL: 60
+      REFRESH_TOKEN_EXPIRATE: 7d
+      ACCESS_TOKEN_EXPIRATE: 1h
     volumes:
       - ./public:/home/app/public
     networks:
@@ -32,7 +34,7 @@ services:
     networks:
       - 5star_be
   cache:
-    image: redis:alpine
+    image: redis:latest
     container_name: 5star_cache
     restart: always
     ports:

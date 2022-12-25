@@ -56,7 +56,7 @@ export class BlogController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Post("")
     async create(
         @Body(new ValidationPipe()) createData: CreateBlogDTO,
@@ -71,7 +71,7 @@ export class BlogController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Delete(":id")
     async destroy(@Param('id') id: number) {
         let result = await this.BlogService.delete(id);
@@ -79,7 +79,7 @@ export class BlogController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Put(":id")
     async update(
         @Param("id") id: number,

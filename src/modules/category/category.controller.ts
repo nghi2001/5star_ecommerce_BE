@@ -22,7 +22,7 @@ export class CategoryController {
     ) { }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Post()
     async store(@Body(new ValidationPipe()) createDto: createCategoryDTO) {
         let category = await this.CategoryService.createCategory(createDto);
@@ -47,7 +47,7 @@ export class CategoryController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Delete(":id")
     async destroy(@Param('id') id: string) {
         let result = await this.CategoryService.deleteOne(id);
@@ -55,7 +55,7 @@ export class CategoryController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Put(":id")
     async update(
         @Param('id') id: number,

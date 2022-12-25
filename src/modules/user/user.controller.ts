@@ -1,4 +1,4 @@
-import { CacheInterceptor, Controller, HttpException, Param, Put, Query, Res, UseGuards, UseInterceptors } from '@nestjs/common';
+import { CacheInterceptor, Controller, HttpException, HttpStatus, Param, Put, Query, Req, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get, Post, Body, Delete } from '@nestjs/common';
 import { ValidationPipe } from '../../common/pipe/validation.pipe';
@@ -18,21 +18,29 @@ export class UserController {
         private UserService: UserService
     ) { }
 
-    // @UseGuards(JwtAuthGuard, RolesGuard)
-    // @Roles(Role.Admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN, Role.SUPER_ADMIN)
     @Put("/role/:id")
     async changeRole(
         @Body(new ValidationPipe()) body: changeRoleDTO,
-        @Param("id") id: number
+        @Param("id") id: number,
+        @Req() req
     ) {
         let user = await this.UserService.findOne(id);
         if (!user) {
             throw new HttpException("Id not fount", 404);
         }
-        let roleExit = user.roles.filter(role => role == body.role);
-        if (roleExit.length <= 0) {
-            user.roles.push(body.role)
+
+        if (body.role.includes(Role.ADMIN)) {
+            if (!req.user.roles.includes(Role.SUPER_ADMIN)) {
+                throw new HttpException("Forbiden", HttpStatus.FORBIDDEN)
+            }
         }
+        if (body.role.includes(Role.SUPER_ADMIN)) {
+            body.role = body.role.filter(role => role != Role.SUPER_ADMIN)
+        }
+
+        user.roles = body.role;
         let updateResult = await this.UserService.update(id, {
             roles: user.roles
         })

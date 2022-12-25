@@ -3,13 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventsModule } from 'src/events/events.module';
 import { Comment } from '../../entity/comment.entity';
 import { BlogModule } from '../blog/blog.module';
+import { NotifyModule } from '../notify/notify.module';
 import { CommentController } from './comment.controller';
 import { CommentRepository } from './comment.repository';
 import { CommentService } from './comment.service';
 console.log(BlogModule);
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Comment]), EventsModule, forwardRef(() => BlogModule)],
+  imports: [TypeOrmModule.forFeature([Comment]), EventsModule, forwardRef(() => BlogModule), NotifyModule],
   controllers: [CommentController],
   providers: [CommentService, CommentRepository],
   exports: [CommentService]

@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { Blog } from './blog.entity';
 import { Comment } from './comment.entity';
 import { MediaFile } from './media.entity';
+import { Notify_User } from './notify_user.entity';
 import { Order } from './order';
 import { Rating } from './rating.entity';
 @Entity()
@@ -28,7 +29,7 @@ export class Profile extends BaseEntity {
         type: 'enum',
         enum: Role,
         array: true,
-        default: [Role.User]
+        default: [Role.USER]
     })
     roles: Role[]
 
@@ -64,5 +65,8 @@ export class Profile extends BaseEntity {
     avatar: MediaFile;
 
     @OneToMany(() => Rating, (rating) => rating.user)
-    ratings: Rating[]
+    ratings: Rating[];
+
+    @OneToMany(() => Notify_User, (notifyUser) => notifyUser.user)
+    notifys: Notify_User[]
 }

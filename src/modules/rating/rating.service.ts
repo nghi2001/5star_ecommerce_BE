@@ -49,7 +49,7 @@ export class RatingService {
     }
 
     async getOne(id: number) {
-        let data = await this.RatingRepository.findOneBy({ id });
+        let data = await this.RatingRepository.getOne(id);
         return data;
     }
 

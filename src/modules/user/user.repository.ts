@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { Profile } from "../../entity/profile.entity";
 import { CreateUserDto } from "./dto/create-user.dto";
 
@@ -44,5 +44,17 @@ export class UserRepository extends Repository<Profile> {
             total,
             data
         };
+    }
+
+    async getByIds(ids: number[]) {
+        let data = await this.find({
+            where: {
+                id: In(ids)
+            },
+            select: {
+                id: true
+            }
+        })
+        return data;
     }
 }

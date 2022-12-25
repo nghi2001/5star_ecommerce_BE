@@ -31,6 +31,7 @@ import { PaymentMethodModule } from './modules/payment-method/payment-method.mod
 import { EventsModule } from './events/events.module';
 import { RatingModule } from './modules/rating/rating.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { NotifyModule } from './modules/notify/notify.module';
 @Module({
   imports: [
     CacheModule.register({
@@ -86,7 +87,8 @@ import { ContactModule } from './modules/contact/contact.module';
     PaymentMethodModule,
     EventsModule,
     RatingModule,
-    ContactModule
+    ContactModule,
+    NotifyModule
   ],
   controllers: [AppController, AwsS3Controller],
   providers: [

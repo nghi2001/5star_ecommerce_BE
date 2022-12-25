@@ -2,11 +2,13 @@ import {
     Controller, Get, Post, Delete,
     Req, Put, Param, ValidationPipe, Body, UseGuards, CacheInterceptor, UseInterceptors, HttpException, Query
 } from '@nestjs/common';
+import { TYPE_NOTIFY } from 'src/common/enum';
 import { to } from 'src/common/helper/catchError';
 import { pager } from 'src/common/helper/paging';
 import { EventsGateway } from 'src/events/events.gateway';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { BlogService } from '../blog/blog.service';
+import { NotifyService } from '../notify/notify.service';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create_comment.dto';
 import { UpdateCommentDto } from './dto/update_comment.dto';
@@ -18,7 +20,8 @@ export class CommentController {
     constructor(
         private CommentService: CommentService,
         private EventService: EventsGateway,
-        private BlogService: BlogService
+        private BlogService: BlogService,
+        private NotifyService: NotifyService
     ) { }
 
     @Get(":id")
@@ -56,7 +59,15 @@ export class CommentController {
         if (newComment) {
             comment = await this.CommentService.getById(newComment.raw[0].id);
             if (comment.parent_id) {
-                this.EventService.sendNotificationToUser(7, { content: "dmm" })
+                let data = await this.CommentService.findOne(comment.parent_id);
+                console.log(data);
+
+                let content = `${req.user.name} đã trả lời bình luận của bạn`
+                this.NotifyService.create({
+                    content: content,
+                    to: [data.user_id],
+                    type: TYPE_NOTIFY.USER
+                })
             }
         }
 

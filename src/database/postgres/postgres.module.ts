@@ -21,6 +21,8 @@ import { StoreSystem } from 'src/entity/store-system.entity';
 import { PaymentMethod } from 'src/entity/payment-method.entity';
 import { Rating } from 'src/entity/rating.entity';
 import { Contact } from 'src/entity/contact.entity';
+import { Notify } from 'src/entity/notify.entity';
+import { Notify_User } from 'src/entity/notify_user.entity';
 
 @Module({
     imports: [
@@ -53,7 +55,9 @@ import { Contact } from 'src/entity/contact.entity';
                     StoreSystem,
                     PaymentMethod,
                     Rating,
-                    Contact
+                    Contact,
+                    Notify,
+                    Notify_User
                 ],
                 synchronize: true,
                 // logging: true

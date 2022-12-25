@@ -20,7 +20,7 @@ export class BigBannerController {
     ) { }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Post("")
     async create(
         @Body(new ValidationPipe()) createBannerDto: CreateBannerDTO
@@ -50,7 +50,7 @@ export class BigBannerController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Delete("/:id")
     async destroy(@Param('id') id) {
         let result = await this.BannerService.deleteOne(id);
@@ -58,7 +58,7 @@ export class BigBannerController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Put(":id")
     async update(
         @Param("id") id: string,

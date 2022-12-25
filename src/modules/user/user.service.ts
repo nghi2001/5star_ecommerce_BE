@@ -3,6 +3,8 @@ import { FileService } from '../file/file.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { updateUserDTO } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
+import { In } from 'typeorm';
+import { to } from 'src/common/helper/catchError';
 
 @Injectable()
 export class UserService {
@@ -117,5 +119,14 @@ export class UserService {
         }
         let data = await this.UserRepository.update({ id }, update)
         return data
+    }
+
+    async getByIds(ids: number[]) {
+        let [err, data] = await to(this.UserRepository.getByIds(ids))
+        if (err) {
+            console.log("Err get user by ids", err);
+            return null;
+        }
+        return data;
     }
 }

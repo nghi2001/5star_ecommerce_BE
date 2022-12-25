@@ -41,7 +41,7 @@ export class AuthService {
 
         if (verifyPass) {
             let profile = await this.UserService.findOne(user.id_profile);
-            let tokens = await this.getTokens({ id: user.id, roles: profile.roles });
+            let tokens = await this.getTokens({ id: user.id, roles: profile.roles, name: user.email });
             await this.updateRefreshToken(tokens.refreshToken, user.id, hashAndIp, deviceInfo)
             return tokens
         }

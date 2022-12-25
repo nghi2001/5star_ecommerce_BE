@@ -25,7 +25,7 @@ export class ProductController {
     ) { }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Post("")
     async create(
         @Body(new ValidationPipe()) body: CreateProductDto
@@ -143,7 +143,7 @@ export class ProductController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Delete("/stock/:id")
     async destroyStock(@Param("id") id: number) {
         let result = await this.ProductService.deleteStock(id);
@@ -151,7 +151,7 @@ export class ProductController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Delete(":id")
     async destroy(@Param("id") id: number) {
         let result = await this.ProductService.delete(id);
@@ -159,7 +159,7 @@ export class ProductController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Put("/stock/:id")
     async updateStock(
         @Param("id") id: number,
@@ -173,7 +173,7 @@ export class ProductController {
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.ADMIN)
     @Put(":id")
     async update(
         @Param("id") id: number,
