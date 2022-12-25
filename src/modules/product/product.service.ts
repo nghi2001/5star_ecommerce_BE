@@ -28,11 +28,11 @@ export class ProductService {
 
     contraintsColumn() {
         return {
-            id: true,
-            name: true,
-            sold: true,
-            views: true,
-            create_at: true,
+            "product.id": true,
+            "product.name": true,
+            "product.sold": true,
+            "product.views": true,
+            "product.create_at": true,
             // price: true
         }
     }

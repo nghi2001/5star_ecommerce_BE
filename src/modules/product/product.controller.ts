@@ -132,9 +132,7 @@ export class ProductController {
         let sort = orderBy(query, contraintsColumn);
         if (query.orderBy == 'price') {
             sort = {
-                stocks: {
-                    price: query.orderType || 'ASC'
-                }
+                "stock.price": query.orderType || 'ASC'
             }
         }
 

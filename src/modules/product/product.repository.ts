@@ -160,10 +160,14 @@ export class ProductRepository extends Repository<Product> {
             }
         })
         let total = await query.getCount();
+
         query
             .take(paginaton.take)
             .skip(paginaton.skip)
-        // .orderBy()
+        let sortKey = Object.keys(sort);
+        if (sortKey.length > 0) {
+            query.orderBy(`${sortKey[0]}`, sort[sortKey[0]])
+        }
         let data = await query.getMany();
         // let data = await this.find({
         //     where: filter,
