@@ -169,21 +169,6 @@ export class ProductRepository extends Repository<Product> {
             query.orderBy(`${sortKey[0]}`, sort[sortKey[0]])
         }
         let data = await query.getMany();
-        // let data = await this.find({
-        //     where: filter,
-        //     relations: {
-        //         stocks: {
-        //             classify_1: true,
-        //             classify_2: true
-        //         },
-        //         images: true
-        //     },
-        //     order: sort,
-        //     ...paginaton
-        // })
-        // let total = await this.count({
-        //     where: filter
-        // })
         return {
             total,
             data

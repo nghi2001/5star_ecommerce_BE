@@ -129,12 +129,13 @@ export class ProductController {
         let paginaton = pager(query);
         let filter = await this.ProductService.renderCondition(query);
         let contraintsColumn = this.ProductService.contraintsColumn();
-        let sort = orderBy(query, contraintsColumn);
+        let sort = orderBy(query, contraintsColumn, 'product.');
         if (query.orderBy == 'price') {
             sort = {
                 "stock.price": query.orderType || 'ASC'
             }
         }
+
 
         let products = await this.ProductService.getAll(filter, paginaton, sort);
         return products
