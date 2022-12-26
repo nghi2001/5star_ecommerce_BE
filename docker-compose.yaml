@@ -64,7 +64,7 @@ services:
     container_name: 5star_fe_client
     ports:
       - 3000:80
-      - 3003:433
+      - 3003:443
     networks:
       - 5star_be
   fe_admin:
