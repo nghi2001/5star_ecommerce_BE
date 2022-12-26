@@ -29,5 +29,8 @@ export class CreateCouponDTO {
 
     @IsInt()
     @IsPositive()
-    max_order: number;
+    @IsOptional()
+    max_price?: number;
+
+
 }

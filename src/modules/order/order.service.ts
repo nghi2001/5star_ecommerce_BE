@@ -76,6 +76,8 @@ export class OrderService {
             if (checkCoupon.type == TypeCoupon.PERCENT) {
                 let discount = (data.total / 100) * checkCoupon.discount;
                 checkCoupon.discount -= discount;
+                data.total -= checkCoupon.discount;
+                data.total -= checkCoupon.discount;
             }
             coupon_id = checkCoupon.id
         }
@@ -93,9 +95,10 @@ export class OrderService {
         let orderObj = this.OrderRepository.createOrderObject(data, coupon_id, status);
         let [errCreateOrder, order] = await to(queryRunner.manager.save(orderObj));
         if (errCreateOrder) {
+            console.log(errCreateOrder);
             await queryRunner.rollbackTransaction();
             await queryRunner.release();
-            throw new HttpException("Can't create order", 500);
+            throw new HttpException(errCreateOrder.message || "Inernal Err", errCreateOrder.status || 500);
         }
         let listOrderDetail = [];
         let productInserted = []
@@ -116,7 +119,8 @@ export class OrderService {
                 })
                 productInserted.push({
                     id: product.id,
-                    quantity: product.quantity - item.quantity
+                    quantity: product.quantity - item.quantity,
+                    itemQuantity: item.quantity
                 })
             }
         }
@@ -138,11 +142,20 @@ export class OrderService {
         };
         for (let e of productInserted) {
             let [err, data] = await to(this.productService.updateStock(e.id, { quantity: e.quantity }));
-            if (err) {
+            let [errUpdateSold] = await to(this.productService.updateSoldPoductByStock(e.id, e.itemQuantity))
+            if (err || errUpdateSold) {
+                let error = err ? err : errUpdateSold
                 await queryRunner.rollbackTransaction();
                 await queryRunner.release();
-                throw new HttpException("Can't create order", 500)
+                throw new HttpException(error.message || "Can't create order", error.status || 500)
             }
+        }
+        let [minusCouponErr] = await to(this.CouponService.minusCoupon(coupon_id, 1));
+        if (minusCouponErr) {
+            console.log("Create Order", minusCouponErr);
+            await queryRunner.rollbackTransaction();
+            await queryRunner.release();
+            throw new HttpException("Can't create order", 500);
         }
         await queryRunner.commitTransaction();
         await queryRunner.release();

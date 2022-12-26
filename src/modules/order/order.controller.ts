@@ -132,22 +132,20 @@ export class OrderController {
     }
 
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post()
     async create(
         @Body(new ValidationPipe()) body: CreateOrderDto,
         @Req() req
     ) {
         try {
-
-            let id = 7;
-
+            let id = req.user.id;
             let user = await this.UserService.findOne(id);
             let data = await this.OrderService.create(body, user);
             return data
         } catch (error) {
             console.log(error);
-            return false
+            throw new HttpException(`${error.message || "Invalid Err"}`, error.status || 500);
         }
     }
 

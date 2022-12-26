@@ -16,6 +16,7 @@ services:
       THROTTLE_TTL: 60
       REFRESH_TOKEN_EXPIRATE: 7d
       ACCESS_TOKEN_EXPIRATE: 1h
+      RETURN_URL: https://5starfashion.xyz:3003/order-success
     volumes:
       - ./public:/home/app/public
     networks:
@@ -49,6 +50,16 @@ services:
     restart: always
     networks:
       - 5star_be
+    environment:
+      FRONTEND_DOMAIN: 5starfashion.xyz
+      REDIS_HOST: 5star_cache
+      REDIS_PORT: 6379
+      DB_HOST: 5star_postgres
+      DB_PORT: 5432
+      THROTTLE_LIMIT: 60
+      THROTTLE_TTL: 60
+      REFRESH_TOKEN_EXPIRATE: 7d
+      ACCESS_TOKEN_EXPIRATE: 1h
   nginx:
     image: nguyenduynghi2001/5star_nginx
     container_name: 5star_nginx

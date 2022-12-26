@@ -26,6 +26,8 @@ export class Blog extends BaseEntity {
     @Column({ default: BLOG_STATUS.ACTIVE })
     status: BLOG_STATUS;
 
+    @Column({ default: 0 })
+    views: 0;
     @ManyToOne(() => Profile, (profile) => profile.blogs)
     @JoinColumn({ name: "user_id" })
     user: Profile

@@ -46,7 +46,7 @@ export class CouponService {
             type: coupon.type,
             discount: coupon.discount,
             min_order: coupon.min_order,
-            max_order: coupon.max_order,
+            max_price: coupon.max_price,
             status: coupon.status || COUPON_STATUS.ACTIVE
         };
         let checkData = await this.checkCode(dataInsert.code);
@@ -166,10 +166,13 @@ export class CouponService {
         if (!coupon) {
             return new Error("coupon not correct");
         }
+        if (coupon.quantity <= 0) {
+            throw new HttpException("Countpon out of stock", 400);
+        }
         if (totalAmount < coupon.min_order) {
             return new Error("totalAmount can't use this coupon");
         }
-        if (totalAmount > coupon.max_price) {
+        if (coupon.type == TypeCoupon.PERCENT && totalAmount > coupon.max_price) {
             coupon.type = TypeCoupon.CASH;
             coupon.discount = coupon.max_price;
         }
@@ -180,5 +183,11 @@ export class CouponService {
             return new Error("coupon not avaiable")
         }
         return coupon;
+    }
+
+    async minusCoupon(id: number, number: number) {
+        let coupon = await this.CouponRepository.findOne({ where: { id } });
+        coupon.quantity -= number;
+        return await coupon.save();
     }
 }

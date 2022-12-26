@@ -5,6 +5,10 @@
         "http://14.225.254.164",
         "http://5starfashion.xyz",
         "https://5starfashion.xyz",
-        "https://5starfashion.xyz:8443"
+        "https://5starfashion.xyz:8443",
+        "https://5starfashion.xyz:3000",
+        "https://5starfashion.xyz:3001",
+        "https://5starfashion.xyz:3002",
+        "https://5starfashion.xyz:3003"
     ]
 }

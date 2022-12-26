@@ -30,7 +30,7 @@ export class Coupon extends BaseEntity {
     @Column({ nullable: true })
     min_order: number;
 
-    @Column({ nullable: true })
+    @Column({ default: 0 })
     max_price: number;
 
     @Column()

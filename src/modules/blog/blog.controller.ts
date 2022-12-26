@@ -13,6 +13,8 @@ import { BlogService } from './blog.service';
 import { CreateBlogDTO } from './dto/createBlogDTO';
 import { GetListDTO } from './dto/get-list.dto';
 import { UpdateBlogDTO } from './dto/updateBlogDTO';
+import { Request } from 'express';
+import redis from 'src/config/database/redis';
 
 @Controller('blog')
 @UseInterceptors(CacheInterceptor)
@@ -25,14 +27,22 @@ export class BlogController {
 
     @Get("/:idSlug")
     async find(
-        @Param("idSlug") id_slug: string
+        @Param("idSlug") id_slug: string,
+        @Req() req: Request
     ) {
+        let fingerprint: any = req.fingerprint
+        let hash = fingerprint.hash;
         let data = null;
         let id = Number(id_slug);
         if (id) {
             data = await this.BlogService.findOne(id);
         } else {
             data = await this.BlogService.getOneBySlug(id_slug);
+        }
+        if (!(await redis.get(hash) == data.id)) {
+            data.views += 1;
+            await data.save();
+            await redis.set(hash, data.id, 'EX', 60)
         }
         return data;
     }

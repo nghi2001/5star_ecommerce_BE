@@ -41,9 +41,11 @@ export class BlogRepository extends Repository<Blog> {
         let total = await query.getCount();
         query
             .leftJoin("blog.media", "media")
+            .leftJoin("blog.user", "user")
             .select([
                 "blog",
-                "media"
+                "media",
+                "user"
             ])
             .take(pagination.take)
             .skip(pagination.skip)

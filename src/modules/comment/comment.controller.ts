@@ -60,7 +60,7 @@ export class CommentController {
             comment = await this.CommentService.getById(newComment.raw[0].id);
             if (comment.parent_id) {
                 let data = await this.CommentService.findOne(comment.parent_id);
-                console.log(data);
+                // console.log(data);
 
                 let content = `${req.user.name} đã trả lời bình luận của bạn`
                 this.NotifyService.create({

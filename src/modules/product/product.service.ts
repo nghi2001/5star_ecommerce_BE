@@ -130,6 +130,17 @@ export class ProductService {
             return product;
         }
     }
+    async updateSoldPoductByStock(stockId, number) {
+        let product = await this.ProductRepository.findOne({
+            where: {
+                stocks: {
+                    id: stockId
+                }
+            }
+        })
+        product.sold += number;
+        return product.save();
+    }
     async getOneProduct(id: number) {
         let checkProdExist = await this.checkProdExist(id);
         if (checkProdExist) {

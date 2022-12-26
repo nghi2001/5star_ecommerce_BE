@@ -117,6 +117,7 @@ export class ProductRepository extends Repository<Product> {
             .leftJoin("stock.classify_1", "classify_1")
             .leftJoin("stock.classify_2", "classify_2")
             .leftJoin("product.images", "images")
+            .leftJoin("product.brand", "brand")
             .select([
                 'product.id',
                 'product.name',
@@ -136,7 +137,8 @@ export class ProductRepository extends Repository<Product> {
                 'stock.id_classify_2',
                 "classify_1.attribute",
                 "classify_2.attribute",
-                "images"
+                "images",
+                "brand"
             ])
         Object.keys(filter).forEach((key) => {
             if (filter[key]) {
