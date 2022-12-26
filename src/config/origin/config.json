@@ -3,6 +3,8 @@
         "http://localhost:3000",
         "http://localhost:3001",
         "http://14.225.254.164",
-        "http://5starfashion.xyz"
+        "http://5starfashion.xyz",
+        "https://5starfashion.xyz",
+        "https://5starfashion.xyz:8443"
     ]
 }

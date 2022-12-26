@@ -11,7 +11,7 @@
     <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
     <script>
       let input = document.querySelector("#a");
-      const socket = io('http://localhost:3001', {
+      const socket = io('http://localhost/ws', {
         query: {
           token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZXMiOlsidXNlciIsImFkbWluIiwic3VwZXJfYWRtaW4iXSwibmFtZSI6Im5ndXllbmR1eW5naGkyMDAxQGdtYWlsLmNvbSIsImlhdCI6MTY3MTk3MTE4NiwiZXhwIjoxNjcyNTc1OTg2fQ.xa0Qn_LNK9Wgp8QbKEKhYQA6kbc-jkugc5ZpCNHaUCs'
         }

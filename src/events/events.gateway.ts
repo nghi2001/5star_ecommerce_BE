@@ -6,9 +6,9 @@ import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 import { AuthService } from "src/modules/auth/auth.service";
 import redisClient from '../config/database/redis';
 @WebSocketGateway({
-    cors: {
-        origin: '*'
-    }
+    // cors: {
+    //     origin: '*'
+    // }
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
