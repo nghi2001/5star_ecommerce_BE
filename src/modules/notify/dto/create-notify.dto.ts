@@ -14,5 +14,5 @@ export class CreaeteNotifyDTO {
 
     @IsInt({ each: true })
     @IsOptional()
-    to: number[]
+    to?: number[]
 }

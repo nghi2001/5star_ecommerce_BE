@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <input type="text" id="a">
-    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js" integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs" crossorigin="anonymous"></script>
-    <script>
-      let input = document.querySelector("#a");
-      const socket = io('http://localhost/ws', {
-        query: {
-          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZXMiOlsidXNlciIsImFkbWluIiwic3VwZXJfYWRtaW4iXSwibmFtZSI6Im5ndXllbmR1eW5naGkyMDAxQGdtYWlsLmNvbSIsImlhdCI6MTY3MTk3MTE4NiwiZXhwIjoxNjcyNTc1OTg2fQ.xa0Qn_LNK9Wgp8QbKEKhYQA6kbc-jkugc5ZpCNHaUCs'
-        }
-      });
-      socket.on('connect', function() {
-        console.log('Connected');
 
-      });
-      socket.on("new-notification", (data) => {
-        console.log(data);
-      })
-      socket.on('disconnect', function() {
-        console.log('Disconnected');
-      });
-    </script>
-    <!-- Handle VNPAY -->
-    <!-- <script>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" id="a">
+  <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"
+    integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
+    crossorigin="anonymous"></script>
+  <script>
+    let input = document.querySelector("#a");
+    const socket = io('http://localhost:3000', {
+      // path: "/socket.io",
+      // query: {
+      //   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInJvbGVzIjpbInVzZXIiXSwibmFtZSI6ImR1eW5naGlraHVtOUBnbWFpbC5jb20iLCJpYXQiOjE2NzIwODg4MzQsImV4cCI6MTY3MjA5MjQzNH0.XPXFdZWUNr1JeQQgIDkoN9d7eISbEfTzYPiVFAfLAU0'
+      // }
+    });
+    socket.on('connect', function () {
+      console.log('Connected');
+
+    });
+    socket.on("new-notification", (data) => {
+      console.log(data);
+    })
+    socket.on('disconnect', function () {
+      console.log('Disconnected');
+    });
+  </script>
+  <!-- Handle VNPAY -->
+  <!-- <script>
         const params = new Proxy(new URLSearchParams(window.location.search), {
             get: (searchParams, prop) => searchParams.get(prop),
             });
@@ -53,4 +58,5 @@
             }
     </script>     -->
 </body>
+
 </html>

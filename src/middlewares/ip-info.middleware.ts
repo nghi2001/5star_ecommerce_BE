@@ -9,7 +9,7 @@ export class IpMiddleware implements NestMiddleware {
         let info = await axios.get(`http://ip-api.com/json/${ip}`);
         let ipData = info.data;
         let address = 'localhost';
-        console.log(info.data, ip);
+        // console.log(info.data, ip);
 
         if (ipData.status == 'success') {
             address = `

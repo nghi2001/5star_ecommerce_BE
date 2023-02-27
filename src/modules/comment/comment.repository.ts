@@ -37,7 +37,9 @@ export class CommentRepository extends Repository<Comment>{
             where: filter,
             relations: {
                 blog: true,
-                profile: true,
+                profile: {
+                    avatar: true
+                },
                 childComment: true
             },
             ...pagination

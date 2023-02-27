@@ -51,7 +51,7 @@ export class InternalaccountController {
             })
             setTimeout(async () => {
                 await this.AccountService.destroyAccountInactive(account.id)
-            }, 1000 * 60 * 60)
+            }, 1000 * 60 * 10)
             return result;
         }
         return new HttpException("Can't create account", 500);

@@ -18,6 +18,7 @@ export class BlogService {
     constraintColumn() {
         return {
             id: true,
+            views: true,
             create_at: true,
             update_at: true
         }

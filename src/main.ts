@@ -5,8 +5,9 @@ import { TranformInterceptor } from './Interceptors/tranform.interceptor';
 import * as cookieParser from 'cookie-parser';
 import * as origin from './config/origin/config.json';
 import * as Fingerprint from 'express-fingerprint';
+import { NestExpressApplication } from "@nestjs/platform-express"
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.use(Fingerprint({
     parameters: [
@@ -16,6 +17,8 @@ async function bootstrap() {
       Fingerprint.geoip,
     ]
   }))
+
+  app.set('trust proxy', 1);
   app.use(cookieParser());
   app.enableCors({
     origin: origin.origin,

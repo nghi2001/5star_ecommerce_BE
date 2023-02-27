@@ -4,11 +4,10 @@ import { Server, Socket } from 'socket.io';
 import { TYPE_NOTIFY } from "src/common/enum";
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 import { AuthService } from "src/modules/auth/auth.service";
-import redisClient from '../config/database/redis';
+// import redisClient from '../config/database/redis';
+import * as origin from '../config/origin/config.json';
 @WebSocketGateway({
-    // cors: {
-    //     origin: '*'
-    // }
+    cors: true
 })
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
@@ -30,7 +29,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
             return client.disconnect()
         }
         client.handshake.query.userId = user.id;
-        // await redisClient.sadd(`${this.redisPrefix}${user.id}`, [client.id]);
         if (!this.users.get(`room:${user.id}`)) {
             let setUser = new Set();
             setUser.add(client.id);
@@ -46,12 +44,18 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     async handleDisconnect(client: Socket) {
-        let setUser = this.users.get('room:' + client.handshake.query.userId);
-        setUser.delete(client.id)
-        if (this.users.get('room:' + client.handshake.query.userId).size <= 0) {
-            this.users.delete('room:' + client.handshake.query.userId)
+        try {
+            let setUser = this.users.get('room:' + client.handshake.query.userId);
+            if (setUser) {
+                setUser.delete(client.id)
+            }
+            if (this.users.get('room:' + client.handshake.query.userId).size <= 0) {
+                this.users.delete('room:' + client.handshake.query.userId)
+            }
+            client.disconnect(true);
+        } catch (error) {
+            console.log(error);
         }
-        client.disconnect(true);
     }
 
     newComment(idComment: number, data) {

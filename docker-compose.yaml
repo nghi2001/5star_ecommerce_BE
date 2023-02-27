@@ -61,7 +61,7 @@ services:
       REFRESH_TOKEN_EXPIRATE: 7d
       ACCESS_TOKEN_EXPIRATE: 1h
   nginx:
-    image: nguyenduynghi2001/5star_nginx
+    image: nguyenduynghi2001/5star_nginx:latest
     container_name: 5star_nginx
     ports:
       - 80:80

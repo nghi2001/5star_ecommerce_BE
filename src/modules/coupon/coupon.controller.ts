@@ -1,9 +1,10 @@
 import { Body, CacheInterceptor, Controller, Delete, Get, HttpException, Param, Post, Put, Query, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { Roles } from 'src/common/decorator/roles.decorator';
-import { Role } from 'src/common/enum';
+import { Role, TYPE_NOTIFY } from 'src/common/enum';
 import { pager } from 'src/common/helper/paging';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { NotifyService } from '../notify/notify.service';
 import { CouponService } from './coupon.service';
 import { CreateCouponDTO } from './dto/create-coupon.dto';
 import { UpdateCouponDTO } from './dto/update-coupon.dto';
@@ -12,7 +13,8 @@ import { UpdateCouponDTO } from './dto/update-coupon.dto';
 @UseInterceptors(CacheInterceptor)
 export class CouponController {
     constructor(
-        private CouponService: CouponService
+        private CouponService: CouponService,
+        private NotifyService: NotifyService
     ) {
 
     }
@@ -27,6 +29,9 @@ export class CouponController {
         let data = await this.CouponService.create(body);
         if (data) {
             newCoupon = await this.CouponService.getById(data.raw[0].id);
+            await this.NotifyService.create({
+                content: `Bạn nhận được một coupon mới: ${newCoupon.code}`, type: TYPE_NOTIFY.SYSTEM
+            })
         }
         return newCoupon;
     }
